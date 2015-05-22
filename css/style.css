@@ -5,9 +5,9 @@
 a {
 	text-decoration: none;
 }
-a:hover {
+/*a:hover {
 	text-decoration: underline;
-}
+}*/
 ul {
 	list-style: none;
 }
@@ -19,16 +19,18 @@ h1 {
 }
 body {
 	width: 100%;
-	font: 12px "Times New Roman", SimSun, sens-serif;
-	background: #E6E6FA;
+	font: 12px/1.7 "Times New Roman", SimSun, sens-serif;
+	background: #EEE9E9;
 }
+/*  INDEX.HTML
+-------------------------------------------------- */
 .top {
 	position: relative;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 80px;
-	background: #DC143C; 
+	background: #CC0033; 
 }
 .top .main {
 	position: relative;
@@ -223,6 +225,9 @@ footer .main {
 .link-list a {
 	color: #FFF;
 }
+.link-list a:hover {
+	text-decoration: underline;
+}
 .copyright {
 	display: block;
 	position: absolute;
@@ -239,6 +244,228 @@ footer .main {
 	margin-left: -15px;
 }
 
+/* BLOG.HTML
+--------------------------------------------------- */
+.blog-main {
+	position: relative;
+	top: 0;
+	left: 0;
+	margin-top: 20px;
+}
+.blog-main:after {
+	content:"";
+	display: block;
+	height: 330px;
+	visibility: hidden;
+}
+.main-content {
+	float: left;
+	width: 710px;
+	margin-right: 10px;
+}
+.blogs {
+	position: relative;
+	height: 330px;
+	background: #FFF;
+	padding: 20px;
+	margin-bottom: 10px;
+}
+.blogs h1 {
+	font-size: 16px;
+	font-weight: 700;
+	color: #FF6347;
+	margin-bottom: 10px;
+}
+.blogs h2 {
+	font-size: 12px;
+	color: #666;
+	/*font-weight: 400;*/
+	margin-bottom: 15px;
+}
+.imfo {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+	color: #999;
+}
+.imfo .author {
+	margin-right: 10px;
+}
+.imfo time {
+	margin-left: 10px;
+}
+.side-date, 
+.side-title {
+	position: absolute;
+	left: -50px;
+	top: 20px;
+	width: 50px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	background: #CD0000;
+	color: #FFF;
+	font-size: 16px;
+}
+.side-title {
+	top: 60px;
+	background: #FF6A6A;
+}
+.page-nav ul {
+	float: left;
+	margin-left: 80px;
+}
+.page-nav li {
+	float: left;
+	margin-left: 10px;
+}
+.page-nav li a {
+	display: inline-block;
+	padding: 10px 15px;
+	background: #FFF;
+	color: #000;
+}
+.page-nav li .current-page {
+	background: #FF6A6A;
+	color: #FFF;
+	font-weight: 700;
+}
+.sidebar {
+	float: left;
+	width: 260px;
+}
+.search {
+	background: #FFF;
+	height: 40px;
+	margin-bottom: 10px;
+	padding: 20px;
+}
+.search-form {
+	width: 100%;
+	height: 100%;
+	border: 1px solid #DCDCDC;
+}
+.search-icon {
+	float: left;
+	width: 40px;
+	height: 100%;
+	background: url(../img/search_icon.png) no-repeat center;
+	border: none;
+}
+.search-input,
+.search-submit {
+	float:left;
+	height: 100%;
+	border: none;
+	line-height: 100%;
+}
+.search-input {
+	width: 130px;
+}
+.search-submit {
+	background: #DCDCDC;
+	color: #FFF;
+	font-size: 24px;
+	font-weight: 700;
+	font-family: "Courier New";
+	width: 50px;
+	cursor: pointer;
+}
+.category {
+	height: 200px;
+	margin-bottom: 10px;
+	border-top: 1px solid #DCDCDC;
+}
+.category a {
+	display: block;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+    height: 50px;
+	border-bottom: 1px solid #DCDCDC;
+	border-left: 4px solid #FFC1C1;
+	background: #FFF;
+	color: #666;
+	padding-left: 16px;
+	line-height: 50px;
+}
+.category a:hover,
+.category .current-category {
+	border-left: 4px solid #CD0000;
+}
+.calendar {
+	height: 250px;
+	margin-bottom: 10px;
+	background: #FFF;
+	padding: 20px;
+}
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+	text-align: center;
+}
+#blog-calendar {
+	width: 100%;
+	height: 100%;
+}
+.calendar-head {
+	width: 100%;
+	color: #CD0000;
+	font-weight: 700;
+}
+.calendar-head a {
+	display: inline-block;
+	color: #CD0000;
+	width: 100%;
+	height: 100%;
+}
+.calender-head a:hover {
+	background: #CD0000;
+	color: #FFF;
+}
+#blog-calendar .day-head,
+#blog-calendar .day {
+	border-bottom: 1px solid #DCDCDC;
+	color: #666;
+}
+#blog-calendar .today,
+#blog-calendar .day td:hover {
+	background: #CD0000;
+	color: #FFF;
+}
+#blog-calendar .day-head td,
+#blog-calendar .day td {
+	width: 31px;
+}
+#blog-calendar .has-blog {
+	color: #CD0000;
+	font-weight: 700;
+}
+.keywords {
+	height: 160px;
+	background: #FFF;
+	padding: 20px;
+	font-family: "Courier New", sens-serif;
+}
+.keywords h1 {
+	color: #666;
+	margin-bottom: 10px;
+}
+.keywords .tags {
+	color: #CD2626;
+}
+.keywords .big {
+	font-size: 30px;
+}
+.keywords .middle {
+	font-size: 18px;
+}
+
+
+	
+	
+		
+	
 	
 	
 	
