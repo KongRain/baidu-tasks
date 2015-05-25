@@ -5,9 +5,6 @@
 a {
 	text-decoration: none;
 }
-/*a:hover {
-	text-decoration: underline;
-}*/
 ul {
 	list-style: none;
 }
@@ -46,9 +43,6 @@ body {
 	position: absolute;
 	left: 0;
 	bottom: 15px;
-	/*position: absolute;
-	left: auto;
-	bottom: 15px;*/
 	color: #FFF;
 	background: transform;
 	font-family: Arial;
@@ -81,9 +75,6 @@ body {
 .banner {
 	width: 100%;
 	height: 525px;
-	/*position: relative;
-	top: 80px;
-	left: 0;*/
 }
 .banner-img {
 	width: 100%;
@@ -279,7 +270,6 @@ footer .main {
 .blogs h2 {
 	font-size: 12px;
 	color: #666;
-	/*font-weight: 400;*/
 	margin-bottom: 15px;
 }
 .imfo {
@@ -344,6 +334,9 @@ footer .main {
 	width: 100%;
 	height: 100%;
 	border: 1px solid #DCDCDC;
+}
+.search-form:focus {
+	border: 1px solid #666;
 }
 .search-icon {
 	float: left;
@@ -441,7 +434,8 @@ table {
 	color: #CD0000;
 	font-weight: 700;
 }
-.keywords {
+.keywords,
+.rank {
 	height: 160px;
 	background: #FFF;
 	padding: 20px;
@@ -464,7 +458,9 @@ table {
 /* ABOUT.HTML
 ------------------------------------------------- */
 .about-main:after,
-.about-main:before {
+.about-main:before,
+.gallery-content:after,
+.gallery-content:before {
 	content:"";
 	display: block;
 	height: 25px;
@@ -583,12 +579,223 @@ table {
 	width: 100%;
 	height: 550px;
 }
-	
-	
-	
-
-	
-	
-	
-
+/* GALLERY.HTML
+----------------------------------------------------- */
+.gallery-nav ul {
+	margin-left: -1px;
+}
+.gallery-item {
+	display: inline-block;
+	float: left;
+}
+.gallery-item a {
+	display: inline-block;
+	padding: 15px 20px 20px 20px;
+	border-top: 5px solid;
+	border-left: 1px solid #DCDCDC;
+	border-bottom: 1px solid;
+	font-size: 14px;
+	font-family: Tahoma, Geneva, sans-serif;
+	background: #FFF;
+	color: #000;
+}
+.gallery-item .item-1 {
+	border-top-color: #FFE1FF;
+	border-bottom-color: #DCDCDC;
+}
+.active .item-1,
+.item-1:hover {
+	border-top-color: #FF82AB;
+	border-bottom-color: #FFF;
+}
+.gallery-item .item-2 {
+	border-top-color: #FFD39B;
+	border-bottom-color: #DCDCDC;
+}
+.active .item-2,
+.item-2:hover {
+	border-top-color: #FF7F50;
+	border-bottom-color: #FFF;
+}
+.gallery-item .item-3 {
+	border-top-color: #FFEC8B;
+	border-bottom-color: #DCDCDC;
+}
+.active .item-3,
+.item-3:hover {
+	border-top-color: #FFD700;
+	border-bottom-color: #FFF;
+}
+.gallery-item .item-4 {
+	border-top-color: #A4D3EE;
+	border-bottom-color: #DCDCDC;
+}
+.active .item-4,
+.item-4:hover {
+	border-top-color: #3A5FCD;
+	border-bottom-color: #FFF;
+}
+.gallery-item .item-5 {
+	border-top-color: #EED2EE;
+	border-bottom-color: #DCDCDC;
+}
+.active .item-5,
+.item-5:hover {
+	border-top-color: #E066FF;
+	border-bottom-color: #FFF;
+}		
+.gallery {
+	padding: 20px;
+	background: #FFF;
+}
+.gallery-container {
+	margin-left: -10px;
+}
+.gallery-container ul {
+	float: left;
+	margin-right: 10px;
+}
+.gallery-container .child-list {
+	margin-right: -10px;
+}
+.gallery-container .img-box {
+	float: left;
+	margin-left: 10px;
+}
+.img-box img {
+	vertical-align: middle;
+}
+.gallery-container .line-1 {
+	width: 330px;
+}
+.gallery-container .line-2 {
+	width: 160px;
+}
+.gallery-container li {
+	display: block;
+	float: left;
+	margin-bottom: 10px;
+}
+.big-img {
+	width: 340px;
+}
+.img-tag-1,
+.img-tag-2,
+.img-tag-3,
+.img-tag-4 {
+	padding: 10px;
+	background: #FF3E96;
+	color: #FFF;
+}
+.img-tag-2 {
+	background: #F08080;
+}
+.img-tag-3 {
+	background: #8DB6CD;
+}
+.img-tag-4 {
+	background: #CDCD00;
+}
+.tag-title {
+	display: block;
+	float: left;
+	font-size: 14px;
+	width: 30px;
+	height: 30px;
+	border: 1px solid #FFF;
+	border-radius: 15px;
+	line-height: 30px;
+	text-align: center;
+}
+.tag-content {
+	float: left;
+	margin-left: 10px;
+}
+.line-1 .tag-content {
+	width: 268px;
+}
+.line-2 .tag-content {
+	width: 98px;
+}
+.tag-content h1 {
+	font-size: 14px;
+}
+.tag-content p {
+	font-size: 12px;
+	text-indent: 0;
+}	
+.load-more {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	height: 50px;
+	background: #FFF;
+	text-align: center;
+	color: #666;
+}
+.load-icon {
+	vertical-align: middle;
+	margin-right: 10px;
+	cursor: pointer;
+}
+.load-more span {
+	line-height: 50px;
+	cursor: pointer;
+}
+.rank {
+	height: 200px;
+	padding: 20px 5px;
+}
+.rank h1 {
+	margin: 0 0 20px 10px;
+	color: #666;
+}
+.rank-container {
+	margin: 0 10px;
+}
+.rank-box {
+	margin-bottom: 10px;
+}
+.ranking {
+	display: block;
+	float: left;
+	width: 16px;
+	height: 16px;
+	font-size: 12px;
+	line-height: 16px;
+	text-align: center;
+	background: #CC0033;
+	color: #FFF;
+	font-weight: 700;
+	border-radius: 8px;
+}
+.rank-outer {
+	float: left;
+	height: 16px;
+	width: 100px;
+	margin-left: 10px;
+	border: 1px solid #CC0033;
+}
+.rank-inner {
+	background: #CC0033;
+	height: 16px;
+}
+.rank-inner.rank-1 {
+	width: 100px;
+}
+.rank-inner.rank-2 {
+	width: 80px;
+}
+.rank-inner.rank-3 {
+	width: 50px;
+}
+.rank-inner.rank-4 {
+	width: 30px;
+}
+.rank-inner.rank-5 {
+	width: 10px;
+}
+.rank-name {
+	margin-left: 10px;
+	float: left;
+}
 	
