@@ -1,0 +1,10 @@
+body {
+    color: black;
+    font: 12px/1.5 Arial;
+}
+.red {
+    color: red;
+}
+.big {
+    font-size: 20px;
+}
