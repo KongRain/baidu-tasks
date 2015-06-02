@@ -211,11 +211,11 @@ $.un = function(sector, event, listener){
     var element = $(sector);
     return removeEvent(element, event, listener);
 };
-$.click = function(sector, event, listener) {
+$.click = function(sector, listener) {
     var element = $(sector);
     return addClickEvent(element, listener);
 };
-$.enter = function(sector, event, listener) {
+$.enter = function(sector, listener) {
     var element = $(sector);
     return addEnterEvent(element, listener);
 };
