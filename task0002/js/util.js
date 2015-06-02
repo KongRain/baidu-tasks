@@ -1,15 +1,11 @@
-/* JavaScript数据类型及语言基础
-=================================================================================
-*/
+/*JavaScript数据类型及语言基础
+==================================================================================
+ */
 
 //判断arr是否为数组，并返回一个bool值
 function isArray(arr) {
 	console.log(arr instanceof Array);
 }
-
-//测试用例
-var arr1 = [1,3,4];
-isArray(arr1);       //true
 
 
 //判断fn是否为函数，并返回一个bool值
@@ -23,12 +19,6 @@ function isFunction(fn) {
 	console.log(fn instanceof Function);
 }
 
-//测试用例
-var fn1 = function() {
-	alert("hello world!");
-}
-isFunction(fn1);     //true
-
 
 //使用递归来实现一个深度克隆，可以复制一个目标对象，返回一个完整拷贝
 //被复制的对象类型会被限制为数字、字符串、布尔、日期、数组、Object对象。不会包含函数、正则对象等
@@ -38,34 +28,13 @@ function cloneObject(src) {
 		for (var attr in src) {
 			if (typeof src[attr] !== "object" && typeof src[attr] !== "undefined") {
 				dst[attr] = src[attr];
-			}
-			else {
+			} else {
 				dst[attr] = cloneObject(src[attr]);
 			}
 		}
 		return dst;
 	}
 }
-
-//测试用例
-var srcObj = {
-    a: [1, 2, 3],
-    b: {
-        b1: ["hello", "hi"],
-        b2: "JavaScript"
-    }
-};
-var abObj = srcObj;
-var tarObj = cloneObject(srcObj);
-
-srcObj.a = [2, 3, 4];
-srcObj.b.b1[0] = "Hello";
-
-console.log(abObj.a[0]);       //2
-console.log(abObj.b.b1[0]);    //hello
-
-console.log(tarObj.a[0]);     // 1
-console.log(tarObj.b.b1[0]);    //Hello
 
 
 //对数组进行去重操作，只考虑数组中元素为数字或字符串，返回一个去重后的数组
@@ -78,18 +47,12 @@ function uniqArray(arr) {
         for(var i=0; i<arr.length; i++) {
             if(i == 0 || arr[i] != uniqArr[uniqArr.length-1]) {
                 uniqArr.push(arr[i]);
-            }
-            else
+            } else
                 continue;
         }
     }
     return uniqArr;
 }
-
-//测试用例
-var a = [1, 3, 5, 7, 5, 3];
-var b = uniqArray(a);
-console.log(b);    //[1, 3, 5, 7]
 
 
 // 实现一个简单的trim函数，用于去除一个字符串，头部和尾部的空白字符
@@ -114,19 +77,11 @@ function simpleTrim(str) {
     return;
 }
 
-//测试用例
-var str1 = "     kxy ";
-console.log(simpleTrim(str1));
-
 
 // 尝试使用一行简洁的正则表达式完成该题目
 function trim(str) {
     return str.replace(/^\s*|\s*$/g, "");
 }
-
-//测试用例
-var str2 = "  hi!  ";
-console.log(trim(str2));
 
 
 //实现一个遍历数组的方法，针对数组中每一个元素执行fn函数，并将数组索引和元素作为参数传递
@@ -140,10 +95,6 @@ function each(arr, fn) {
     }
 }
 
-//测试用例
-var arr2 = ["kxy", "loves", "JavaScript"];
-each(arr2, fn);
-
 
 // 获取一个对象里面第一层元素的数量，返回一个整数
 function getObjectLength(obj) {
@@ -156,16 +107,6 @@ function getObjectLength(obj) {
     return len;
 }
 
-//测试用例
-var obj = {
-    a: 1,
-    b: 2,
-    c: {
-        c1: 3,
-        c2: 4
-    }
-}
-console.log(getObjectLength(obj));
 
 /* DOM
 =========================================================================
@@ -175,8 +116,7 @@ console.log(getObjectLength(obj));
 function addClass(element, newClassName) {
     /*if(!element.className) {
         element.className = newClassName;
-    }
-    else {
+    }else {
         var finnalClass = element.className;
         finnalClass += " ";
         finnalClass += newClassName;
@@ -186,22 +126,14 @@ function addClass(element, newClassName) {
     element.classList.add(newClassName);
 }
 
-//测试用例
-//var red = document.getElementsByTagName("p")[0];
-//addClass(red, "big");
-
 
 //移除element中的样式oldClassName
 function removeClass(element, oldClassName) {
     if(element.classList.contains(oldClassName)) {
         element.classList.remove(oldClassName);
-    }
-    else
+    } else
         return false;
 }
-
-//测试用例
-//removeClass(red, "red");
 
 
 //判断siblingNode和element是否为同一个父元素下的同一级的元素，返回bool值
@@ -216,12 +148,6 @@ function isSiblingNode(element, siblingNode) {
         }
     }
 }
-
-//测试用例
-//var number1 = document.getElementById("number1");
-//var html = document.getElementsByTagName("html")[0];
-//isSiblingNode(red, number1);    //true
-//console.log(html.parentNode);   //#document
 
 
 //获取element相对于浏览器窗口的位置，返回一个对象{x, y}
@@ -239,8 +165,7 @@ function getPosition(element) {
     if(document.compatMode == "BackCompat") {
         scrollLeft = document.body.scrollLeft;
         scrollTop = document.body.scrollTop;
-    }
-    else {
+    } else {
         scrollLeft = document.documentElement.scrollLeft;
         scrollTop = document.documentElement.scrollTop;
     }
@@ -248,6 +173,56 @@ function getPosition(element) {
     position.y = top - scrollTop;
     return position;
 }
+
+
+
+//实现一个简单的jQuery
+function $(sector) {
+    if(!sector || typeof sector != "string") {
+        return false;
+    }
+    var element;
+    var reg = /\s+/;
+
+    if(!reg.test(sector)) {
+        //sector中不包含层级关系
+        element = noGrade(document, sector)[0];
+    } else {
+        var subSectors = sector.split(" ");
+        //假设只有两级
+        var firstList = noGrade(document, subSectors[0]);
+        for(var i=0; i<firstList.length; i++) {
+            var secondList = noGrade(firstList[i], subSectors[1]);
+            if(secondList.length) {
+                element = secondList[0];
+                break;
+            }
+        }
+    }
+    return element;
+}
+
+//事件
+$.on = function(sector, event, listener) {
+    var element = $(sector);
+    return addEvent(element, event, listener);
+};
+$.un = function(sector, event, listener){
+    var element = $(sector);
+    return removeEvent(element, event, listener);
+};
+$.click = function(sector, event, listener) {
+    var element = $(sector);
+    return addClickEvent(element, listener);
+};
+$.enter = function(sector, event, listener) {
+    var element = $(sector);
+    return addEnterEvent(element, listener);
+};
+$.delegate = function(sector, tag, event, listener) {
+    var element = $(sector);
+    return delegateEvent(element, tag, event, listener);
+};
 
 
 //通过属性获得元素（for function $()）
@@ -260,13 +235,13 @@ function getElementsByAttr(parent, attr, value) {
     var flag = value ? 1 : 0;       //要选择属性值：1；不选择属性值：0
     for(var i=0; i<allChild.length; i++) {
         if(allChild[i].hasAttribute(attr)) {
+            var item = allChild[i];
             if(flag) {
-                if(this.getAttribute(attr) == value) {
-                    results.push(this);
+                if(item.getAttribute(attr) == value) {
+                    results.push(item);
                 }
-            }
-            else {
-                results.push(this);
+            } else {
+                results.push(item);
             }
         }
     }
@@ -292,18 +267,17 @@ function noGrade(parent, sector) {
             eleList = parent.getElementsByClassName(substr);
             break;
         case "[":
-            if(!sector.search(/=/g)) {
+            if(sector.search(/=/g) == -1) {
                 //只有属性名称，无属性值
                 substr = sector.slice(1, -1);
                 eleList = getElementsByAttr(parent, substr);
                 break;
-            }
-            else {
+            } else {
                 //包含属性名与属性值
-                var re = /^\[(\w+)\s*=\s*(\w+)\]$/g;
+                var re = /^\[(\w+)\s*=\s*('|")(\w+)('|")\]$/g;
                 var result = re.exec(sector);
                 var attr =  result[1];
-                var val = result[2];
+                var val = result[3];
                 eleList = getElementsByAttr(parent, attr, val);
             }
             break;
@@ -313,32 +287,146 @@ function noGrade(parent, sector) {
     return eleList;
 }
 
-//实现一个简单的jQuery
-function $(sector) {
-    if(!sector || typeof sector != "string") {
-        return false;
-    }
-    var element;
-    var reg = /\s+/;
+/* 事件
+==============================================================================
+ */
 
-    if(!reg.test(sector)) {
-        //sector中不包含层级关系
-        element = noGrade(document, sector)[0];
+// 给一个element绑定一个针对event事件的响应，响应函数为listener
+function addEvent(element, event, listener) {
+    if(element.addEventListener) {
+        element.addEventListener(event, listener, false);
+    } else if(element.attachEvent) {
+        element.attachEvent("on"+event, listener);
+    } else {
+        element["on"+event] = listener;
     }
-    else {
-        var subSectors = sector.split(" ");
-        //假设只有两级
-        var firstList = noGrade(document, subSectors[0]);
-        for(var i=0; i<firstList.length; i++) {
-            var secondList = noGrade(firstList[i], subSectors[1]);
-            if(secondList.length) {
-                element = secondList[0];
-                break;
+}
+
+
+// 移除element对象对于event事件发生时执行listener的响应
+function removeEvent(element, event, listener) {
+    if(element.removeEventListener) {
+        element.removeEventListener(event, listener, false);
+    } else if(element.detachEvent) {
+        element.detachEvent("on"+event, listener);
+    } else {
+        element["on"+event] = null;
+    }
+}
+
+
+// 实现对click事件的绑定
+function addClickEvent(element, listener) {
+    addEvent(element, "click", listener);
+}
+
+// 实现对于按Enter键时的事件绑定
+function addEnterEvent(element, listener) {
+    addEvent(element, "keypress", function(e) {
+        var event = e || window.event;
+        if(event.keyCode == 13) {
+            listener(event);
+        }
+    });
+}
+
+//事件代理
+//一个问题：怎么把listener函数的参数传进去？
+function delegateEvent(element, tag, eventName, listener) {
+    addEvent(element, eventName, function(e) {
+        var e = e|| window.event;
+        var target = e.target ? e.target : e.srcElement;
+        var nodeName = target.nodeName.toLowerCase();
+        if(nodeName == tag) {
+            listener(e);
+        }
+    })
+}
+
+
+/* BOM
+=====================================================================================
+ */
+
+//判断浏览器是否为IE浏览器，返回-1或版本号
+function isIE() {
+    if(window.attachEvent) {
+        var ua = navigator.userAgent;
+        return ua.match(/msie([\d.]+)/)[1];
+    } else {
+        return -1;
+    }
+}
+
+//设置cookie chrome下无法使用
+function setCookie(cookieName, cookieValue, expiredays) {
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + expiredays);
+    document.cookie = cookieName + "=" + encodeURIComponent(cookieValue);
+    document.cookie += (expiredays ? (";expires=" + exdate.toUTCString()) : "");
+}
+
+//获取cookie的值
+function getCookie(cookieName) {
+    var begin = document.cookie.indexOf(cookieName);
+    if(begin != -1) {
+        begin += cookieName.length + 1;
+        var end = document.cookie.indexOf(";", begin);
+        if(end == -1) {
+            end = document.cookie.length;
+        }
+        return decodeURIComponent(document.cookie.substr(begin, end));
+    } else {
+        return "";
+    }
+}
+
+/* Ajax
+===============================================================================
+ */
+
+function ajax(url, options) {
+    var xmlhttp,
+        type = options.type || "GET",
+        data = options.data || {};
+
+    if(window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // for IE5, IE6
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            if(options.onsuccess) {
+                options.onsuccess(xmlhttp.responseText, xmlhttp);
+            }
+        } else if(xmlhttp.readyState == 4 && xmlhttp.status == 404) {
+            if(options.onfail) {
+                options.onfail(xmlhttp.responseText, xmlhttp);
             }
         }
     }
-    return element;
+
+    if(type.toUpperCase() == "GET") {
+        url += "?";
+        for(var obj in data) {
+            var val = data[obj];
+            url += obj + "=" + val + "&";
+        }
+        var relurl = url.substr(0, url.length-1);
+        xmlhttp.open("GET", relurl, true);
+        xmlhttp.send();
+    } else {
+        var sendmsg = "";
+        for(var obj in data) {
+            var val = data[obj];
+            sendmsg += obj + "=" + val + "&";
+        }
+        sendmsg = sendmsg.substr(0, sendmsg.length-1);
+        xmlhttp.open("POST", url, true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(sendmsg);
+    }
 }
 
-//测试用例
-console.log($(".red .big"));
