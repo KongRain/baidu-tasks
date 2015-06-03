@@ -1,10 +1,44 @@
+* {
+    padding: 0;
+    margin: 0;
+}
 body {
-    color: black;
     font: 12px/1.5 Arial;
+    width: 100%;
+    height: 100%;
 }
 .red {
     color: red;
 }
 .big {
     font-size: 20px;
+}
+.outer {
+    margin: 100px auto;
+    text-align: center;
+}
+.date {
+    margin-bottom: 20px;
+    font-size: 30px;
+}
+.date input {
+    margin: auto 5px;
+    width: 100px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 30px;
+}
+.date .btn {
+    margin-left: 15px;
+    font-size: 20px;
+}
+.count {
+    font-size: 30px;
+    display: none;
+}
+.count span{
+    margin: auto 3px;
+    font-size: 30px;
+    color: #f00;
 }
