@@ -39,14 +39,31 @@
             $("#input3").value = inputs.replace(/[^\u4e00-\u9fa5\uFF0C\u3001\uFF1Ba-zA-Z\,\;\s]/g, "");
         });
         $.click("#btn3", function() {
+            //清空上次输入的结果
+            $("#hobbies3").innerHTML = "";
+
             var inputs = $("#input3").value;
             var arr = inputs.split(/[\uFF0C\u3001\uFF1B\,\;\s]/g);
+            var finalArr = uniqArray(arr);
             if(arr.length == 0 || inputs.length == 0) {
                 $("#tag").innerHTML = tags[0];
             } else if(arr.length > 10) {
                 $("#tag").innerHTML = tags[1];
             } else {
-                $("#hobbies3").innerHTML = uniqArray(arr);
+                for(var i=0; i<finalArr.length; i++) {
+                    var label = document.createElement("label");
+                    var cbox = document.createElement("input");
+                    var br = document.createElement("br");
+                    var id = "item" + i;
+                    label.setAttribute("for", id);
+                    label.innerHTML = finalArr[i];
+                    $("#hobbies3").appendChild(label);
+                    cbox.setAttribute("type", "checkbox");
+                    cbox.setAttribute("name", "hobbies");
+                    cbox.setAttribute("id", id);
+                    label.appendChild(cbox);
+                    $("#hobbies3").appendChild(br);
+                }
             }
         });
     }
