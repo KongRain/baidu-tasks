@@ -42,3 +42,66 @@ body {
     font-size: 30px;
     color: #f00;
 }
+.carousel {
+    position: relative;
+    overflow: hidden;
+    width: 700px;
+    height: 220px;
+    margin: 10px auto;
+}
+.carousel-inner {
+    position: relative;
+    overflow: hidden;
+}
+.carousel-inner .item {
+    display: none;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: left 1s ease-in-out 0s;
+}
+.carousel-inner .item.active {
+    display: block;
+    left: 0;
+}
+.carousel-inner .item.active.left {
+    display: block;
+    left: -100%;
+}
+.carousel-inner .item.next {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 100%;
+}
+.carousel-inner .item.next.left {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.item img {
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+}
+.indicator {
+    display: block;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+}
+.circles {
+    float: left;
+    display: block;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background: transparent;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.circles.current {
+    background: #fff;
+}

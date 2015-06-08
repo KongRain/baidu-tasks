@@ -132,7 +132,16 @@ function removeClass(element, oldClassName) {
     if(element.classList.contains(oldClassName)) {
         element.classList.remove(oldClassName);
     } else
+        return element;
+}
+
+//判断一个元素是否有className类
+function hasClass(element, className) {
+    if(element.classList.contains(className)) {
+        return true;
+    } else {
         return false;
+    }
 }
 
 
