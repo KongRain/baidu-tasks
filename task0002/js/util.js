@@ -183,6 +183,27 @@ function getPosition(element) {
     return position;
 }
 
+//设置一个元素相对窗口的坐标位置
+function setPosition(element, x, y) {
+    var scrollLeft, scrollTop, parent, left, top;
+    parent = element.offsetParent;
+    if(document.compatMode == "BackCompat") {
+        scrollLeft = document.body.scrollLeft;
+        scrollTop = document.body.scrollTop;
+    } else {
+        scrollLeft = document.documentElement.scrollLeft;
+        scrollTop = document.documentElement.scrollTop;
+    }
+    left = x + scrollLeft;
+    top = y + scrollTop;
+    while(parent) {
+        left -= parent.offsetLeft;
+        top -= parent.offsetTop;
+        parent = parent.offsetParent;
+    }
+    element.style.left = left + "px";
+    element.style.top = top + "px";
+}
 
 
 //实现一个简单的jQuery
@@ -346,7 +367,7 @@ function delegateEvent(element, tag, eventName, listener) {
         var e = e|| window.event;
         var target = e.target ? e.target : e.srcElement;
         var nodeName = target.nodeName.toLowerCase();
-        if(nodeName == tag) {
+        if(nodeName == tag && target != element) {
             listener(e);
         }
     })

@@ -105,3 +105,70 @@ body {
 .circles.current {
     background: #fff;
 }
+.search {
+    width: 150px;
+    margin: 50px auto;
+}
+.key {
+    width: 100px;
+    padding: 2px;
+}
+.db {
+    display: none;
+    width: 150px;
+    border: 1px solid #999;
+}
+.sug {
+    list-style: none;
+    margin-bottom: -1px;
+}
+.sug .item {
+    display: block;
+    padding: 5px;
+    border-bottom: 1px solid #999;
+}
+.sug .item:hover {
+    cursor: pointer;
+    background: #f0f0f0;
+}
+.sug .item.focus {
+    cursor: pointer;
+    background: #f0f0f0;
+}
+.sug .match {
+    color: red;
+}
+.left,
+.right {
+    /*position: absolute;
+    top: 20px;*/
+    float: left;
+    width: 200px;
+    height: 500px;
+    border: 1px solid #000;
+    margin-top: 20px;
+}
+.left {
+    /*left: 400px;*/
+    margin-left: 400px;
+    margin-right: 150px;
+}
+/*.right {
+    /!*right: 400px;*!/
+    margin-right: 400px;
+}*/
+.drager {
+    height: 50px;
+    border-bottom: 1px solid #000;
+    background: #f00;
+}
+.drager.move {
+    position: absolute;
+    width: 200px;
+    border: 1px solid #000;
+    background: rgba(255, 0, 0, 0.5);
+    cursor: move;
+}
+.drager.placeholder {
+    background: rgba(255, 255, 0, 0.4);
+}
