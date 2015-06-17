@@ -1,15 +1,15 @@
 * {
     margin: 0;
     padding: 0;
-    font: 12px/1.5 #FF99CC Arial;
+    font: 15px/1.5 #5C5C5C Arial;
 }
 body {
     width: 100%;
     height: 100%;
 }
 h1 {
-    font-size: 20px;
-    margin: 5px 0;
+    font-size: 17px;
+    margin: 10px;
 }
 ul {
     list-style: none;
@@ -34,14 +34,15 @@ a {
     height: 24px;
     margin-right: 5px;
     background: no-repeat;
+    vertical-align: middle;
 }
 .icon.folder {
     -moz-background-image: url(../img/icon/folder.ico);
          background-image: url(../img/icon/folder.ico);
 }
 .icon.doc {
-    -moz-background-image: url(../img/icon/file.ico);
-         background-image: url(../img/icon/file.ico);
+    -moz-background-image: url(../img/icon/file2.ico);
+         background-image: url(../img/icon/file2.ico);
 }
 .icon.ok {
     -moz-background-image: url(../img/icon/ok.ico);
@@ -50,6 +51,10 @@ a {
 .icon.edit {
     -moz-background-image: url(../img/icon/edit.ico);
          background-image: url(../img/icon/edit.ico);
+}
+.icon.add {
+    -moz-background-image: url(../img/icon/add.ico);
+         background-image: url(../img/icon/add.ico);
 }
 .outer {
     width: 100%;
@@ -95,7 +100,6 @@ header .user {
     position: fixed;
     top: 50px;
     bottom: 0;
-    padding: 10px;
     background: #F2F2F2;
     color: #5C5C5C;
     font-size: 15px;
@@ -103,11 +107,11 @@ header .user {
 }
 .main #task-class {
     left: 0;
-    width: 200px;
+    width: 220px;
 }
 .main #task-list {
     left: 221px;
-    width: 200px;
+    width: 220px;
 }
 .main #task-detail {
     right: 0;
@@ -116,17 +120,52 @@ header .user {
 
 .class-list li {
     display: inline-block;
-    vertical-align: middle;
-    margin: 10px;
+    height: 30px;
+    width: 100%;
+    line-height: 30px;
     cursor: pointer;
 }
-.class-list .icon {
-    vertical-align: middle;
+.class-list > li {
+    margin-top: 10px;
 }
-.class-list li + li {
-    margin-top: 0;
+.class-list > li p {
+    text-indent: 10px;
 }
-.class-list ul {
-    display: none;
+.class-list ul > li p {
+    text-indent: 30px;
+}
+.class-list ul ul >li p {
+    text-indent: 50px;
+}
+.addition {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #B5B5B5;
+    color: #5C5C5C;
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+.head {
+    height: 40px;
+    width: 220px;
+    background: #C9C9C9;
+}
+.head ul {
+    padding: 10px 15px;
+}
+.head li {
+    float: left;
+    display: inline-block;
+    padding: 3px 10px;
+    color: #5C5C5C;
+    font-size: 15px;
+    cursor: pointer;
+}
+.head li:hover {
+    background: #fff;
 }
 
