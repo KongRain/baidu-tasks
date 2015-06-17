@@ -4,10 +4,29 @@
 (function() {
     var input = $(".key");
     var list = $(".sug");
-    var suggestData = ["text1", "text123", "text890", "Text1"];
+    var suggestData;
+
+    function getData() {
+        var xhr;
+        if(window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhr.open("GET", "sug_data.json", true);
+        xhr.send();
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4) {
+                if(xhr.status >= 200 && xhr.status <= 300) {
+                    suggestData = JSON.parse(xhr.responseText);
+                }
+            }
+        }
+    }
 
     //根据用户输入提供词条
     function suggest() {
+        getData();
         $.on(".key", "keyup", function(e) {
             var event = window.event || e;
             var key = event.keyCode;
