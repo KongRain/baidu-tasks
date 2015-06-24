@@ -128,6 +128,9 @@ header .user {
 .class-list > li {
     margin-top: 10px;
 }
+/*.class-list > li:hover {
+    background-color: #B5B5B5;
+}*/
 .class-list > li p {
     text-indent: 10px;
 }
