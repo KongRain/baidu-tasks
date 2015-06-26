@@ -13,6 +13,7 @@
  * @returns {XMLHttpRequest} 发送请求的XMLHttpRequst对象
  */
 function ajax(url, options) {
+    var target = this;
     var options = options || {};
     var type = (options.type || "GET").toUpperCase();
     var data = stringifyData(options.data || {});
@@ -92,7 +93,7 @@ function ajax(url, options) {
         if(type == "onfail") {
             handler(xhr);
         } else if(type == "onsuccess") {
-            handler(xhr, xhr.responseText);
+            handler.call(target, xhr, xhr.responseText);
         }
     }
 }

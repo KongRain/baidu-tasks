@@ -56,6 +56,7 @@
             var span = li.getElementsByTagName("span")[0];
             span.innerHTML = name + "(" + len + ")";
             list.appendChild(li);
+            addEvent(li, "click", clickHandler);
         }
     }
 
@@ -102,12 +103,84 @@
     }
 
     function matches(ele, selector) {
-        return ele.mozMatchesSelector(selector);
+        return ele.webkitMatchesSelector(selector);
     }
 
-    /*function clickHandler() {
+    function clickHandler() {
+        var subList = this.getElementsByTagName("ul")[0];
 
-    }*/
+        if(subList) {
+            this.removeChild(subList);
+        }else {
+            var className = this.getElementsByTagName("span")[0].innerHTML;
+            className = className.replace(/\s*\(\d+\)$/, "");
+            var options = {
+                type: "GET",
+                data: {
+                    "class": className
+                },
+                onsuccess: initSubTC,
+                onfail: failHandler
+            };
+            ajax.call(this, "file_data.json", options);
+        }
+    }
+
+    function initSubTC(xhr, text) {
+        var files;
+        var text = JSON.parse(text);
+        var url = xhr.responseURL;
+        var searchString = url.match(/\?(.*)=(.*)$/);
+        var num = text.length;
+        if(searchString) {
+            var searchName = decodeURIComponent(searchString[1]),
+                searchData = decodeURIComponent(searchString[2]);
+            for(var i=0; i<num; i++) {
+                var that = text[i];
+                if(that[searchName] == searchData) {
+                    files = that.file;
+                    break;
+                }
+            }
+            if(files) {
+                var len = files.length;
+                var ul = document.createElement("ul");
+                this.appendChild(ul);
+                for(var j=0; j<len; j++) {
+                    var fileName = files[j].fname;
+                    var tasks = files[j].task;
+                    var li = CreateLi("file");
+                    var span = li.getElementsByTagName("span")[0];
+                    span.innerHTML = fileName + "(" + tasks.length + ")";
+                    ul.appendChild(li);
+                    addEvent(li, "click", subClickHandler);
+                }
+            }
+        }
+    }
+
+    function subClickHandler() {
+        var parent = this.parentNode;
+        while(parent.nodeName.toLowerCase() != "li") {
+            parent =  parent.parentNode;
+        }
+        var className = parent.getElementsByTagName("span")[0].innerHTML;
+        var taskName = this.getElementsByTagName("span")[0].innerHTML;
+        var options = {
+            type: "GET",
+            data: {
+                "class": className,
+                "task": taskName
+            },
+            onsuccess: initTask,
+            onfail: failHandler
+        }
+        ajax("file_data.json", options);
+    }
+
+    function initTask() {
+
+    }
 
     window.onload = function() {
         var options = {
@@ -123,6 +196,7 @@
         addEvent(classList, "mouseout", function(e) {
             onMouseLeave(e);
         });
+
     }
 
 })();

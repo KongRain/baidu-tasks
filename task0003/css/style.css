@@ -40,7 +40,7 @@ a {
     -moz-background-image: url(../img/icon/folder.ico);
          background-image: url(../img/icon/folder.ico);
 }
-.icon.doc {
+.icon.file {
     -moz-background-image: url(../img/icon/file2.ico);
          background-image: url(../img/icon/file2.ico);
 }
