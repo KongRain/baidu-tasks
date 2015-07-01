@@ -128,9 +128,6 @@ header .user {
 .class-list > li {
     margin-top: 10px;
 }
-/*.class-list > li:hover {
-    background-color: #B5B5B5;
-}*/
 .class-list > li p {
     text-indent: 10px;
 }
@@ -157,6 +154,9 @@ header .user {
     width: 220px;
     background: #C9C9C9;
 }
+.head .active {
+    background: #fff;
+}
 .head ul {
     padding: 10px 15px;
 }
@@ -171,4 +171,29 @@ header .user {
 .head li:hover {
     background: #fff;
 }
-
+.body .all {
+    display: block;
+}
+.body .finished,
+.body .unFinished {
+    display: none;
+}
+.body .date,
+.body .item {
+    height: 30px;
+    line-height: 30px;
+}
+.body .date {
+    background: #B4CDCD;
+    padding-left: 20px;
+}
+.body .item {
+    padding-left: 30px;
+    cursor: pointer;
+}
+.body .item:hover {
+    background: #fff;
+}
+.item.done {
+    color: #00EE00;
+}

@@ -133,3 +133,44 @@ function delegateEvent(ele, tag, type, listener) {
         }
     });
 }
+/*
+对象
+ */
+function objLen(obj) {
+    var len = 0;
+    for(var name in obj) {
+        if(obj.hasOwnProperty(name)) {
+            len++;
+        }
+    }
+    return len;
+}
+
+function addClass(ele, name) {
+    var oldClass = ele.className;
+    if(oldClass.length == 0) {
+        ele.className = name;
+    } else {
+        var oldArray = oldClass.split(/\s/);
+        for(var i = 0, len = oldArray.length; i < len; i++) {
+            if(oldArray[i] == name) {
+                return;
+            }
+        }
+        ele.className += " " + name;
+    }
+}
+
+function removeClass(ele, name) {
+    var oldClass = ele.className;
+    if(oldClass.length == 0) return;
+    var oldArray = oldClass.split(/\s/);
+    for(var i = 0, len = oldArray.length; i < len; i++) {
+        if(oldArray[i] == name) {
+            oldArray.splice(i, 1);
+        }
+    }
+    var newClass = oldArray.join(" ");
+    ele.className = newClass;
+}
+
