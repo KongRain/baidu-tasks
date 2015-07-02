@@ -197,3 +197,50 @@ header .user {
 .item.done {
     color: #00EE00;
 }
+.detail-head {
+    height: 40px;
+    background: #C9C9C9;
+}
+.detail-head .task-name {
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-left: 20px;
+}
+.detail-head .icon {
+    float: right;
+    margin-top: 8px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.detail,
+.new-task {
+    display: none;
+}
+.detail .date {
+    height: 40px;
+    background: #FFFACD;
+    line-height: 40px;
+    padding-left: 20px;
+}
+.detail-body,
+.new-task {
+    padding: 20px;
+}
+.new-task label {
+    display: inline-block;
+    height: 20px;
+    margin-bottom: 20px;
+    line-height: 20px;
+}
+.new-task label input {
+    height: 20px;
+    line-height: 20px;
+    width: 150px;
+}
+.new-task textarea {
+    vertical-align: top;
+    width: 150px;
+    height: 100px;
+}
+

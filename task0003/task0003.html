@@ -8,7 +8,7 @@
 <body>
     <div class="outer">
         <header>
-            <a href="https://github.com/LiiiiittleRain" class="user-icon">
+            <a href="https://github.com/KongRain" class="user-icon">
                 <img src="img/icon.png">
             </a>
             <span class="user">Kxy's tasks</span>
@@ -50,6 +50,29 @@
                 </div>
             </div>
             <div id="task-detail">
+                <div class="detail-head">
+                    <span class="task-name"></span>
+                    <i class="icon ok"></i>
+                    <i class="icon edit"></i>
+                </div>
+                <div class="detail">
+                    <div class="date"></div>
+                    <div class="detail-body">
+                        <p></p>
+                    </div>
+                </div>
+                <div class="new-task">
+                    <form>
+                        <label for="task-name">任务名称
+                        <input id="task-name" type="text" name="task-name" placeholder="不超过10个字" /></label>
+                        <br />
+                        <label for="task-date">创建时间
+                        <input id="task-date" type="text" name="task-date" placeholder="yyyy-mm-dd" /></label>
+                        <br />
+                        <label for="task-content">任务描述</label>
+                        <textarea id="task-content"></textarea>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
