@@ -48,29 +48,28 @@
             addEvent(li, "click", clickHandler);
         }
 
-
-        function clickHandler() {
-            var subList = this.getElementsByTagName("ul")[0];
-
-            if(subList) {
-                this.removeChild(subList);
-            }else {
-                var className = this.getElementsByTagName("span")[0].innerHTML;
-                className = className.replace(/\s*\(\d+\)$/, "");
-                current.class = className;
-                var options = {
-                    type: "GET",
-                    data: {
-                        "class": className
-                    },
-                    onsuccess: getData,
-                    onfail: failHandler
-                };
-                ajax.call(this, "file_data.json", options);
-            }
-        }
     }
 
+    function clickHandler() {
+        var subList = this.getElementsByTagName("ul")[0];
+
+        if(subList) {
+            this.removeChild(subList);
+        }else {
+            var className = this.getElementsByTagName("span")[0].innerHTML;
+            className = className.replace(/\s*\(\d+\)$/, "");
+            current.class = className;
+            var options = {
+                type: "GET",
+                data: {
+                    "class": className
+                },
+                onsuccess: getData,
+                onfail: failHandler
+            };
+            ajax.call(this, "file_data.json", options);
+        }
+    }
 
     /**
      * 初始化子文件列表
@@ -402,7 +401,34 @@
         return ele.webkitMatchesSelector(selector);
     }
 
+    /**
+     * Ajax提交数据，修改JSON
+     */
+    function newClass() {
+        var list = tClass.getElementsByClassName("class-list")[0];
+        var className = prompt("请输入任务名称", "");
+        if(className != null && className != "") {
+            var options = {
+                type: "POST",
+                data: {
+                    class: className
+                },
+                onsuccess: postData,
+                onfail: failHandler
+            }
+            ajax("file_data.json", options);
 
+            var li = createLi("folder");
+            var span = li.getElementsByTagName("span")[0];
+            span.innerHTML = className + "(0)";
+            list.appendChild(li);
+            addEvent(li, "click", clickHandler);
+        }
+    }
+
+    function postData(xhr, text) {
+        var text = JSON.parse(text);
+    }
 
     window.onload = function() {
         var options = {
@@ -418,6 +444,11 @@
         addEvent(classList, "mouseout", function(e) {
             onMouseLeave(e);
         });
+        var b_add = document.getElementsByClassName("addition"),
+            b_addClass = b_add[0],
+            b_addTask = b_add[1];
+
+        addEvent(b_addClass, "click", newClass);
     }
 
 })();
