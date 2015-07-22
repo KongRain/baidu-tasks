@@ -6,12 +6,51 @@
     var tList = document.getElementById("task-list");
     var tDetail = document.getElementById("task-detail");
     var classList = document.getElementsByClassName("class-list")[0];
-    var data;
+
+    //当前查看的任务路径
     var current = {
         class: "",
         file: "",
         task: ""
-    }; //当前查看的任务路径
+    };
+
+    /**
+     * json 数据
+     *
+     * @type: [@class] Array 所有分类
+     * @class {
+     *           "class": String 分类名称
+     *           "file": [@files] Array 下属文件列表
+     *         }
+     * @files {
+     *           "fname": String 文件名
+     *           "task": [@tasks] Array 下属任务
+     *        }
+     * @tasks {
+     *          "tname": String 任务名
+     *          "date": String 创建时间
+     *          "finished": Boolen 是否完成
+     *          "detail": String 任务详细说明
+     *        }
+     */
+    var data = [
+        {
+            "class": "默认分类",
+            "file": [
+                {
+                    "fname": "功能介绍",
+                    "task": [
+                        {
+                            "tname": "使用说明",
+                            "date": "2015-07-22",
+                            "finished": true,
+                            "detail": "此为任务管理器，添加分类，添加文件，添加任务说明"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 
     function createLi (type) {
         var type = type ? type : "folder";
@@ -33,13 +72,13 @@
      * 点击其中一个任务类型，出现其下属子文件
      */
 
-    function initTC(xhr, text) {
-        var text = JSON.parse(text);
+    function initTC() {
+        /*var text = JSON.parse(text);*/
         var list = tClass.getElementsByClassName("class-list")[0];
-        var num = text.length;
+        var num = data.length;
         for(var i=0; i<num; i++) {
-            var name = text[i].class;
-            var files = text[i].file;
+            var name = data[i].class;
+            var files = data[i].file;
             var len = files.length;
             var li = createLi("folder");
             var span = li.getElementsByTagName("span")[0];
@@ -60,14 +99,9 @@
             className = className.replace(/\s*\(\d+\)$/, "");
             current.class = className;
             var options = {
-                type: "GET",
-                data: {
-                    "class": className
-                },
-                onsuccess: getData,
-                onfail: failHandler
+                class: current.class
             };
-            ajax.call(this, "file_data.json", options);
+            getData.call(this, options);
         }
     }
 
@@ -107,15 +141,11 @@
             current.file = fileName;
 
             var options = {
-                type: "GET",
-                data: {
-                    "class": current.class,
-                    "fname": current.file
-                },
-                onsuccess: getData,
-                onfail: failHandler
-            }
-            ajax.call(this, "file_data.json", options);
+                class: current.class,
+                fname: current.file
+            };
+            getData.call(this, options);
+
         }
     }
 
@@ -261,16 +291,11 @@
             body.style.display = "block";
             current.task = name;
             var options = {
-                type: "GET",
-                data: {
-                    "class": current.class,
-                    "fname": current.file,
-                    "tname": current.task
-                },
-                onsuccess: getData,
-                onfail: failHandler
-            }
-            ajax.call(this, "file_data.json", options);
+                class: current.class,
+                fname: current.file,
+                tname: current.task
+            };
+            getData.call(this, options);
         }
     }
 
@@ -290,36 +315,23 @@
     /**
      * Ajax "GET"方式 处理函数，获得整体的json对象
      * 根据查询字符串的不同再分别调用各自的处理函数
+     * @param options Object 查询对象
+     *        {
+     *            class: className,
+     *            file: fileName,
+     *            task: taskName
+     *        }
      */
-    function getData(xhr, text) {
-        var file, task, detail, data, length;
-        var str = {};     //查询字符串
-        var text = JSON.parse(text);
-        length = text.length;
-        var url = xhr.responseURL;
-        if (url.indexOf("?") > 0) {
-            var search = url.split("?");
-            var searchString = decodeURIComponent(search[1]);
-            if (searchString.indexOf("&") > 0) {
-                searchString = searchString.split("&");
-            } else {
-                searchString = [searchString];
-            }
-            for (var i = 0, len = searchString.length; i < len; i++) {
-                var sub = searchString[i].split("=");
-                var key = sub[0];
-                var value = sub[1];
-                str[key] = value;
-            }
-        }
+    function getData(options) {
+        var file, task, detail, length = data.length;
 
-        var num = objLen(str);
+        var num = objLen(options);
         if (num == 0) return;
-        for (var k in str) {
+        for (var k in options) {
             if (!file) {
                 for (var i = 0; i < length; i++) {
-                    var that = text[i];
-                    if (that[k] == str[k]) {
+                    var that = data[i];
+                    if (that[k] == options[k]) {
                         file = that.file;
                         break;
                     }
@@ -328,7 +340,7 @@
                 var length2 = file.length;
                 for(var j = 0; j < length2; j++) {
                     var that = file[j];
-                    if(that[k] == str[k]) {
+                    if(that[k] == options[k]) {
                         task = that.task;
                         break;
                     }
@@ -337,7 +349,7 @@
                 var length3 = task.length;
                 for(var i = 0; i < length3; i++) {
                     var that = task[i];
-                    if(that[k] == str[k]) {
+                    if(that[k] == options[k]) {
                         detail = that;
                         break;
                     }
@@ -353,9 +365,6 @@
         }
     }
 
-    function failHandler(xhr) {
-        console.log(xhr.error);
-    }
 
     /**
      * 鼠标进入 退出
@@ -404,7 +413,7 @@
     /**
      * Ajax提交数据，修改JSON
      */
-    function newClass() {
+    /*function newClass() {
         var list = tClass.getElementsByClassName("class-list")[0];
         var className = prompt("请输入任务名称", "");
         if(className != null && className != "") {
@@ -428,16 +437,10 @@
 
     function postData(xhr, text) {
         var text = JSON.parse(text);
-    }
+    }*/
 
     window.onload = function() {
-        var options = {
-            type: "GET",
-            data: {},
-            onsuccess: initTC,
-            onfail: failHandler
-        };
-        ajax("file_data.json", options);
+        initTC();
         addEvent(classList, "mouseover", function(e) {
             onMouseEnter(e);
         });
@@ -448,7 +451,7 @@
             b_addClass = b_add[0],
             b_addTask = b_add[1];
 
-        addEvent(b_addClass, "click", newClass);
+        /*addEvent(b_addClass, "click", newClass);*/
     }
 
 })();

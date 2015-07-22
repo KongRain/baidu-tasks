@@ -174,3 +174,114 @@ function removeClass(ele, name) {
     ele.className = newClass;
 }
 
+//实现一个简单的jQuery
+function $(sector) {
+    if(!sector || typeof sector != "string") {
+        return false;
+    }
+    var element;
+    var reg = /\s+/;
+
+    if(!reg.test(sector)) {
+        //sector中不包含层级关系
+        element = noGrade(document, sector)[0];
+    } else {
+        var subSectors = sector.split(" ");
+        //假设只有两级
+        var firstList = noGrade(document, subSectors[0]);
+        for(var i=0; i<firstList.length; i++) {
+            var secondList = noGrade(firstList[i], subSectors[1]);
+            if(secondList.length) {
+                element = secondList[0];
+                break;
+            }
+        }
+    }
+    return element;
+}
+
+//事件
+$.on = function(sector, event, listener) {
+    var element = $(sector);
+    return addEvent(element, event, listener);
+};
+$.un = function(sector, event, listener){
+    var element = $(sector);
+    return removeEvent(element, event, listener);
+};
+$.click = function(sector, listener) {
+    var element = $(sector);
+    return addClickEvent(element, listener);
+};
+$.enter = function(sector, listener) {
+    var element = $(sector);
+    return addEnterEvent(element, listener);
+};
+$.delegate = function(sector, tag, event, listener) {
+    var element = $(sector);
+    return delegateEvent(element, tag, event, listener);
+};
+
+
+//通过属性获得元素（for function $()）
+function getElementsByAttr(parent, attr, value) {
+    if(!parent || !attr) {
+        return false;
+    }
+    var allChild = parent.getElementsByTagName("*");
+    var results = new Array();
+    var flag = value ? 1 : 0;       //要选择属性值：1；不选择属性值：0
+    for(var i=0; i<allChild.length; i++) {
+        if(allChild[i].hasAttribute(attr)) {
+            var item = allChild[i];
+            if(flag) {
+                if(item.getAttribute(attr) == value) {
+                    results.push(item);
+                }
+            } else {
+                results.push(item);
+            }
+        }
+    }
+    return results;
+}
+
+
+//没有层级关系的元素提取函数（for function $()）
+function noGrade(parent, sector) {
+    if(!parent || !sector || typeof sector != "string") {
+        return false;
+    }
+    var eleList = new Array();
+    var substr, element;
+    switch(sector[0]) {
+        case "#":
+            substr = sector.slice(1);
+            element = parent.getElementById(substr);
+            eleList.push(element);
+            break;
+        case ".":
+            substr = sector.slice(1);
+            eleList = parent.getElementsByClassName(substr);
+            break;
+        case "[":
+            if(sector.search(/=/g) == -1) {
+                //只有属性名称，无属性值
+                substr = sector.slice(1, -1);
+                eleList = getElementsByAttr(parent, substr);
+                break;
+            } else {
+                //包含属性名与属性值
+                var re = /^\[(\w+)\s*=\s*('|")(\w+)('|")\]$/g;
+                var result = re.exec(sector);
+                var attr =  result[1];
+                var val = result[3];
+                eleList = getElementsByAttr(parent, attr, val);
+            }
+            break;
+        default:
+            eleList = parent.getElementsByTagName(sector);
+    }
+    return eleList;
+}
+
