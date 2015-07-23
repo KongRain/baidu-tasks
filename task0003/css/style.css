@@ -7,8 +7,10 @@ body {
     width: 100%;
     height: 100%;
 }
-h1 {
+h1, h2, h3 {
     font-size: 17px;
+}
+h1, h2 {
     margin: 10px;
 }
 ul {
@@ -128,13 +130,21 @@ header .user {
 .class-list > li {
     margin-top: 10px;
 }
-.class-list > li p {
+.class-list > li h3 {
     text-indent: 10px;
 }
-.class-list ul > li p {
+.class-list > li h3:hover,
+.class-list > li.active > h3 {
+    background-color: #B5B5B5;
+}
+.class-list ul > li h3 {
     text-indent: 30px;
 }
-.class-list ul ul >li p {
+.class-list ul > li h3:hover,
+.class-list ul > li.active > h3 {
+    background-color: #B5B5B5;
+}
+.class-list ul ul >li h3{
     text-indent: 50px;
 }
 .addition {
