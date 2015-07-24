@@ -153,7 +153,7 @@ function setCurrent() {
 
 function showAllClass() {
     var len = data.length;
-    var list = $("#task-class .class-list")[0];
+    var list = $("#task-class .class-list");
     if(!list) {
         console.log('list search failed.');
     }
@@ -199,7 +199,7 @@ Klass.prototype = {
 
     /*在页面中显示*/
     show: function() {
-        var list = $('#task-class .class-list')[0];
+        var list = $('#task-class .class-list');
         var li = createLi('folder');
         this.setUI(li);
         var span = li.getElementsByTagName('span')[0];
@@ -275,6 +275,7 @@ function File(name) {
     this.name = name;
     this.tasks = [];      //包含的三级子任务 每个元素均为三级任务类Task
     this.ui = null;       //在ui中绑定的DOM元素
+    this.list = new List();     //包含的三级子任务对应的任务表 为List类
 }
 
 File.prototype = {
@@ -294,13 +295,13 @@ File.prototype = {
         this.ui = ui;
     },
 
-    /*为该对象添加三级任务*/
+    /*为该对象添加三级任务 !待改! */
     addTask: function(task) {
         this.tasks.push(task);
-        task.show();
+        this.list.showTask(task);
     },
 
-    /*删除该对象的某个三级任务*/
+    /*删除该对象的某个三级任务 !待改! */
     removeTask: function(task) {
         var tasks = this.tasks;
         var index = tasks.indexOf(task);
@@ -325,9 +326,13 @@ File.prototype = {
 
     /*显示其包含的所有三级任务*/
     showTasks: function() {
+        this.list.clear();
         this.tasks.forEach(function(task) {
-            task.show();
+            this.list.showTask(task);
         });
+        this.list.switchTo('all');
+        this.list.initDone();
+        this.list.initUndone();
     },
 
     /*高光选中此对象*/
@@ -350,6 +355,7 @@ function Task(name, date, finished, detail) {
     this.date = date;
     this.finished = finished;
     this.detail = detail;
+
 }
 
 Task.prototype = {
@@ -384,4 +390,136 @@ Task.prototype = {
     },
 
     show: function() {}
+}
+
+/**
+ *====================================== 三级任务列表类 List ===========================
+ */
+//这个类只负责显示三级任务 包括日期聚类，在列表中新建任务的显示等
+function List(tasks) {
+    //this.tasks = tasks;            //对应的全部三级任务
+    this.allList = $('.all');         //全部列表
+    this.doneList = $('.undone');           //已完成列表
+    this.undoneList = $('.done');        //未完成列表
+    this.dates = [];                //列表中已包含的日期
+}
+
+List.prototype = {
+    constructor: List,
+
+    /*在列表里显示一个任务task*/
+    showTask: function(task) {
+        var date = task.date;
+        var dateItem;         //任务对应的日期div
+        if(date.indexOf(date) < 0) {
+            this.dates.push(date);
+            dateItem = this.createDateItem(date);
+        } else {
+            dateItem = this.searchDateItem(date);
+        }
+        var taskBlock = document.createElement("div");
+        taskBlock.innerHTML = task.tname;
+        addClass(taskBlock, "item");
+        if(task.finished) {
+            addClass(taskBlock, "done");
+        }
+        dateItem.appendChild(taskBlock);
+    },
+
+    /*创建新的日期div*/
+    createDateItem: function(date) {
+        var dateItem = document.createElement("div");
+        var dateBlock = document.createElement("div");
+        dateBlock.innerHTML = date;
+        addClass(dateItem, 'dateItem');
+        addClass(dateBlock, 'date');
+        dateItem.appendChild(dateBlock);
+        return dateItem;
+    },
+
+    /*查找date对应的div*/
+    searchDateItem: function(date) {
+        if(this.dates.indexOf(date) == -1) return;
+
+        var dateBlock, dateItem;
+        var allList = $('.all');
+        var dates = allList.getElementsByClassName("date");
+        for(var i = 0, len = dates.length; i<len; i++) {
+            if(dates[i].innerHTML == date) {
+                dateBlock = dates[i];
+                dateItem = dates[i].parentNode;
+                break;
+            }
+        }
+        return dateItem;
+    },
+
+    clear: function() {
+        this.allList = '';
+        this.doneList = '';
+        this.undoneList = '';
+    },
+
+    initWhole: function() {},
+
+    initDone: function() {
+        this.doneList.innerHTML = this.allList.innerHTML;
+        var items = this.doneList.getElementsByClassName("item");
+        for(var len = items.length, i = len-1; i >= 0; i--) {
+            var that = items[i];
+            if(!that.classList.contains("done")) {
+                var parent = that.parentNode;
+                parent.removeChild(that);
+                if(parent.children.length == 1) {
+                    this.doneList.removeChild(parent);
+                }
+            } else {
+                removeClass(that, "done");
+            }
+        }
+    },
+
+    initUndone: function() {
+        this.undoneList.innerHTML = this.allList.innerHTML;
+        var items = this.undoneList.getElementsByClassName("item");
+        for(var len = items.length, i = len-1; i >= 0; i--) {
+            var that = items[i];
+            if(that.classList.contains("done")) {
+                var parent = that.parentNode;
+                parent.removeChild(that);
+                if(parent.children.length == 1) {
+                    this.undoneList.removeChild(parent);
+                }
+            }
+        }
+    },
+
+    /*切换到要显示的列表 option：all || undone || done*/
+    switchTo: function(option) {
+        var option = option || 'all';
+        var b_all = $('#task-list .b-all'),
+            b_undone = $('#task-list .b-undone'),
+            b_done = $('#task-list .b-done');
+
+        if(option == 'all') {
+            addClass(b_all, "active");
+            removeClass(b_done, "active");
+            removeClass(b_undone, "active");
+            this.allList.style.display = "block";
+            this.doneList.style.display = this.undoneList.style.display = "none";
+        } else if(option == 'undone') {
+            addClass(b_undone, "active");
+            removeClass(b_all, "active");
+            removeClass(b_done, "active");
+            this.undoneList.style.display = "block";
+            this.allList.style.display = this.doneList.style.display = "none";
+        } else {
+            addClass(b_done, "active");
+            removeClass(b_undone, "active");
+            removeClass(b_all, "active");
+            this.doneList.style.display = "block";
+            this.allList.style.display = this.undoneList.style.display = "none";
+        }
+    }
+
 }

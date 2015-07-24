@@ -218,10 +218,11 @@
             var tDate = task.date;
             if(date.indexOf(tDate) < 0) {
                 date.push(tDate);
-                dateItem = document.createElement("dateItem");
+                dateItem = document.createElement("div");
                 dateBlock = document.createElement("div");
                 dateBlock.innerHTML = tDate;
                 addClass(dateBlock, "date");
+                addClass(dateItem, 'dateItem');
                 dateItem.appendChild(dateBlock);
                 allList.appendChild(dateItem);
             } else {
