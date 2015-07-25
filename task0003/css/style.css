@@ -217,6 +217,13 @@ header .user {
     font-weight: 700;
     margin-left: 20px;
 }
+.detail-head .input-name,
+.detail .input-date {
+    height: 30px;
+    width: 150px;
+    vertical-align: top;
+    margin-top: 3px;
+}
 .detail-head .icon {
     float: right;
     margin-top: 8px;
@@ -225,9 +232,9 @@ header .user {
 }
 .detail,
 .new-task {
-    display: none;
+    /*display: none;*/
 }
-.detail .date {
+.detail .task-date {
     height: 40px;
     background: #FFFACD;
     line-height: 40px;

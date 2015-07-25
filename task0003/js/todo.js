@@ -1,6 +1,6 @@
 
 /*全局变量current 保存当前选择的类别、文件、任务ID*/
-var current = {
+var currentKlass = {
     'class': '默认分类',
     'fname': '功能介绍',
     'tname': '使用说明'
@@ -169,20 +169,44 @@ function showAllClass() {
     }
 
 }
+/**
+ * ================================= 最外层窗口类 Main ===================================
+ */
 
-function createLi (type) {
-    var type = type ? type : "folder";
-    var li = document.createElement("li");
-    var h3 = document.createElement("h3");
-    var i = document.createElement("i");
-    var span = document.createElement("span");
-    addClass(i, "icon");
-    addClass(i, type);
-    h3.appendChild(i);
-    h3.appendChild(span);
-    li.appendChild(h3);
-    return li;
+function Main() {
+    this.klasses = [];      //包含的一级任务分类 每个元素均为一级任务类Klass
+    this.sum = 1;         //总任务数量
 }
+
+Main.prototype = {
+    constructor: Main,
+
+    addKlass: function(klass) {
+        this.klasses.push(klass);
+        klass.show();
+    },
+
+    removeKlass: function(klass) {
+        var klasses = this.klasses;
+        var index = klasses.indexOf(klass);
+        if(index == -1) return;
+        else {
+            klasses.splice(index+1, 1);
+            $('.class-list').removeChild(klass.ui);    //在页面中删除DOM元素
+        }
+    },
+
+    getSum: function() {
+        var num;
+        this.klasses.forEach(function(klass) {
+            klass.files.forEach(function(file) {
+                num += file.tasks.length;
+            });
+        });
+        return num;
+    }
+}
+
 
 /**
  * ================================= 一级任务类 Klass ===================================
@@ -192,6 +216,7 @@ function Klass(name) {
     this.name = name;
     this.files = [];     //包含的二级子任务 每个元素均为二级任务类File
     this.ui = null;      //在ui中绑定的DOM元素
+    this.currentFile = null;      //当前操作的二级文件
 }
 
 Klass.prototype = {
@@ -200,7 +225,7 @@ Klass.prototype = {
     /*在页面中显示*/
     show: function() {
         var list = $('#task-class .class-list');
-        var li = createLi('folder');
+        var li = this.createLi('folder');
         this.setUI(li);
         var span = li.getElementsByTagName('span')[0];
         span.innerHTML = this.name + '(' + this.files.length + ')';
@@ -210,6 +235,11 @@ Klass.prototype = {
     /*为此对象绑定DOM元素*/
     setUI: function(ui) {
         this.ui = ui;
+    },
+
+    /*设置当前二级任务*/
+    setCurrentFile: function(file) {
+        this.currentFile = file;
     },
 
     /*添加二级子任务*/
@@ -264,6 +294,21 @@ Klass.prototype = {
     /*取消高光*/
     unHighLight: function() {
         removeClass(this.ui, 'active');
+    },
+
+    /*创建界面的DOM元素*/
+    createLi: function (type) {
+        var type = type ? type : "folder";
+        var li = document.createElement("li");
+        var h3 = document.createElement("h3");
+        var i = document.createElement("i");
+        var span = document.createElement("span");
+        addClass(i, "icon");
+        addClass(i, type);
+        h3.appendChild(i);
+        h3.appendChild(span);
+        li.appendChild(h3);
+        return li;
     }
 }
 
@@ -276,6 +321,7 @@ function File(name) {
     this.tasks = [];      //包含的三级子任务 每个元素均为三级任务类Task
     this.ui = null;       //在ui中绑定的DOM元素
     this.list = new List();     //包含的三级子任务对应的任务表 为List类
+    this.currentTask = null;
 }
 
 File.prototype = {
@@ -283,7 +329,7 @@ File.prototype = {
 
     /*创建该对象的DOM元素，并返回这个DOM元素*/
     show: function() {
-        var li = createLi('file');
+        var li = this.createLi('file');
         this.setUI(li);
         var span = li.getElementsByTagName('span')[0];
         span.innerHTML = this.name + '(' + this.tasks.length + ')';
@@ -295,13 +341,19 @@ File.prototype = {
         this.ui = ui;
     },
 
-    /*为该对象添加三级任务 !待改! */
+    /*设置当前的三级任务*/
+    setCurrentTask: function(task) {
+        this.currentFile = task;
+    },
+
+    /*为该对象添加三级任务*/
     addTask: function(task) {
         this.tasks.push(task);
         this.list.showTask(task);
+        this.list.updateBoth();
     },
 
-    /*删除该对象的某个三级任务 !待改! */
+    /*/!*删除该对象的某个三级任务 !待改! *!/
     removeTask: function(task) {
         var tasks = this.tasks;
         var index = tasks.indexOf(task);
@@ -312,7 +364,7 @@ File.prototype = {
             //待添加在界面中删除这个任务
             //...
         }
-    },
+    },*/
 
     /*根据三级任务的名字查找对应对象*/
     getTask: function(taskName) {
@@ -331,8 +383,7 @@ File.prototype = {
             this.list.showTask(task);
         });
         this.list.switchTo('all');
-        this.list.initDone();
-        this.list.initUndone();
+        this.list.updateBoth();
     },
 
     /*高光选中此对象*/
@@ -343,6 +394,21 @@ File.prototype = {
     /*取消高光*/
     unHighLight: function() {
         removeClass(this.ui, 'active');
+    },
+
+    /*创建界面的DOM元素*/
+    createLi: function (type) {
+        var type = type ? type : "folder";
+        var li = document.createElement("li");
+        var h3 = document.createElement("h3");
+        var i = document.createElement("i");
+        var span = document.createElement("span");
+        addClass(i, "icon");
+        addClass(i, type);
+        h3.appendChild(i);
+        h3.appendChild(span);
+        li.appendChild(h3);
+        return li;
     }
 }
 
@@ -355,7 +421,8 @@ function Task(name, date, finished, detail) {
     this.date = date;
     this.finished = finished;
     this.detail = detail;
-
+    this.ui = null;        //在ui的全部列表中绑定的DOM元素
+    /*this.list = new List();   //对应的list列表*/
 }
 
 Task.prototype = {
@@ -389,14 +456,76 @@ Task.prototype = {
         }
     },
 
-    show: function() {}
+    setUI: function(ui) {
+        this.ui = ui;
+    },
+
+    showDetail: function() {
+        $('.task-name').innerHTML = this.name;
+        $('.task-date').innerHTML = this.date;
+        $('.detail-body').innerHTML = this.detail;
+    },
+
+    /*编辑的界面*/
+    edit: function() {
+        var editName = '<input class="input-name" type="text" ';
+        if(this.name) {
+            editName += 'value=' + this.name;
+        } else {
+            editName += 'placeholder="请输入任务名称"';
+        }
+        editName += ' />';
+        $('.task-name').innerHTML = editName;
+
+        var editDate = '<input class="input-date" type=';
+        if(this.date) {
+            editDate += '"text" value=' + this.date;
+        }else {
+            editDate += '"date"';
+        }
+        editDate += ' />';
+        $('.task-date').innerHTML = editDate;
+
+        var editDetail = '<textarea class="input-detail "';
+        if(this.detail) {
+            editDetail += '>' + this.detail + '</textarea>';
+        }else {
+            editDetail += 'palceholder="请输入任务内容"></textarea>';
+        }
+        $('.detail-boty').innerHTML = editDetail;
+    },
+
+    /*提交编辑信息*/
+    submitEdit: function() {
+        var name = $('.input-name').value,
+            date = $('.input-date').value,
+            detail = $('.input-detail').innerHTML;
+
+        if(name == '') {
+            alert('请输入任务名称');
+        }
+        if(date == '') {
+            alert('请输入日期');
+        }
+        this.name = name;
+        this.date = date;
+        this.detail = detail;
+        //currentKlass.currentFile.list.showTask(this);
+    },
+
+    /*点击任务的完成按钮*/
+    finishTask: function() {
+        this.finished = true;
+        addClass(this.ui, 'done');
+    }
+
 }
 
 /**
  *====================================== 三级任务列表类 List ===========================
  */
 //这个类只负责显示三级任务 包括日期聚类，在列表中新建任务的显示等
-function List(tasks) {
+function List() {
     //this.tasks = tasks;            //对应的全部三级任务
     this.allList = $('.all');         //全部列表
     this.doneList = $('.undone');           //已完成列表
@@ -424,9 +553,10 @@ List.prototype = {
             addClass(taskBlock, "done");
         }
         dateItem.appendChild(taskBlock);
+        task.setUI(taskBlock);              //为task绑定DOM元素
     },
 
-    /*创建新的日期div*/
+    /*创建新的日期div 内部*/
     createDateItem: function(date) {
         var dateItem = document.createElement("div");
         var dateBlock = document.createElement("div");
@@ -437,12 +567,12 @@ List.prototype = {
         return dateItem;
     },
 
-    /*查找date对应的div*/
+    /*查找date对应的div 内部*/
     searchDateItem: function(date) {
         if(this.dates.indexOf(date) == -1) return;
 
         var dateBlock, dateItem;
-        var allList = $('.all');
+        var allList = this.allList;
         var dates = allList.getElementsByClassName("date");
         for(var i = 0, len = dates.length; i<len; i++) {
             if(dates[i].innerHTML == date) {
@@ -460,9 +590,14 @@ List.prototype = {
         this.undoneList = '';
     },
 
-    initWhole: function() {},
+    /*根据全部类表更新完成和未完成列表*/
+    updateBoth: function() {
+        this.updateDone();
+        this.updateUndone();
+    },
 
-    initDone: function() {
+    /*根据全部类表更新完成列表 内部*/
+    updateDone: function() {
         this.doneList.innerHTML = this.allList.innerHTML;
         var items = this.doneList.getElementsByClassName("item");
         for(var len = items.length, i = len-1; i >= 0; i--) {
@@ -479,7 +614,8 @@ List.prototype = {
         }
     },
 
-    initUndone: function() {
+    /*根据全部类表更新未完成列表 内部*/
+    updateUndone: function() {
         this.undoneList.innerHTML = this.allList.innerHTML;
         var items = this.undoneList.getElementsByClassName("item");
         for(var len = items.length, i = len-1; i >= 0; i--) {
@@ -519,6 +655,15 @@ List.prototype = {
             removeClass(b_all, "active");
             this.doneList.style.display = "block";
             this.allList.style.display = this.undoneList.style.display = "none";
+        }
+    },
+
+    deleteTask: function(task) {
+        var ui = task.ui;
+        var dateItem = ui.parentNode;
+        dateItem.removeChild(ui);
+        if(dateItem.children.length == 1) {
+            dateItem.parentNode.removeChild(dateItem);
         }
     }
 
