@@ -1,5 +1,8 @@
 
-/*全局变量current 保存当前选择的类别、文件、任务ID*/
+
+/*
+
+/!*全局变量current 保存当前选择的类别、文件、任务ID*!/
 var currentKlass = {
     'class': '默认分类',
     'fname': '功能介绍',
@@ -7,6 +10,7 @@ var currentKlass = {
 };
 //总任务数量
 var sum = 0;
+*/
 
 /**
  * ========================= 数据结构 ===========================
@@ -28,24 +32,7 @@ var sum = 0;
  *          "detail": String 任务详细说明
  *        }
  */
-var data = [
-    {
-        "class": "默认分类",
-        "file": [
-            {
-                "fname": "功能介绍",
-                "task": [
-                    {
-                        "tname": "使用说明",
-                        "date": "2015-07-22",
-                        "finished": true,
-                        "detail": "此为任务管理器，添加分类，添加文件，添加任务说明"
-                    }
-                ]
-            }
-        ]
-    }
-];
+
 /**
  * ======================== 数据查找 ==========================
  */
@@ -53,9 +40,8 @@ var data = [
 /**
  * 获得分类
  * @param className {String}  类别名称
- * @return found {Object}  根据名称找到对应的类别对象
- */
-function getClass(className) {
+ * @return found {Object}  根据名称找到对应的类别对象*/
+/*function getClass(className) {
     var className = className || current.class;
     var len = data.length;
     var found;
@@ -67,7 +53,7 @@ function getClass(className) {
         }
     }
     return found;
-}
+}*/
 
 /**
  * 获得文件
@@ -75,7 +61,7 @@ function getClass(className) {
  * @param fileName {String}  文件名称
  * @return found {Object}  根据名称找到对应的文件对象
  */
-function getFile(className, fileName) {
+/*function getFile(className, fileName) {
     var className = className || current.class,
         fileName = fileName || current.fname;
     var theClass = getClass(className);
@@ -89,7 +75,7 @@ function getFile(className, fileName) {
         }
     }
     return found;
-}
+}*/
 
 /**
  * 获得任务文件
@@ -98,7 +84,7 @@ function getFile(className, fileName) {
  *@param taskName {String}  任务名称
  *@return found {Object}  根据名称找到对应的任务对象
  */
-function getTask(className, fileName, taskName) {
+/*function getTask(className, fileName, taskName) {
     var className = className || current.class,
         fileName = fileName || current.fname,
         taskName = taskName || current.tname;
@@ -113,7 +99,7 @@ function getTask(className, fileName, taskName) {
         }
     }
     return found;
-}
+}*/
 
 /**
  * ======================== 数据呈现 ===========================
@@ -169,6 +155,7 @@ function showAllClass() {
     }
 
 }
+
 /**
  * ================================= 最外层窗口类 Main ===================================
  */
@@ -176,6 +163,7 @@ function showAllClass() {
 function Main() {
     this.klasses = [];      //包含的一级任务分类 每个元素均为一级任务类Klass
     this.sum = 1;         //总任务数量
+    this.currentKlass = null;    //当前窗口的一级任务
 }
 
 Main.prototype = {
@@ -184,6 +172,7 @@ Main.prototype = {
     addKlass: function(klass) {
         this.klasses.push(klass);
         klass.show();
+        this.setCurrentKlass(klass);
     },
 
     removeKlass: function(klass) {
@@ -196,6 +185,16 @@ Main.prototype = {
         }
     },
 
+    /*通过一级任务名称找到相应的对象*/
+    getKlass: function(klassName) {
+        var klasses = this.klasses;
+        for(var i=0, len=klasses.length; i<len; i++) {
+            if(klasses[i].name == klassName) {
+                return klasses[i];
+            }
+        }
+    },
+
     getSum: function() {
         var num;
         this.klasses.forEach(function(klass) {
@@ -204,6 +203,29 @@ Main.prototype = {
             });
         });
         return num;
+    },
+
+    setCurrentKlass: function(klass) {
+        this.currentKlass = klass;
+    },
+
+    init: function() {
+        this.addKlass(dftKlass);
+        this.eventDelegate();
+    },
+
+    /*一级任务点击事件代理*/
+    eventDelegate: function() {
+        delegateEvent($('.class-list'), 'li', 'click', function(e) {
+            var type = this.getElementsByTagName('i')[0];
+            if(!hasClass(type, 'folder')) return;
+
+            var klassName = this.getElementsByTagName("span")[0].innerHTML;
+            klassName = klassName.replace(/\s*\(\d+\)$/, "");
+            var currentKlass = this.getKlass(klassName);
+            this.setCurrentKlass(currentKlass);     //设置当前文件
+            currentKlass.toggle();
+        });
     }
 }
 
@@ -245,7 +267,18 @@ Klass.prototype = {
     /*添加二级子任务*/
     addFile: function(file) {
         this.files.push(file);
-        this.ui.appendChild(file.ui);   //在页面中添加DOM元素
+        /*this.ui.appendChild(file.ui);   //在页面中添加DOM元素*/
+        //显示这个文件
+        var fileUI = file.createUI();
+        var subList = this.ui.getElementsByTagName('ul')[0];
+        if(subList) {
+            subList.appendChild(fileUI);
+        } else {
+            var newList = document.createElement('ul');
+            newList.appendChild(fileUI);
+            this.ui.appendChild(newList);
+        }
+        this.setCurrentFile(file);
     },
 
     /*删除二级子任务*/
@@ -271,7 +304,7 @@ Klass.prototype = {
             var ul = document.createElement("ul");
             this.ui.appendChild(ul);
             this.files.forEach(function(file) {
-                ul.appendChild(file.show());
+                ul.appendChild(file.createUI());
             });
         }
     },
@@ -309,6 +342,30 @@ Klass.prototype = {
         h3.appendChild(span);
         li.appendChild(h3);
         return li;
+    },
+
+    /*二级任务点击事件代理*/
+    eventDelegate: function() {
+        delegateEvent(this.ui, 'li', 'click', function(e) {
+            var type = this.getElementsByTagName('i')[0];
+            if(!hasClass(type, 'doc')) return;
+
+            if(e.cancelBubble) {
+                e.cancelable;
+            } else {
+                e.stopPropagation();
+            }
+            var fileName = this.getElementsByTagName("span")[0].innerHTML;
+            fileName = fileName.replace(/\s*\(\d+\)$/, "");
+            var currentFile = this.getFile(fileName);
+            this.setCurrentFile(currentFile);     //设置当前文件
+            currentFile.showTasks();
+        });
+    },
+
+    init: function() {
+        this.addFile(dftFile);
+        this.eventDelegate();
     }
 }
 
@@ -328,7 +385,7 @@ File.prototype = {
     constructor: File,
 
     /*创建该对象的DOM元素，并返回这个DOM元素*/
-    show: function() {
+    createUI: function() {
         var li = this.createLi('file');
         this.setUI(li);
         var span = li.getElementsByTagName('span')[0];
@@ -492,7 +549,7 @@ Task.prototype = {
         }else {
             editDetail += 'palceholder="请输入任务内容"></textarea>';
         }
-        $('.detail-boty').innerHTML = editDetail;
+        $('.detail-body').innerHTML = editDetail;
     },
 
     /*提交编辑信息*/
@@ -528,8 +585,8 @@ Task.prototype = {
 function List() {
     //this.tasks = tasks;            //对应的全部三级任务
     this.allList = $('.all');         //全部列表
-    this.doneList = $('.undone');           //已完成列表
-    this.undoneList = $('.done');        //未完成列表
+    this.doneList = $('.finish');           //已完成列表
+    this.undoneList = $('.unFinish');        //未完成列表
     this.dates = [];                //列表中已包含的日期
 }
 
@@ -537,19 +594,19 @@ List.prototype = {
     constructor: List,
 
     /*在列表里显示一个任务task*/
-    showTask: function(task) {
+    showTask: function (task) {
         var date = task.date;
         var dateItem;         //任务对应的日期div
-        if(date.indexOf(date) < 0) {
+        if (this.dates.indexOf(date) < 0) {
             this.dates.push(date);
             dateItem = this.createDateItem(date);
         } else {
             dateItem = this.searchDateItem(date);
         }
         var taskBlock = document.createElement("div");
-        taskBlock.innerHTML = task.tname;
+        taskBlock.innerHTML = task.name;
         addClass(taskBlock, "item");
-        if(task.finished) {
+        if (task.finished) {
             addClass(taskBlock, "done");
         }
         dateItem.appendChild(taskBlock);
@@ -557,25 +614,26 @@ List.prototype = {
     },
 
     /*创建新的日期div 内部*/
-    createDateItem: function(date) {
+    createDateItem: function (date) {
         var dateItem = document.createElement("div");
         var dateBlock = document.createElement("div");
         dateBlock.innerHTML = date;
         addClass(dateItem, 'dateItem');
         addClass(dateBlock, 'date');
         dateItem.appendChild(dateBlock);
+        this.allList.appendChild(dateItem);         //在界面中显示
         return dateItem;
     },
 
     /*查找date对应的div 内部*/
-    searchDateItem: function(date) {
-        if(this.dates.indexOf(date) == -1) return;
+    searchDateItem: function (date) {
+        if (this.dates.indexOf(date) == -1) return;
 
         var dateBlock, dateItem;
         var allList = this.allList;
         var dates = allList.getElementsByClassName("date");
-        for(var i = 0, len = dates.length; i<len; i++) {
-            if(dates[i].innerHTML == date) {
+        for (var i = 0, len = dates.length; i < len; i++) {
+            if (dates[i].innerHTML == date) {
                 dateBlock = dates[i];
                 dateItem = dates[i].parentNode;
                 break;
@@ -584,28 +642,28 @@ List.prototype = {
         return dateItem;
     },
 
-    clear: function() {
+    clear: function () {
         this.allList = '';
         this.doneList = '';
         this.undoneList = '';
     },
 
     /*根据全部类表更新完成和未完成列表*/
-    updateBoth: function() {
+    updateBoth: function () {
         this.updateDone();
         this.updateUndone();
     },
 
     /*根据全部类表更新完成列表 内部*/
-    updateDone: function() {
+    updateDone: function () {
         this.doneList.innerHTML = this.allList.innerHTML;
         var items = this.doneList.getElementsByClassName("item");
-        for(var len = items.length, i = len-1; i >= 0; i--) {
+        for (var len = items.length, i = len - 1; i >= 0; i--) {
             var that = items[i];
-            if(!that.classList.contains("done")) {
+            if (!that.classList.contains("done")) {
                 var parent = that.parentNode;
                 parent.removeChild(that);
-                if(parent.children.length == 1) {
+                if (parent.children.length == 1) {
                     this.doneList.removeChild(parent);
                 }
             } else {
@@ -615,15 +673,15 @@ List.prototype = {
     },
 
     /*根据全部类表更新未完成列表 内部*/
-    updateUndone: function() {
+    updateUndone: function () {
         this.undoneList.innerHTML = this.allList.innerHTML;
         var items = this.undoneList.getElementsByClassName("item");
-        for(var len = items.length, i = len-1; i >= 0; i--) {
+        for (var len = items.length, i = len - 1; i >= 0; i--) {
             var that = items[i];
-            if(that.classList.contains("done")) {
+            if (that.classList.contains("done")) {
                 var parent = that.parentNode;
                 parent.removeChild(that);
-                if(parent.children.length == 1) {
+                if (parent.children.length == 1) {
                     this.undoneList.removeChild(parent);
                 }
             }
@@ -631,19 +689,19 @@ List.prototype = {
     },
 
     /*切换到要显示的列表 option：all || undone || done*/
-    switchTo: function(option) {
+    switchTo: function (option) {
         var option = option || 'all';
         var b_all = $('#task-list .b-all'),
             b_undone = $('#task-list .b-undone'),
             b_done = $('#task-list .b-done');
 
-        if(option == 'all') {
+        if (option == 'all') {
             addClass(b_all, "active");
             removeClass(b_done, "active");
             removeClass(b_undone, "active");
             this.allList.style.display = "block";
             this.doneList.style.display = this.undoneList.style.display = "none";
-        } else if(option == 'undone') {
+        } else if (option == 'undone') {
             addClass(b_undone, "active");
             removeClass(b_all, "active");
             removeClass(b_done, "active");
@@ -658,13 +716,89 @@ List.prototype = {
         }
     },
 
-    deleteTask: function(task) {
+    deleteTask: function (task) {
         var ui = task.ui;
         var dateItem = ui.parentNode;
         dateItem.removeChild(ui);
-        if(dateItem.children.length == 1) {
+        if (dateItem.children.length == 1) {
             dateItem.parentNode.removeChild(dateItem);
         }
     }
-
 }
+
+/**
+ * ====================================== 全局变量 ================================
+ */
+
+var data = [
+    {
+        "class": "默认分类",
+        "file": [
+            {
+                "fname": "功能介绍",
+                "task": [
+                    {
+                        "tname": "使用说明",
+                        "date": "2015-07-22",
+                        "finished": true,
+                        "detail": "此为任务管理器，添加分类，添加文件，添加任务说明"
+                    }
+                ]
+            }
+        ]
+    }
+];
+var main = new Main();
+var dftKlass = new Klass('默认分类');
+var dftFile = new File('功能介绍');
+var dftTask = new Task('使用说明', '2015-07-22', true, '此为任务管理器，添加分类，添加文件，添加任务说明');
+main.addKlass(dftKlass);
+dftKlass.addFile(dftFile);
+dftFile.addTask(dftTask);
+dftTask.showDetail();
+
+/**
+ * ===================================== 新建分类 ===========================================
+ */
+addEvent($('#task-class .addition'),'click', function() {
+    $('#prompt').style.display = 'block';
+});
+
+addEvent($('#prompt .sure'), 'click', function() {
+    var type = $('#select-class').value;
+    var name = $('#class-name').value;
+    if(name == '') {
+        alert('请填写任务名称');
+    }
+    if(type == 'parent') {
+        var newKlass = new Klass(name);
+        main.addKlass(newKlass);
+    } else {
+        var newFile = new File(name);
+        main.currentKlass.addFile(newFile);
+    }
+    $('#prompt').style.display = 'none';
+    $('#class-name').value = '';
+    $('#select-class').value = 'parent';
+});
+
+addEvent($('#prompt .cancel'), 'click', function() {
+    $('#prompt').style.display = 'none';
+    $('#class-name').value = '';
+    $('#select-class').value = 'parent';
+});
+
+/**
+ * ================================= 新建任务 =================================
+ */
+
+addEvent($('#task-list .addition'), 'click', function() {
+    var currentFile = main.currentKlass.currentFile;
+    if(!currentFile) {
+        alert('请先创建子分类');
+        return;
+    } else {
+        var newTask = new Task();
+        newTask.edit();
+    }
+});

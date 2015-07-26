@@ -133,6 +133,12 @@ function delegateEvent(ele, tag, type, listener) {
         }
     });
 }
+
+function getTarget(e) {
+    var event = e || window.event;
+    var target = e.srcElement || e.target;
+    return target;
+}
 /*
 对象
  */
@@ -172,6 +178,14 @@ function removeClass(ele, name) {
     }
     var newClass = oldArray.join(" ");
     ele.className = newClass;
+}
+
+function hasClass(element, className) {
+    if(element.classList.contains(className)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 //实现一个简单的jQuery
