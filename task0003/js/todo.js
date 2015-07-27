@@ -164,6 +164,7 @@ function Main() {
     this.klasses = [];      //包含的一级任务分类 每个元素均为一级任务类Klass
     this.sum = 1;         //总任务数量
     this.currentKlass = null;    //当前窗口的一级任务
+    this.init();
 }
 
 Main.prototype = {
@@ -172,6 +173,7 @@ Main.prototype = {
     addKlass: function(klass) {
         this.klasses.push(klass);
         klass.show();
+        klass.init();         //为klass绑定事件
         this.setCurrentKlass(klass);
     },
 
@@ -211,21 +213,40 @@ Main.prototype = {
 
     init: function() {
         this.addKlass(dftKlass);
+        dftKlass.addFile(dftFile);
+        dftFile.addTask(dftTask);
+        dftTask.showDetail();
         this.eventDelegate();
     },
 
     /*一级任务点击事件代理*/
     eventDelegate: function() {
-        delegateEvent($('.class-list'), 'li', 'click', function(e) {
-            var type = this.getElementsByTagName('i')[0];
-            if(!hasClass(type, 'folder')) return;
-
+        /*var klassName = delegateEvent($('.class-list'), 'h3', 'click', function(e) {
             var klassName = this.getElementsByTagName("span")[0].innerHTML;
             klassName = klassName.replace(/\s*\(\d+\)$/, "");
-            var currentKlass = this.getKlass(klassName);
-            this.setCurrentKlass(currentKlass);     //设置当前文件
+            return klassName;
+        });
+
+        var currentKlass = this.getKlass(klassName);
+        this.setCurrentKlass(currentKlass);     //设置当前文件
+        currentKlass.toggle();*/
+        var that = this;
+        addEvent($('.class-list'), 'click', function(e) {
+            var target = getTarget(e);
+            var targetTag = target.tagName.toLowerCase();
+            while(targetTag != 'h3' && targetTag != 'h4') {
+                target = target.parentNode;
+                targetTag = target.tagName.toLowerCase();
+            }
+            if(targetTag == 'h4') return;
+
+            var klassName = target.getElementsByTagName("span")[0].innerHTML;
+            klassName = klassName.replace(/\s*\(\d+\)$/, "");
+            var currentKlass = that.getKlass(klassName);
+            that.setCurrentKlass(currentKlass);     //设置当前文件
             currentKlass.toggle();
         });
+
     }
 }
 
@@ -279,6 +300,7 @@ Klass.prototype = {
             this.ui.appendChild(newList);
         }
         this.setCurrentFile(file);
+
     },
 
     /*删除二级子任务*/
@@ -299,7 +321,7 @@ Klass.prototype = {
         var subList = this.ui.getElementsByTagName('ul')[0];
 
         if(subList) {
-            this.removeChild(subList);
+            this.ui.removeChild(subList);
         } else {
             var ul = document.createElement("ul");
             this.ui.appendChild(ul);
@@ -333,20 +355,25 @@ Klass.prototype = {
     createLi: function (type) {
         var type = type ? type : "folder";
         var li = document.createElement("li");
-        var h3 = document.createElement("h3");
+        var h;
+        if(type == 'folder') {
+            h = document.createElement("h3");
+        } else {
+            h = document.createElement('h4');
+        }
         var i = document.createElement("i");
         var span = document.createElement("span");
         addClass(i, "icon");
         addClass(i, type);
-        h3.appendChild(i);
-        h3.appendChild(span);
-        li.appendChild(h3);
+        h.appendChild(i);
+        h.appendChild(span);
+        li.appendChild(h);
         return li;
     },
 
     /*二级任务点击事件代理*/
-    eventDelegate: function() {
-        delegateEvent(this.ui, 'li', 'click', function(e) {
+    clickEventDelegate: function() {
+        /*delegateEvent(this.ui, 'li', 'click', function(e) {
             var type = this.getElementsByTagName('i')[0];
             if(!hasClass(type, 'doc')) return;
 
@@ -360,12 +387,34 @@ Klass.prototype = {
             var currentFile = this.getFile(fileName);
             this.setCurrentFile(currentFile);     //设置当前文件
             currentFile.showTasks();
+        });*/
+        var that = this;
+        addEvent($('.class-list'), 'click', function(e) {
+            var event = e || window.event;
+            var target = getTarget(event);
+            var targetTag = target.tagName.toLowerCase();
+            while(targetTag != 'h3' && targetTag != 'h4') {
+                target = target.parentNode;
+                targetTag = target.tagName.toLowerCase();
+            }
+            if(targetTag == 'h3') return;
+
+            //取消冒泡
+            if(event.cancelBubble) {
+                event.cancelBubble;
+            } else {
+                event.stopPropagation();
+            }
+            var fileName = target.getElementsByTagName("span")[0].innerHTML;
+            fileName = fileName.replace(/\s*\(\d+\)$/, "");
+            var currentFile = that.getFile(fileName);
+            that.setCurrentFile(currentFile);     //设置当前文件
+            currentFile.showTasks();
         });
     },
 
     init: function() {
-        this.addFile(dftFile);
-        this.eventDelegate();
+        this.clickEventDelegate();
     }
 }
 
@@ -407,7 +456,9 @@ File.prototype = {
     addTask: function(task) {
         this.tasks.push(task);
         this.list.showTask(task);
+        task.init();
         this.list.updateBoth();
+        this.currentTask = task;
     },
 
     /*/!*删除该对象的某个三级任务 !待改! *!/
@@ -435,9 +486,11 @@ File.prototype = {
 
     /*显示其包含的所有三级任务*/
     showTasks: function() {
+        var that = this;
         this.list.clear();
+        this.list.dates = [];
         this.tasks.forEach(function(task) {
-            this.list.showTask(task);
+            that.list.showTask(task);
         });
         this.list.switchTo('all');
         this.list.updateBoth();
@@ -457,16 +510,22 @@ File.prototype = {
     createLi: function (type) {
         var type = type ? type : "folder";
         var li = document.createElement("li");
-        var h3 = document.createElement("h3");
+        var h;
+        if(type == 'folder') {
+            h = document.createElement("h3");
+        } else {
+            h = document.createElement('h4');
+        }
         var i = document.createElement("i");
         var span = document.createElement("span");
         addClass(i, "icon");
         addClass(i, type);
-        h3.appendChild(i);
-        h3.appendChild(span);
-        li.appendChild(h3);
+        h.appendChild(i);
+        h.appendChild(span);
+        li.appendChild(h);
         return li;
     }
+
 }
 
 /**
@@ -521,6 +580,14 @@ Task.prototype = {
         $('.task-name').innerHTML = this.name;
         $('.task-date').innerHTML = this.date;
         $('.detail-body').innerHTML = this.detail;
+        $('.edit-submit').style.display = 'none';
+        if(this.finished) {
+            $('.detail-head .ok').style.display = 'none';
+            $('.detail-head .edit').style.display = 'none';
+        } else {
+            $('.detail-head .ok').style.display = 'inline-block';
+            $('.detail-head .edit').style.display = 'inline-block';
+        }
     },
 
     /*编辑的界面*/
@@ -543,13 +610,14 @@ Task.prototype = {
         editDate += ' />';
         $('.task-date').innerHTML = editDate;
 
-        var editDetail = '<textarea class="input-detail "';
+        var editDetail = '<textarea class="input-detail" ';
         if(this.detail) {
             editDetail += '>' + this.detail + '</textarea>';
         }else {
             editDetail += 'palceholder="请输入任务内容"></textarea>';
         }
         $('.detail-body').innerHTML = editDetail;
+        $('.edit-submit').style.display = 'block';
     },
 
     /*提交编辑信息*/
@@ -574,6 +642,17 @@ Task.prototype = {
     finishTask: function() {
         this.finished = true;
         addClass(this.ui, 'done');
+    },
+
+    clickHandler: function() {
+        var that = this;
+        addEvent(this.ui, 'click', function() {
+            that.showDetail();
+        });
+    },
+
+    init: function() {
+        this.clickHandler();
     }
 
 }
@@ -588,6 +667,7 @@ function List() {
     this.doneList = $('.finish');           //已完成列表
     this.undoneList = $('.unFinish');        //未完成列表
     this.dates = [];                //列表中已包含的日期
+    this.switchHandler();
 }
 
 List.prototype = {
@@ -643,9 +723,9 @@ List.prototype = {
     },
 
     clear: function () {
-        this.allList = '';
-        this.doneList = '';
-        this.undoneList = '';
+        this.allList.innerHTML = '';
+        this.doneList.innerHTML  = '';
+        this.undoneList.innerHTML  = '';
     },
 
     /*根据全部类表更新完成和未完成列表*/
@@ -723,6 +803,17 @@ List.prototype = {
         if (dateItem.children.length == 1) {
             dateItem.parentNode.removeChild(dateItem);
         }
+    },
+
+    switchHandler: function() {
+        var that = this;
+        addEvent($('#task-list ul'), 'click', function(e) {
+            var event = e || window.event;
+            var target = getTarget(event);
+            var cName = target.className;
+            var option = cName.replace(/^b-/, '');
+            that.switchTo(option);
+        });
     }
 }
 
@@ -748,22 +839,22 @@ var data = [
         ]
     }
 ];
-var main = new Main();
+
 var dftKlass = new Klass('默认分类');
 var dftFile = new File('功能介绍');
 var dftTask = new Task('使用说明', '2015-07-22', true, '此为任务管理器，添加分类，添加文件，添加任务说明');
-main.addKlass(dftKlass);
-dftKlass.addFile(dftFile);
-dftFile.addTask(dftTask);
-dftTask.showDetail();
+var main = new Main();
 
 /**
  * ===================================== 新建分类 ===========================================
  */
+
+/*点击新建任务按钮*/
 addEvent($('#task-class .addition'),'click', function() {
     $('#prompt').style.display = 'block';
 });
 
+/*点击确定按钮*/
 addEvent($('#prompt .sure'), 'click', function() {
     var type = $('#select-class').value;
     var name = $('#class-name').value;
@@ -776,12 +867,14 @@ addEvent($('#prompt .sure'), 'click', function() {
     } else {
         var newFile = new File(name);
         main.currentKlass.addFile(newFile);
+        newFile.showTasks();
     }
     $('#prompt').style.display = 'none';
     $('#class-name').value = '';
     $('#select-class').value = 'parent';
 });
 
+/*点击取消按钮*/
 addEvent($('#prompt .cancel'), 'click', function() {
     $('#prompt').style.display = 'none';
     $('#class-name').value = '';
@@ -792,6 +885,7 @@ addEvent($('#prompt .cancel'), 'click', function() {
  * ================================= 新建任务 =================================
  */
 
+/*点击新建任务按钮*/
 addEvent($('#task-list .addition'), 'click', function() {
     var currentFile = main.currentKlass.currentFile;
     if(!currentFile) {
@@ -800,5 +894,36 @@ addEvent($('#task-list .addition'), 'click', function() {
     } else {
         var newTask = new Task();
         newTask.edit();
+    }
+});
+
+/*点击保存按钮*/
+addEvent($('.edit-submit .save'), 'click', function() {
+    var newName = $('.input-name').value;
+    var newDate = $('.input-date').value;
+    var newDetail = $('.input-detail').value;
+    if(!newName) {
+        alert('请输入任务名称');
+        return;
+    }
+    if(!newDate) {
+        alert('请输入任务日期');
+        return;
+    }
+    var newTask = new Task(newName, newDate, false, newDetail);
+    var currentFile = main.currentKlass.currentFile;
+    currentFile.addTask(newTask);
+    newTask.showDetail();
+});
+
+/*点击取消按钮*/
+addEvent($('.edit-submit .cancel'), 'click', function() {
+    var currentFile = main.currentKlass.currentFile;
+    var currentTask = currentFile.currentTask;
+    if(currentTask) {
+        currentTask.showDetail();
+    }else{
+        var task = new Task('', '', true, '');
+        task.showDetail();
     }
 });

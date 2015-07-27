@@ -20,13 +20,13 @@
                 <ul class="class-list clearfix">
                     <!--<li><h3><i class="icon folder"></i><span>百度项目 ()</span></h3>
                         <ul>
-                            <li class="active"><h3><i class="icon doc"></i>task1 (<span class="num"></span>)</h3></li>
-                            <li><h3><i class="icon doc"></i>task2 (<span class="num"></span>)</h3></li>
+                            <li class="active"><h4><i class="icon doc"></i>task1 (<span class="num"></span>)</h4></li>
+                            <li><h4><i class="icon doc"></i>task2 (<span class="num"></span>)</h4></li>
                         </ul>
                     </li>
                     <li><h3><i class="icon folder"></i>毕业设计 (<span class="num"></span>)</h3>
                         <ul>
-                            <li><h3><i class="icon folder"></i>实验数据 (<span class="num"></span>)</h3>
+                            <li><h4><i class="icon folder"></i>实验数据 (<span class="num"></span>)</h4>
                                 <ul>
                                     <li><p><i class="icon doc"></i>C++ (<span class="num"></span>)</p></li>
                                     <li><p><i class="icon doc"></i>Matlab (<span class="num"></span>)</p></li>
@@ -76,15 +76,19 @@
             </div>
             <div id="task-detail">
                 <div class="detail-head">
-                    <span class="task-name"><input class="input-name" type="text" placeholder="kxy" /></span>
+                    <span class="task-name"><!--<input class="input-name" type="text" placeholder="kxy" />--></span>
                     <i class="icon ok"></i>
                     <i class="icon edit"></i>
                 </div>
                 <div class="detail">
-                    <div class="task-date"><input class="input-date" type="date" /></div>
+                    <div class="task-date"><!--<input class="input-date" type="date" />--></div>
                     <div class="detail-body">
                         <!--<p></p>-->
-                        <textarea class="input-detail"></textarea>
+                        <!--<textarea class="input-detail" placeholder="请输入任务内容"></textarea>-->
+                    </div>
+                    <div class="edit-submit">
+                        <button class="save">保存</button>
+                        <button class="cancel">取消</button>
                     </div>
                 </div>
                 <!--<div class="new-task">

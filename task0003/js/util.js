@@ -126,9 +126,14 @@ function removeEvent(ele, type, listener) {
 function delegateEvent(ele, tag, type, listener) {
     addEvent(ele, type, function(e) {
         var event = e || window.event;
-        var target = e.target || e.srcElement;
+        var target = getTarget(e);
         var tagName = target.nodeName.toLowerCase();
-        if(tagName == tag.toLowerCase()) {
+        while(tagName != tag && target != ele) {
+            target = target.parentNode;
+            tagName = target.nodeName.toLowerCase();
+        }
+
+        if(tagName == tag) {
             listener.call(target, event);
         }
     });

@@ -7,7 +7,7 @@ body {
     width: 100%;
     height: 100%;
 }
-h1, h2, h3 {
+h1, h2, h3, h4 {
     font-size: 17px;
 }
 h1, h2 {
@@ -137,16 +137,16 @@ header .user {
 .class-list > li.active > h3 {
     background-color: #B5B5B5;
 }
-.class-list ul > li h3 {
+.class-list h4 {
     text-indent: 30px;
 }
-.class-list ul > li h3:hover,
-.class-list ul > li.active > h3 {
+.class-list h4:hover,
+.class-list ul > li.active > h4 {
     background-color: #B5B5B5;
 }
-.class-list ul ul >li h3{
+/*.class-list ul ul >li h3{
     text-indent: 50px;
-}
+}*/
 .addition {
     position: absolute;
     bottom: 0;
@@ -230,9 +230,10 @@ header .user {
     margin-right: 20px;
     cursor: pointer;
 }
-.detail,
-.new-task {
+.detail {
     /*display: none;*/
+    height: 100%;
+    width: 100%;
 }
 .detail .task-date {
     height: 40px;
@@ -240,11 +241,32 @@ header .user {
     line-height: 40px;
     padding-left: 20px;
 }
-.detail-body,
-.new-task {
+.detail-body {
     padding: 20px;
+    width: 100%;
+    height: 100%;
 }
-.new-task label {
+.detail-body textarea {
+    width: 100%;
+    height: 100%;
+    background-color: inherit;
+    border: 0px;
+    font-size: 20px;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+}
+.edit-submit {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: none;
+}
+.edit-submit button {
+    height: 30px;
+    width: 80px;
+}
+/*.new-task label {
     display: inline-block;
     height: 20px;
     margin-bottom: 20px;
@@ -259,7 +281,7 @@ header .user {
     vertical-align: top;
     width: 150px;
     height: 100px;
-}
+}*/
 #prompt {
     display: none;
 }
