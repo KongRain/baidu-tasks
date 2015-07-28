@@ -1,161 +1,4 @@
 
-
-/*
-
-/!*全局变量current 保存当前选择的类别、文件、任务ID*!/
-var currentKlass = {
-    'class': '默认分类',
-    'fname': '功能介绍',
-    'tname': '使用说明'
-};
-//总任务数量
-var sum = 0;
-*/
-
-/**
- * ========================= 数据结构 ===========================
- * json 数据
- *
- * @type: [@class] Array 所有分类
- * @class {
- *           "class": String 分类名称
- *           "file": [@files] Array 下属文件列表
- *         }
- * @files {
- *           "fname": String 文件名
- *           "task": [@tasks] Array 下属任务
- *        }
- * @tasks {
- *          "tname": String 任务名
- *          "date": String 创建时间
- *          "finished": Boolen 是否完成
- *          "detail": String 任务详细说明
- *        }
- */
-
-/**
- * ======================== 数据查找 ==========================
- */
-
-/**
- * 获得分类
- * @param className {String}  类别名称
- * @return found {Object}  根据名称找到对应的类别对象*/
-/*function getClass(className) {
-    var className = className || current.class;
-    var len = data.length;
-    var found;
-
-    for(var i= 0; i<len; i++) {
-        if(data[i].class == className) {
-            found  = data[i];
-            break;
-        }
-    }
-    return found;
-}*/
-
-/**
- * 获得文件
- * @param className {String} 类别名称
- * @param fileName {String}  文件名称
- * @return found {Object}  根据名称找到对应的文件对象
- */
-/*function getFile(className, fileName) {
-    var className = className || current.class,
-        fileName = fileName || current.fname;
-    var theClass = getClass(className);
-    var len = theClass.file.length;
-    var found;
-
-    for(var i=0; i<len; i++) {
-        if(theClass.file[i].fname == fileName) {
-            found = theClass.file[i];
-            break;
-        }
-    }
-    return found;
-}*/
-
-/**
- * 获得任务文件
- *@param className {String} 类别名称
- *@param fileName {String}  文件名称
- *@param taskName {String}  任务名称
- *@return found {Object}  根据名称找到对应的任务对象
- */
-/*function getTask(className, fileName, taskName) {
-    var className = className || current.class,
-        fileName = fileName || current.fname,
-        taskName = taskName || current.tname;
-    var theFile = getFile(className, fileName);
-    var len = theFile.task.length;
-    var found;
-
-    for(var i=0; i<len; i++) {
-        if(theFile.task[i].tname == taskName) {
-            found = theFile.task[i];
-            break;
-        }
-    }
-    return found;
-}*/
-
-/**
- * ======================== 数据呈现 ===========================
- */
-
-//全局初始化
-function init() {
-    initClass();
-    initTask();
-    initDetail();
-    setCurrent();
-}
-
-//分类栏初始化
-function initClass(){
-    showAllClass();
-    setSum();
-    delegateClickEvent();
-    delegateMouseEvent();
-}
-
-
-//任务栏初始化
-function initTask() {
-
-}
-
-//细节栏初始化
-function initDetail() {
-
-}
-
-//将当前任务用高亮标记出来
-function setCurrent() {
-
-}
-
-function showAllClass() {
-    var len = data.length;
-    var list = $("#task-class .class-list");
-    if(!list) {
-        console.log('list search failed.');
-    }
-    for(var i=0; i<len; i++) {
-        var name = data[i].class;
-        var files = data[i].file;
-        var length = files.length;
-        var li = createLi("folder");
-        var span = li.getElementsByTagName("span")[0];
-        span.innerHTML = name + "(" + length + ")";
-        list.appendChild(li);
-        //addEvent(li, "click", clickHandler);
-    }
-
-}
-
 /**
  * ================================= 最外层窗口类 Main ===================================
  */
@@ -182,7 +25,7 @@ Main.prototype = {
         var index = klasses.indexOf(klass);
         if(index == -1) return;
         else {
-            klasses.splice(index+1, 1);
+            klasses.splice(index, 1);
             $('.class-list').removeChild(klass.ui);    //在页面中删除DOM元素
         }
     },
@@ -217,19 +60,11 @@ Main.prototype = {
         dftFile.addTask(dftTask);
         dftTask.showDetail();
         this.eventDelegate();
+        this.cilckDelete();
     },
 
     /*一级任务点击事件代理*/
     eventDelegate: function() {
-        /*var klassName = delegateEvent($('.class-list'), 'h3', 'click', function(e) {
-            var klassName = this.getElementsByTagName("span")[0].innerHTML;
-            klassName = klassName.replace(/\s*\(\d+\)$/, "");
-            return klassName;
-        });
-
-        var currentKlass = this.getKlass(klassName);
-        this.setCurrentKlass(currentKlass);     //设置当前文件
-        currentKlass.toggle();*/
         var that = this;
         addEvent($('.class-list'), 'click', function(e) {
             var target = getTarget(e);
@@ -247,7 +82,32 @@ Main.prototype = {
             currentKlass.toggle();
         });
 
-    }
+    },
+
+    /*点击删除图标删除此分类（一级分类）*/
+    cilckDelete: function() {
+        var that = this;
+
+        addEvent($('.class-list'), 'click', function(e) {
+            var event = e || window.event;
+            var target = getTarget(e);
+            if(hasClass(target, 'delete') && target.parentNode.nodeName.toLowerCase() == 'h3') {
+                if(event.cancelBubble) {
+                    event.cancelBubble = true;
+                } else {
+                    event.stopPropagation();
+                }
+                var answer = confirm('确定删除此分类？');
+                if(answer) {
+                    var klassName = target.parentNode.getElementsByTagName('span')[0].innerHTML;
+                    klassName = klassName.replace(/\s*\(\d+\)$/, "");
+                    var klass = that.getKlass(klassName);
+                    that.removeKlass(klass);
+                }
+            }
+
+        });
+    },
 }
 
 
@@ -300,7 +160,13 @@ Klass.prototype = {
             this.ui.appendChild(newList);
         }
         this.setCurrentFile(file);
+        this.updateLength();
+        file.init();
+    },
 
+    updateLength: function() {
+        var span = this.ui.getElementsByTagName('span')[0];
+        span.innerHTML = this.name + '(' + this.files.length + ')';
     },
 
     /*删除二级子任务*/
@@ -309,8 +175,9 @@ Klass.prototype = {
         var index = files.indexOf(file);
         if(index == -1) return;
         else {
-            files.splice(index+1, 1);
-            this.ui.removeChild(file.ui);    //在页面中删除DOM元素
+            files.splice(index, 1);
+            this.ui.getElementsByTagName('ul')[0].removeChild(file.ui);    //在页面中删除DOM元素
+            this.updateLength();
         }
     },
 
@@ -321,7 +188,12 @@ Klass.prototype = {
         var subList = this.ui.getElementsByTagName('ul')[0];
 
         if(subList) {
-            this.ui.removeChild(subList);
+            /*this.ui.removeChild(subList);*/
+            if(subList.style.display == 'block') {
+                subList.style.display = 'none';
+            } else {
+                subList.style.display = 'block';
+            }
         } else {
             var ul = document.createElement("ul");
             this.ui.appendChild(ul);
@@ -363,31 +235,19 @@ Klass.prototype = {
         }
         var i = document.createElement("i");
         var span = document.createElement("span");
+        var deleteIcon = document.createElement('i');
+        deleteIcon.className = 'icon delete';
         addClass(i, "icon");
         addClass(i, type);
         h.appendChild(i);
         h.appendChild(span);
+        h.appendChild(deleteIcon);
         li.appendChild(h);
         return li;
     },
 
     /*二级任务点击事件代理*/
     clickEventDelegate: function() {
-        /*delegateEvent(this.ui, 'li', 'click', function(e) {
-            var type = this.getElementsByTagName('i')[0];
-            if(!hasClass(type, 'doc')) return;
-
-            if(e.cancelBubble) {
-                e.cancelable;
-            } else {
-                e.stopPropagation();
-            }
-            var fileName = this.getElementsByTagName("span")[0].innerHTML;
-            fileName = fileName.replace(/\s*\(\d+\)$/, "");
-            var currentFile = this.getFile(fileName);
-            this.setCurrentFile(currentFile);     //设置当前文件
-            currentFile.showTasks();
-        });*/
         var that = this;
         addEvent($('.class-list'), 'click', function(e) {
             var event = e || window.event;
@@ -408,13 +268,67 @@ Klass.prototype = {
             var fileName = target.getElementsByTagName("span")[0].innerHTML;
             fileName = fileName.replace(/\s*\(\d+\)$/, "");
             var currentFile = that.getFile(fileName);
+            if(!currentFile) return;
             that.setCurrentFile(currentFile);     //设置当前文件
             currentFile.showTasks();
         });
     },
 
+    /*鼠标进入出现删除图标*/
+    enterEventDelegate: function() {
+        addEvent(this.ui, 'mouseover', this.showIcon);
+    },
+
+    /*鼠标移出隐藏删除图标*/
+    leaveEventDelegate: function() {
+        addEvent(this.ui, 'mouseout', this.hintIcon);
+    },
+
+    showIcon: function() {
+        var deleteIcon = this.getElementsByClassName('delete')[0];
+        deleteIcon.style.display = 'inline-block';
+    },
+
+    hintIcon: function() {
+        var deleteIcon = this.getElementsByClassName('delete')[0];
+        deleteIcon.style.display = 'none';
+    },
+
+    removeMouseEvent: function() {
+        removeEvent(this.ui, 'mouseover', this.showIcon);
+        removeEvent(this.ui, 'mouseout',this.hintIcon);
+    },
+
+    /*点击删除图标删除此文件（二级分类）*/
+    cilckDelete: function() {
+        var that = this;
+        //var deleteIcon = this.getElementsByClassName('delete')[0];
+        addEvent(this.ui, 'click', function(e) {
+            var event = e || window.event;
+            var target = getTarget(e);
+            if(hasClass(target, 'delete') && target.parentNode.nodeName.toLowerCase() == 'h4') {
+                if(event.cancelBubble) {
+                    event.cancelBubble = true;
+                } else {
+                    event.stopPropagation();
+                }
+                var answer = confirm('确定删除此分类？');
+                if(answer) {
+                    var fileName = target.parentNode.getElementsByTagName('span')[0].innerHTML;
+                    fileName = fileName.replace(/\s*\(\d+\)$/, "");
+                    var file = that.getFile(fileName);
+                    that.removeFile(file);
+                }
+            }
+
+        });
+    },
+
     init: function() {
         this.clickEventDelegate();
+        this.enterEventDelegate();
+        this.leaveEventDelegate();
+        this.cilckDelete();
     }
 }
 
@@ -459,9 +373,10 @@ File.prototype = {
         task.init();
         this.list.updateBoth();
         this.currentTask = task;
+        this.updateLength();
     },
 
-    /*/!*删除该对象的某个三级任务 !待改! *!/
+    /*删除该对象的某个三级任务 !待改! */
     removeTask: function(task) {
         var tasks = this.tasks;
         var index = tasks.indexOf(task);
@@ -469,10 +384,14 @@ File.prototype = {
         if(index == -1) return;
         else {
             tasks.splice(index+1, 1);
-            //待添加在界面中删除这个任务
-            //...
+            this.list.deleteTask(task);
         }
-    },*/
+    },
+
+    updateLength: function() {
+        var span = this.ui.getElementsByTagName('span')[0];
+        span.innerHTML = this.name + '(' + this.tasks.length + ')';
+    },
 
     /*根据三级任务的名字查找对应对象*/
     getTask: function(taskName) {
@@ -518,12 +437,57 @@ File.prototype = {
         }
         var i = document.createElement("i");
         var span = document.createElement("span");
+        var deleteIcon = document.createElement('i');
+        deleteIcon.className = 'icon delete';
         addClass(i, "icon");
         addClass(i, type);
         h.appendChild(i);
         h.appendChild(span);
+        h.appendChild(deleteIcon);
         li.appendChild(h);
         return li;
+    },
+
+    /*鼠标进入出现删除图标*/
+    enterEventDelegate: function() {
+        addEvent(this.ui, 'mouseover', this.showIcon);
+    },
+
+    /*鼠标移出隐藏删除图标*/
+    leaveEventDelegate: function() {
+        addEvent(this.ui, 'mouseout',this.hintIcon);
+    },
+
+    showIcon: function(e) {
+        var event = e || window.event;
+        if(event.cancelBubble) {
+            event.cancelBubble = true;
+        } else {
+            event.stopPropagation();
+        }
+        var deleteIcon = this.getElementsByClassName('delete')[0];
+        deleteIcon.style.display = 'inline-block';
+    },
+
+    hintIcon: function(e) {
+        var event = e || window.event;
+        if(event.cancelBubble) {
+            event.cancelBubble = true;
+        } else {
+            event.stopPropagation();
+        }
+        var deleteIcon = this.getElementsByClassName('delete')[0];
+        deleteIcon.style.display = 'none';
+    },
+
+    removeMouseEvent: function() {
+        removeEvent(this.ui, 'mouseover', this.showIcon);
+        removeEvent(this.ui, 'mouseout',this.hintIcon);
+    },
+
+    init: function() {
+        this.enterEventDelegate();
+        this.leaveEventDelegate();
     }
 
 }
@@ -624,7 +588,7 @@ Task.prototype = {
     submitEdit: function() {
         var name = $('.input-name').value,
             date = $('.input-date').value,
-            detail = $('.input-detail').innerHTML;
+            detail = $('.input-detail').value;
 
         if(name == '') {
             alert('请输入任务名称');
@@ -691,6 +655,7 @@ List.prototype = {
         }
         dateItem.appendChild(taskBlock);
         task.setUI(taskBlock);              //为task绑定DOM元素
+        task.init();
     },
 
     /*创建新的日期div 内部*/
@@ -802,6 +767,8 @@ List.prototype = {
         dateItem.removeChild(ui);
         if (dateItem.children.length == 1) {
             dateItem.parentNode.removeChild(dateItem);
+            var index = this.dates.indexOf(task.date);
+            this.dates.splice(index, 1);
         }
     },
 
@@ -811,8 +778,21 @@ List.prototype = {
             var event = e || window.event;
             var target = getTarget(event);
             var cName = target.className;
-            var option = cName.replace(/^b-/, '');
-            that.switchTo(option);
+            /*var option = cName.replace(/^b-/, '');
+            that.switchTo(option);*/
+            switch (cName) {
+                case 'b-all':
+                    that.switchTo('all');
+                    break;
+                case 'b-undone':
+                    that.switchTo('undone');
+                    break;
+                case 'b-done':
+                    that.switchTo('done');
+                    break;
+                default:
+                    break;
+            }
         });
     }
 }
@@ -821,6 +801,26 @@ List.prototype = {
  * ====================================== 全局变量 ================================
  */
 
+/*
+ * ========================= 数据结构 ===========================
+ * json 数据
+ *
+ * @type: [@class] Array 所有分类
+ * @class {
+ *           "class": String 分类名称
+ *           "file": [@files] Array 下属文件列表
+ *         }
+ * @files {
+ *           "fname": String 文件名
+ *           "task": [@tasks] Array 下属任务
+ *        }
+ * @tasks {
+ *          "tname": String 任务名
+ *          "date": String 创建时间
+ *          "finished": Boolen 是否完成
+ *          "detail": String 任务详细说明
+ *        }
+ */
 var data = [
     {
         "class": "默认分类",
@@ -844,6 +844,8 @@ var dftKlass = new Klass('默认分类');
 var dftFile = new File('功能介绍');
 var dftTask = new Task('使用说明', '2015-07-22', true, '此为任务管理器，添加分类，添加文件，添加任务说明');
 var main = new Main();
+dftKlass.removeMouseEvent();
+dftFile.removeMouseEvent();
 
 /**
  * ===================================== 新建分类 ===========================================
@@ -892,26 +894,26 @@ addEvent($('#task-list .addition'), 'click', function() {
         alert('请先创建子分类');
         return;
     } else {
-        var newTask = new Task();
+        var newTask = new Task('', '', true, '');
+        $('.detail-head .ok').style.display = 'none';
+        $('.detail-head .edit').style.display = 'none';
         newTask.edit();
     }
 });
 
 /*点击保存按钮*/
 addEvent($('.edit-submit .save'), 'click', function() {
-    var newName = $('.input-name').value;
-    var newDate = $('.input-date').value;
-    var newDetail = $('.input-detail').value;
-    if(!newName) {
-        alert('请输入任务名称');
-        return;
-    }
-    if(!newDate) {
-        alert('请输入任务日期');
-        return;
-    }
-    var newTask = new Task(newName, newDate, false, newDetail);
     var currentFile = main.currentKlass.currentFile;
+    var currentTask = currentFile.currentTask;
+
+    // 通过编辑按钮是否隐藏来判断当前操作是编辑任务还是新建任务
+    if($('.detail-head .ok').style.display == 'inline-block') {
+        /*var newTask = new Task(newName, newDate, false, newDetail);*/
+        currentFile.removeTask(currentTask);
+    }
+
+    var newTask = new Task('', '', false, '');
+    newTask.submitEdit();
     currentFile.addTask(newTask);
     newTask.showDetail();
 });
@@ -925,5 +927,27 @@ addEvent($('.edit-submit .cancel'), 'click', function() {
     }else{
         var task = new Task('', '', true, '');
         task.showDetail();
+    }
+});
+
+/**
+ * ===================================== 编辑任务 ===================================
+ */
+/*点击编辑或完成按钮*/
+addEvent($('.detail-head'), 'click', function(e) {
+    var target = getTarget(e);
+    var cName = target.className;
+    var currentFile = main.currentKlass.currentFile;
+    var currentTask = currentFile.currentTask;
+    switch (cName) {
+        case 'icon ok':
+            currentTask.finishTask();
+            currentFile.list.updateBoth();
+            break;
+        case 'icon edit':
+            currentTask.edit();
+            break;
+        default :
+            break;
     }
 });
