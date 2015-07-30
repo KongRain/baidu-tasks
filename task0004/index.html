@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="less/index.css">
+</head>
+<body>
+    <div class="container">
+        <header class="container-header">
+            <h1 class="caption">任务管理系统</h1>
+        </header>
+        <main>
+            <article class="task-class">
+                <header>
+                    <h2 class="title">所有任务 (<span class="title sum"></span>)</h2>
+                    <h2 class="title">分类列表</h2>
+                </header>
+                <section>
+                    <ul class="class-list">
+                        <li><h3 class="folder">百度项目 ()<i class="fa delete"></i></h3>
+                            <ul>
+                                <li>
+                                    <h4 class="file">task0001 ()</h4>
+                                    <i class="fa delete"></i>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--<i class="icon delete"></i></h3>
+                        <ul>
+                            <li class="active"><h4><i class="icon doc"></i>task1 (<span class="num"></span>)</h4></li>
+                            <li><h4>
+                                <i class="icon doc"></i>
+                                task2 (<span class="num"></span>)</h4></li>
+                        </ul>
+                        </li>
+                        <li><h3><i class="icon folder"></i>毕业设计 (<span class="num"></span>)</h3>
+                        <ul>
+                            <li><h4><i class="icon folder"></i>实验数据 (<span class="num"></span>)</h4>
+                                <ul>
+                                    <li><p><i class="icon doc"></i>C++ (<span class="num"></span>)</p></li>
+                                    <li><p><i class="icon doc"></i>Matlab (<span class="num"></span>)</p></li>
+                                </ul>
+                            </li>
+                            <li><p><i class="icon doc"></i>版本管理 (<span class="num"></span>)</p></li>
+                        </ul>
+                        </li>
+                        <li><p><i class="icon folder"></i>自学前端 (<span class="num"></span>)</p>
+                        <ul>
+                            <li><p><i class="icon doc"></i>HTML (<span class="num"></span>)</p></li>
+                            <li><p><i class="icon doc"></i>CSS (<span class="num"></span>)</p></li>
+                            <li><p><i class="icon doc"></i>JavaScript (<span class="num"></span>)</p></li>
+                        </ul>
+                        </li>-->
+                    </ul>
+                </section>
+                <button class="addition">新建分类</button>
+            </article>
+            <article class="task-list">
+                <nav class="head">
+                    <ul class="clearfix">
+                        <li class="b-all">所有</li>
+                        <li class="b-undone">未完成</li>
+                        <li class="b-done">已完成</li>
+                    </ul>
+                </nav>
+                <section>
+                    <div class="all"></div>
+                    <div class="unFinish"></div>
+                    <div class="finish"></div>
+                    <!--<div class="dateItem">
+                        <div class="date">2015-04-02</div>
+                        <div class="item">to-do1</div>
+                        <div class="item">to-do1</div>
+                    </div>
+                    <div class="dateItem">
+                        <div class="date">2015-04-02</div>
+                        <div class="item">to-do1</div>
+                        <div class="item">to-do1</div>
+                    </div>-->
+                </section>
+                <button class="addition">新建任务</button>
+            </article>
+            <article class="task-detail">
+                <header>
+                    <h3 class="task-name"><!--<input class="input-name" type="text" placeholder="kxy" />--></h3>
+                    <!-- <i class="icon ok"></i>
+                    <i class="icon edit"></i> -->
+                    <date class="task-date"></date>
+                </header>
+                <section class="detail">
+                    <div class="detail-body">
+                        <!--<p></p>-->
+                        <!--<textarea class="input-detail" placeholder="请输入任务内容"></textarea>-->
+                    </div>
+                    <div class="edit-submit">
+                        <button class="save">保存</button>
+                        <button class="cancel">取消</button>
+                    </div>
+                </section>
+                <!--<div class="new-task">
+                    <form>
+                        <label for="task-name">任务名称
+                        <input id="task-name" type="text" name="task-name" placeholder="不超过10个字" /></label>
+                        <br />
+                        <label for="task-date">创建时间
+                        <input id="task-date" type="text" name="task-date" placeholder="yyyy-mm-dd" /></label>
+                        <br />
+                        <label for="task-content">任务描述</label>
+                        <textarea id="task-content"></textarea>
+                    </form>
+                </div>-->
+            </article>
+        </main>
+    </div>
+    <div class="prompt">
+        <div class="mask"></div>
+        <div class="popup">
+            <h1>新建分类</h1>
+            <label for="select-class">分类类型
+                <select id="select-class">
+                    <option value="parent">主分类</option>
+                    <option value="child">子分类</option>
+                </select>
+            </label>
+            <label for="class-name">分类名称
+                <input type="text" id="class-name" />
+            </label>
+            <button class='sure' name="sure">确认</button>
+            <button class='cancel' name="cancel">取消</button>
+        </div>
+    </div>
+
+    <script src="js/util.js"></script>
+    <!--<script src="js/todo.js"></script>-->
+    <!--<script src="js/task0003.js"></script>-->
+</body>
+</html>

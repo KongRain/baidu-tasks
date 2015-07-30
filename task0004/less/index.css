@@ -1,0 +1,204 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  height: 100%;
+  width: 100%;
+}
+body {
+  height: 100%;
+  width: 100%;
+  color: #222222;
+  background-color: #eeeeee;
+  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+h1 {
+  font-size: 41px;
+}
+h2 {
+  font-size: 34px;
+}
+h3 {
+  font-size: 28px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 14px;
+}
+ul {
+  list-style: none;
+  line-height: 1.42857143;
+}
+a {
+  text-decoration: none;
+  color: transparent;
+}
+.container {
+  height: 100%;
+  width: 100%;
+}
+main {
+  height: 100%;
+  width: 100%;
+  display: block;
+  padding: 10px 16px;
+}
+main:after {
+  display: block;
+  content: '';
+  height: 0;
+  visibility: hidden;
+  clear: both;
+}
+/* FONT PATH
+ * -------------------------- */
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('../fonts/fontawesome-webfont.eot?v=4.3.0');
+  src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.3.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.3.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.3.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.container-header {
+  width: 100%;
+  padding: 10px 16px;
+  background-color: #333333;
+}
+.container-header .caption {
+  color: #66d9ef;
+}
+.container-header .caption::before {
+  content: "\f00a";
+  margin-right: 10px;
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+  width: 41px;
+  height: 41px;
+  padding: 10px;
+  background-color: #333333;
+  color: #66d9ef;
+  line-height: 41px;
+  text-align: center;
+}
+.task-class {
+  float: left;
+  position: relative;
+  width: 220px;
+  height: 100%;
+  border-right: 1px solid #777777;
+}
+.task-class header .title {
+  padding: 6px 12px;
+  font-size: 20px;
+}
+.task-class .class-list li {
+  line-height: 1.42857143;
+  cursor: pointer;
+}
+.task-class .class-list li ul {
+  margin-left: 16px;
+}
+.task-class .class-list .folder,
+.task-class .class-list .file {
+  font-size: 16px;
+}
+.task-class .class-list .folder:hover,
+.task-class .class-list .file:hover,
+.task-class .class-list .folder.active,
+.task-class .class-list .file.active {
+  background-color: #1292aa;
+  color: #fff;
+}
+.task-class .addition {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  font-size: 20px;
+  line-height: 1.42857143;
+  color: #66d9ef;
+  background-color: #333333;
+  border: 1px solid #262626;
+  cursor: pointer;
+}
+.task-class .addition:hover {
+  color: #ffffff;
+  background-color: #1292aa;
+  border: 1px solid #0f7e93;
+  cursor: pointer;
+}
+.folder {
+  padding-left: 28px;
+}
+.folder::before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+  content: "\f115";
+  width: 28px;
+  margin-left: -28px;
+}
+.file {
+  padding-left: 28px;
+}
+.file::before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+  content: "\f016";
+  width: 28px;
+  margin-left: -28px;
+}
+/*.@{ele-name} {
+		padding-right: @padding-large-horizontal + @font-size-base;
+	}
+*/
+.folder::after {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+  content: "\f00d";
+  width: 28px;
+  margin-left: 32px;
+}
+/*.@{ele-name} {
+		padding-right: @padding-large-horizontal + @font-size-base;
+	}
+*/
+.file::after {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+  content: "\f00d";
+  width: 28px;
+  margin-left: 32px;
+}

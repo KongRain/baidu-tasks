@@ -1,0 +1,17 @@
+.container-header {
+	width: 100%;
+	padding: @padding-large-vertical @padding-large-horizontal;
+	background-color: @gray-dark;
+
+	.caption {
+		color: @blue-base;
+	}
+
+	.caption::before {
+		content: @fa-var-th;
+		margin-right: @padding-large-vertical;
+		.fa-icon(@font-size-h1, @padding-large-vertical, @gray-dark, @blue-base);
+	}
+}
+
+

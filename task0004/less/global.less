@@ -1,0 +1,101 @@
+.whole-size() {
+	height: 100%;
+	width: 100%;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	.whole-size;
+}
+
+body {
+	.whole-size;
+	color: @text-color;
+	background-color: @body-bg;
+	font-size: @font-size-base;
+	font-family: @font-family-sans-serif;
+}
+
+h1 {
+	font-size: @font-size-h1;
+}
+
+h2 {
+	font-size: @font-size-h2;
+}
+
+h3 {
+	font-size: @font-size-h3;
+}
+
+h4 {
+	font-size: @font-size-h4;
+}
+
+h5 {
+	font-size: @font-size-h5;
+}
+
+h6 {
+	font-size: @font-size-h6;
+}
+
+ul {
+	list-style: none;
+	line-height: @line-height-base;
+}
+
+a {
+	text-decoration: none;
+	color: transparent;
+}
+
+.clearfix() {
+	display: block;
+
+	&:after {
+		display: block;
+		content: '';
+		height: 0;
+		visibility: hidden;
+		clear: both;
+	}
+}
+
+.container{
+	.whole-size;
+}
+
+main {
+	.whole-size;
+	.clearfix;
+	padding: @padding-large-vertical @padding-large-horizontal;
+}
+
+.vertical-horizontal-middle(@pos: absolute) {
+	position: @pos;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.btn-primary(@color: @btn-primary-color, @bg-color: @btn-primary-bg, @bd-color: @btn-primary-border) {
+	color: @color;
+	background-color: @bg-color;
+	border: 1px solid @bd-color;
+	cursor: pointer;
+}
+
+.btn-default(@color: @btn-default-color, @bg-color: @btn-default-bg, @bd-color: @btn-default-border) {
+	color: @color;
+	background-color: @bg-color;
+	border: 1px solid @bd-color;
+	cursor: pointer;
+}
+
+

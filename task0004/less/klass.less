@@ -1,0 +1,65 @@
+@article-width:    220px;
+
+.task-class {
+	float: left;
+	position: relative;
+	width: @article-width;
+	height: 100%;
+	border-right: 1px solid @gray-light;
+
+	header {
+		.title {
+			padding: @padding-base-vertical @padding-base-horizontal;
+			font-size: @font-size-large;
+		}
+	}
+
+	.class-list {
+		margin-left: -@padding-base-horizontal;
+
+		li {
+			line-height: @line-height-base;
+			padding-bottom: @padding-base-vertical;
+			cursor: pointer;
+
+			.folder {
+				text-indent: @padding-base-horizontal;
+			}
+
+			.file {
+				text-indent: @padding-base-horizontal * 2;
+			}
+
+			.folder, .file {
+			font-size: @font-size-base;
+
+			&:hover, &.active {
+				background-color: @blue-dark;
+				color: #fff;
+			}
+
+			.delete {
+				
+			}
+		}	
+
+	}
+
+	.addition {
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		width: 100%;
+		font-size: @font-size-large;
+		line-height: @line-height-base;
+		.btn-primary;
+
+		&:hover {
+			.btn-default;
+		}
+	}
+
+}
+
+.set-icon-before(folder, @fa-var-folder-open-o);
+.set-icon-before(file, @fa-var-file-o);
