@@ -400,6 +400,7 @@ main:after {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
   width: 369px;
   height: 200px;
   border-radius: 6px;
@@ -417,6 +418,7 @@ main:after {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
   line-height: 1.42857143;
   margin: 10px 0;
 }
@@ -437,6 +439,7 @@ main:after {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
   width: 184.5px;
   bottom: 10px;
 }
