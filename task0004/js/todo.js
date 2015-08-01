@@ -15,6 +15,7 @@ Main.prototype = {
 
     addKlass: function(klass) {
         this.klasses.push(klass);
+        klass.setParent(this);
         klass.show();
         klass.init();         //为klass绑定事件
         this.setCurrentKlass(klass);
@@ -57,6 +58,10 @@ Main.prototype = {
 
     setCurrentKlass: function(klass) {
         this.currentKlass = klass;
+        this.klasses.forEach(function(klass) {
+            removeClass(klass.ui.getElementsByTagName('h3')[0], 'active');
+        });
+        addClass(klass.ui.getElementsByTagName('h3')[0], 'active');
     },
 
     init: function() {
@@ -137,6 +142,7 @@ function Klass(name) {
     this.files = [];     //包含的二级子任务 每个元素均为二级任务类File
     this.ui = null;      //在ui中绑定的DOM元素
     this.currentFile = null;      //当前操作的二级文件
+    this.parent = null;      //它的父类 也就是Main
 }
 
 Klass.prototype = {
@@ -161,6 +167,12 @@ Klass.prototype = {
     /*设置当前二级任务*/
     setCurrentFile: function(file) {
         this.currentFile = file;
+        this.parent.setCurrentKlass(this);
+    },
+
+    /*设置父类*/
+    setParent: function(pa) {
+        this.parent = pa;
     },
 
     /*添加二级子任务*/
@@ -180,6 +192,7 @@ Klass.prototype = {
         this.setCurrentFile(file);
         this.updateLength();
         file.init();
+        file.setParent(this);
     },
 
     updateLength: function() {
@@ -362,6 +375,7 @@ function File(name) {
     this.ui = null;       //在ui中绑定的DOM元素
     this.list = new List();     //包含的三级子任务对应的任务表 为List类
     this.currentTask = null;
+    this.parent = null;     //它的父类 也就是Klass
 }
 
 File.prototype = {
@@ -388,6 +402,11 @@ File.prototype = {
         this.currentFile = task;
     },
 
+    /*设置它的父类*/
+    setParent: function(pa) {
+        this.parent = pa;
+    },
+
     /*为该对象添加三级任务*/
     addTask: function(task) {
         this.tasks.push(task);
@@ -396,6 +415,7 @@ File.prototype = {
         this.list.updateBoth();
         this.currentTask = task;
         this.updateLength();
+        task.setParent(this);
     },
 
     /*删除该对象的某个三级任务 !待改! */
@@ -521,6 +541,7 @@ function Task(name, date, finished, detail) {
     this.detail = detail;
     this.ui = null;        //在ui的全部列表中绑定的DOM元素
     /*this.list = new List();   //对应的list列表*/
+    this.parent = null;    //它的父类 也就是File
 }
 
 Task.prototype = {
@@ -558,17 +579,19 @@ Task.prototype = {
         this.ui = ui;
     },
 
+    setParent: function(pa) {
+        this.parent = pa;
+    },
+
     showDetail: function() {
         $('.task-name').innerHTML = this.name;
         $('.task-date').innerHTML = this.date;
         $('.detail-body').innerHTML = this.detail;
         $('.edit-submit').style.display = 'none';
         if(this.finished) {
-            $('.detail-head .ok').style.display = 'none';
-            $('.detail-head .edit').style.display = 'none';
+            $('.detail-head').style.display = 'none';
         } else {
-            $('.detail-head .ok').style.display = 'inline-block';
-            $('.detail-head .edit').style.display = 'inline-block';
+            $('.detail-head').style.display = 'block';
         }
     },
 
@@ -913,8 +936,7 @@ addEvent($('.task-list .addition'), 'click', function() {
         return;
     } else {
         var newTask = new Task('', '', true, '');
-        $('.detail-head .ok').style.display = 'none';
-        $('.detail-head .edit').style.display = 'none';
+        $('.detail-head').style.display = 'none';
         newTask.edit();
     }
 });
@@ -925,7 +947,7 @@ addEvent($('.edit-submit .save'), 'click', function() {
     var currentTask = currentFile.currentTask;
 
     // 通过编辑按钮是否隐藏来判断当前操作是编辑任务还是新建任务
-    if($('.detail-head .ok').style.display == 'inline-block') {
+    if($('.detail-head').style.display == 'block') {
         /*var newTask = new Task(newName, newDate, false, newDetail);*/
         currentFile.removeTask(currentTask);
     }
