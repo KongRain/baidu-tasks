@@ -182,6 +182,7 @@ main:after {
   float: right;
   margin-right: 12px;
   line-height: 1.42857143;
+  display: none;
 }
 .folder {
   padding-left: 28px;
@@ -312,6 +313,21 @@ main:after {
   height: 100%;
   position: relative;
 }
+.task-detail header .detail-head {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.task-detail header .detail-head i {
+  font-size: 28px;
+  margin-right: 16px;
+  margin-top: 2px;
+  cursor: pointer;
+  color: #222222;
+}
+.task-detail header .detail-head i:hover {
+  color: #1292aa;
+}
 .task-detail header h2 {
   font-size: 20px;
   padding: 6px 12px;
@@ -321,13 +337,6 @@ main:after {
   line-height: 1.42857143;
   font-size: 16px;
   border: 1px solid #777777;
-}
-.task-detail header h2 i {
-  font-size: 20px;
-  line-height: 1.42857143;
-  float: right;
-  margin-right: 16px;
-  cursor: pointer;
 }
 .task-detail header .task-name {
   color: #1292aa;
