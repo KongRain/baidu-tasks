@@ -1,0 +1,83 @@
+
+.task-detail {
+	overflow: hidden;
+	height: 100%;
+	position: relative;
+
+	header {
+		.detail-head {
+			position: absolute;
+			top: 0;
+			right: 0;
+
+			i {
+				font-size: @font-size-h3;
+				//line-height: @font-size-large * @line-height-base;
+				margin-right: @padding-large-horizontal;
+				margin-top: (@font-size-large + @padding-base-vertical*2 - @font-size-h3)/2;
+				cursor: pointer;
+				color: @text-color;
+
+				&:hover {
+					color: @blue-dark;
+				}
+			}
+		}
+
+		h2 {
+			font-size: @font-size-large;
+			padding: @padding-base-vertical @padding-base-horizontal;
+			border-bottom: 1px dotted @text-color;
+
+			input {
+				line-height: @line-height-base;
+				font-size: @font-size-base;
+				border: 1px solid @gray-light;
+			}
+
+		}
+
+		
+
+		.task-name {
+			color: @blue-dark;	
+		}
+	}
+
+	.detail {
+		position: absolute;
+		bottom: @padding-base-vertical*2 + @line-height-computed;
+		top: @padding-base-vertical*4 + @line-height-computed*2 + 2;
+		width: 100%;
+
+		.detail-body {
+			.whole-size;
+			padding: @padding-base-horizontal;
+			line-height: @line-height-base;
+
+			.input-detail {
+				.whole-size;
+				background-color: transparent;
+				font-size: @font-size-base;
+				line-height: @line-height-base;
+			}
+		}
+		
+	}
+
+	.edit-submit {
+
+		position: absolute;
+		bottom: @padding-large-vertical;
+		right: @padding-large-horizontal;
+
+		.save {
+			.btn-default;
+			margin-right: @padding-large-horizontal;
+		}
+
+		.cancel {
+			.btn-primary;
+		}
+	}
+}

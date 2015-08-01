@@ -41,13 +41,18 @@ Main.prototype = {
     },
 
     getSum: function() {
-        var num;
+        var num = 0;
         this.klasses.forEach(function(klass) {
             klass.files.forEach(function(file) {
                 num += file.tasks.length;
             });
         });
         return num;
+    },
+
+    setSum: function() {
+        this.sum = this.getSum();
+        $('.task-class .sum').innerHTML = this.sum;
     },
 
     setCurrentKlass: function(klass) {
@@ -61,9 +66,10 @@ Main.prototype = {
         dftTask.showDetail();
         this.eventDelegate();
         this.cilckDelete();
+        this.setSum();
     },
 
-    /*一级任务点击事件代理*/
+    /*一级任务点击事件代理 点击一级任务显示或隐藏二级任务*/
     eventDelegate: function() {
         var that = this;
         addEvent($('.class-list'), 'click', function(e) {
@@ -75,7 +81,7 @@ Main.prototype = {
             }
             if(targetTag == 'h4') return;
 
-            var klassName = target.getElementsByTagName("span")[0].innerHTML;
+            var klassName = target.lastChild.nodeValue;
             klassName = klassName.replace(/\s*\(\d+\)$/, "");
             var currentKlass = that.getKlass(klassName);
             that.setCurrentKlass(currentKlass);     //设置当前文件
@@ -91,7 +97,7 @@ Main.prototype = {
         addEvent($('.class-list'), 'click', function(e) {
             var event = e || window.event;
             var target = getTarget(e);
-            if(hasClass(target, 'delete') && target.parentNode.nodeName.toLowerCase() == 'h3') {
+            if(hasClass(target, 'fa-close') && target.parentNode.nodeName.toLowerCase() == 'h3') {
                 if(event.cancelBubble) {
                     event.cancelBubble = true;
                 } else {
@@ -99,15 +105,26 @@ Main.prototype = {
                 }
                 var answer = confirm('确定删除此分类？');
                 if(answer) {
-                    var klassName = target.parentNode.getElementsByTagName('span')[0].innerHTML;
+                    var klassName = target.parentNode.lastChild.nodeValue;
                     klassName = klassName.replace(/\s*\(\d+\)$/, "");
                     var klass = that.getKlass(klassName);
                     that.removeKlass(klass);
+
+                    //更新总任务数量
+                    var sum = $('.sum').innerHTML;
+                    var deleteNum = 0;
+                    klass.files.forEach(function(file) {
+                        deleteNum += file.tasks.length;
+                    });
+                    sum -= deleteNum;
+                    $('.sum').innerHTML = sum;
                 }
             }
 
         });
     },
+
+    
 }
 
 
@@ -127,11 +144,12 @@ Klass.prototype = {
 
     /*在页面中显示*/
     show: function() {
-        var list = $('#task-class .class-list');
+        var list = $('.task-class .class-list');
         var li = this.createLi('folder');
         this.setUI(li);
-        var span = li.getElementsByTagName('span')[0];
-        span.innerHTML = this.name + '(' + this.files.length + ')';
+        var h3 = li.getElementsByTagName('h3')[0];
+        var textNode = document.createTextNode(this.name + '(' + this.files.length + ')');
+        h3.appendChild(textNode);
         list.appendChild(li);
     },
 
@@ -165,8 +183,8 @@ Klass.prototype = {
     },
 
     updateLength: function() {
-        var span = this.ui.getElementsByTagName('span')[0];
-        span.innerHTML = this.name + '(' + this.files.length + ')';
+        var h3 = this.ui.getElementsByTagName('h3')[0];
+        h3.lastChild.nodeValue = this.name + '(' + this.files.length + ')';
     },
 
     /*删除二级子任务*/
@@ -233,20 +251,16 @@ Klass.prototype = {
         } else {
             h = document.createElement('h4');
         }
-        var i = document.createElement("i");
-        var span = document.createElement("span");
-        var deleteIcon = document.createElement('i');
-        deleteIcon.className = 'icon delete';
-        addClass(i, "icon");
-        addClass(i, type);
-        h.appendChild(i);
-        h.appendChild(span);
+        var deleteIcon = document.createElement("i");
+        deleteIcon.className = 'fa fa-close';
+        addClass(h, type);
+
         h.appendChild(deleteIcon);
         li.appendChild(h);
         return li;
     },
 
-    /*二级任务点击事件代理*/
+    /*二级任务点击事件代理   点击二级任务在list列表中显示其子任务*/
     clickEventDelegate: function() {
         var that = this;
         addEvent($('.class-list'), 'click', function(e) {
@@ -265,7 +279,7 @@ Klass.prototype = {
             } else {
                 event.stopPropagation();
             }
-            var fileName = target.getElementsByTagName("span")[0].innerHTML;
+            var fileName = target.lastChild.nodeValue;
             fileName = fileName.replace(/\s*\(\d+\)$/, "");
             var currentFile = that.getFile(fileName);
             if(!currentFile) return;
@@ -285,15 +299,16 @@ Klass.prototype = {
     },
 
     showIcon: function() {
-        var deleteIcon = this.getElementsByClassName('delete')[0];
+        var deleteIcon = this.getElementsByClassName('fa-close')[0];
         deleteIcon.style.display = 'inline-block';
     },
 
     hintIcon: function() {
-        var deleteIcon = this.getElementsByClassName('delete')[0];
+        var deleteIcon = this.getElementsByClassName('fa-close')[0];
         deleteIcon.style.display = 'none';
     },
 
+    //默认分类不能删除 所以要取消时间绑定
     removeMouseEvent: function() {
         removeEvent(this.ui, 'mouseover', this.showIcon);
         removeEvent(this.ui, 'mouseout',this.hintIcon);
@@ -306,7 +321,7 @@ Klass.prototype = {
         addEvent(this.ui, 'click', function(e) {
             var event = e || window.event;
             var target = getTarget(e);
-            if(hasClass(target, 'delete') && target.parentNode.nodeName.toLowerCase() == 'h4') {
+            if(hasClass(target, 'fa-close') && target.parentNode.nodeName.toLowerCase() == 'h4') {
                 if(event.cancelBubble) {
                     event.cancelBubble = true;
                 } else {
@@ -314,10 +329,15 @@ Klass.prototype = {
                 }
                 var answer = confirm('确定删除此分类？');
                 if(answer) {
-                    var fileName = target.parentNode.getElementsByTagName('span')[0].innerHTML;
+                    var fileName = target.parentNode.lastChild.nodeValue;
                     fileName = fileName.replace(/\s*\(\d+\)$/, "");
                     var file = that.getFile(fileName);
                     that.removeFile(file);
+
+                    //更新总任务数量
+                    var sum = parseInt($('.sum').innerHTML);
+                    sum -= file.tasks.length;
+                    $('.sum').innerHTML = sum;
                 }
             }
 
@@ -351,8 +371,10 @@ File.prototype = {
     createUI: function() {
         var li = this.createLi('file');
         this.setUI(li);
-        var span = li.getElementsByTagName('span')[0];
-        span.innerHTML = this.name + '(' + this.tasks.length + ')';
+        var h4 = li.getElementsByTagName('h4')[0];
+        var textNode = document.createTextNode(this.name + '(' + this.tasks.length + ')');
+        h4.appendChild(textNode);
+        
         return li;
     },
 
@@ -389,8 +411,8 @@ File.prototype = {
     },
 
     updateLength: function() {
-        var span = this.ui.getElementsByTagName('span')[0];
-        span.innerHTML = this.name + '(' + this.tasks.length + ')';
+        var h4 = this.ui.getElementsByTagName('h4')[0];
+        h4.lastChild.nodeValue = this.name + '(' + this.tasks.length + ')';
     },
 
     /*根据三级任务的名字查找对应对象*/
@@ -435,14 +457,10 @@ File.prototype = {
         } else {
             h = document.createElement('h4');
         }
-        var i = document.createElement("i");
-        var span = document.createElement("span");
-        var deleteIcon = document.createElement('i');
-        deleteIcon.className = 'icon delete';
-        addClass(i, "icon");
-        addClass(i, type);
-        h.appendChild(i);
-        h.appendChild(span);
+        var deleteIcon = document.createElement("i");
+        deleteIcon.className = 'fa fa-close';
+        addClass(h, type);
+
         h.appendChild(deleteIcon);
         li.appendChild(h);
         return li;
@@ -465,7 +483,7 @@ File.prototype = {
         } else {
             event.stopPropagation();
         }
-        var deleteIcon = this.getElementsByClassName('delete')[0];
+        var deleteIcon = this.getElementsByClassName('fa-close')[0];
         deleteIcon.style.display = 'inline-block';
     },
 
@@ -476,7 +494,7 @@ File.prototype = {
         } else {
             event.stopPropagation();
         }
-        var deleteIcon = this.getElementsByClassName('delete')[0];
+        var deleteIcon = this.getElementsByClassName('fa-close')[0];
         deleteIcon.style.display = 'none';
     },
 
@@ -736,9 +754,9 @@ List.prototype = {
     /*切换到要显示的列表 option：all || undone || done*/
     switchTo: function (option) {
         var option = option || 'all';
-        var b_all = $('#task-list .b-all'),
-            b_undone = $('#task-list .b-undone'),
-            b_done = $('#task-list .b-done');
+        var b_all = $('.task-list .b-all'),
+            b_undone = $('.task-list .b-undone'),
+            b_done = $('.task-list .b-done');
 
         if (option == 'all') {
             addClass(b_all, "active");
@@ -774,7 +792,7 @@ List.prototype = {
 
     switchHandler: function() {
         var that = this;
-        addEvent($('#task-list ul'), 'click', function(e) {
+        addEvent($('.task-list ul'), 'click', function(e) {
             var event = e || window.event;
             var target = getTarget(event);
             var cName = target.className;
@@ -852,12 +870,12 @@ dftFile.removeMouseEvent();
  */
 
 /*点击新建任务按钮*/
-addEvent($('#task-class .addition'),'click', function() {
-    $('#prompt').style.display = 'block';
+addEvent($('.task-class .addition'),'click', function() {
+    $('.prompt').style.display = 'block';
 });
 
 /*点击确定按钮*/
-addEvent($('#prompt .sure'), 'click', function() {
+addEvent($('.prompt .sure'), 'click', function() {
     var type = $('#select-class').value;
     var name = $('#class-name').value;
     if(name == '') {
@@ -871,14 +889,14 @@ addEvent($('#prompt .sure'), 'click', function() {
         main.currentKlass.addFile(newFile);
         newFile.showTasks();
     }
-    $('#prompt').style.display = 'none';
+    $('.prompt').style.display = 'none';
     $('#class-name').value = '';
     $('#select-class').value = 'parent';
 });
 
 /*点击取消按钮*/
-addEvent($('#prompt .cancel'), 'click', function() {
-    $('#prompt').style.display = 'none';
+addEvent($('.prompt .cancel'), 'click', function() {
+    $('.prompt').style.display = 'none';
     $('#class-name').value = '';
     $('#select-class').value = 'parent';
 });
@@ -888,7 +906,7 @@ addEvent($('#prompt .cancel'), 'click', function() {
  */
 
 /*点击新建任务按钮*/
-addEvent($('#task-list .addition'), 'click', function() {
+addEvent($('.task-list .addition'), 'click', function() {
     var currentFile = main.currentKlass.currentFile;
     if(!currentFile) {
         alert('请先创建子分类');
@@ -916,6 +934,7 @@ addEvent($('.edit-submit .save'), 'click', function() {
     newTask.submitEdit();
     currentFile.addTask(newTask);
     newTask.showDetail();
+    main.setSum();
 });
 
 /*点击取消按钮*/
@@ -940,11 +959,12 @@ addEvent($('.detail-head'), 'click', function(e) {
     var currentFile = main.currentKlass.currentFile;
     var currentTask = currentFile.currentTask;
     switch (cName) {
-        case 'icon ok':
+        case 'ok fa fa-check-square-o':
             currentTask.finishTask();
             currentFile.list.updateBoth();
+            this.style.display = 'none';
             break;
-        case 'icon edit':
+        case 'edit fa fa-pencil-square-o':
             currentTask.edit();
             break;
         default :

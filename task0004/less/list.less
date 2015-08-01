@@ -1,0 +1,68 @@
+
+.task-list {
+	.article;
+
+	.head {
+
+		ul {
+			.clearfix;
+			background-color: @gray-light;
+			padding: @padding-xs-vertical*3 @padding-xs-horizontal;
+
+			li {
+				float: left;
+				width: @nav-li-width;
+				font-size: @font-size-large;
+				line-height: @line-height-base;
+				padding: @padding-xs-vertical @padding-xs-horizontal;
+				color: #fff;
+				text-align: center;
+				cursor: pointer;
+				
+				&:hover {
+					background-color: @gray-lighter;
+					color: @text-color;
+				}
+			}
+			
+		}
+
+	}
+
+	section {
+		.all {
+			display: block;
+		}
+		.unFinish, .finish {
+			display: none;
+		}
+
+		.dateItem {
+			.date,.item {
+				line-height: @line-height-base;
+				
+			}
+
+			.date {
+				background-color: @blue-base;
+				text-align: center;
+				color: #fff;
+			}
+			.item {
+				padding-left: @font-size-base + @padding-base-horizontal;
+				cursor: pointer;
+
+				&:hover {
+					background-color: #fff;
+					color: @blue-dark;
+				}
+
+				&.done {
+					color: @green-dark;
+				}
+			}
+		}
+	}
+}
+
+.set-icon-before(done, @fa-var-check);

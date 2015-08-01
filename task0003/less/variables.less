@@ -3,6 +3,7 @@
 @body-bg:  @gray-lighter;
 @text-color:  @gray-darker;
 
+
 ///== Typography
 //
 //## Font, line-height, and color for body text, headings, and more.
@@ -14,8 +15,67 @@
 @font-size-large:   ceil((@font-size-base * 1.25));  
 @font-size-small:   ceil((@font-size-base * 0.85));
 
-@font-size-h1:      floor((@font-size-base * 2));
-@font-size-h2:      @font-size-large;
-@font-size-h3:      @font-size-base;
-@font-size-h4:      @font-size-base;
+@font-size-h1:      floor((@font-size-base * 2.6));
+@font-size-h2:      floor((@font-size-base * 2.15));
+@font-size-h3:      ceil((@font-size-base * 1.7));
+@font-size-h4:      ceil((@font-size-base * 1.25));
+@font-size-h5:      @font-size-base;
+@font-size-h6:      ceil((@font-size-base * 0.85));
+
+//** Unit-less `line-height` for use in components like buttons.
+@line-height-base:       1.428571429;  // 20/14
+//** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
+@line-height-computed:   floor((@font-size-base * @line-height-base));  // ~20
+
+
+//== Iconography
+//
+//## Specify custom location and filename of the included Glyphicons icon font.
+
+//** Load icons from this directory
+@icon-path:    '../img/icon/';
+
+
+//== Components
+//
+//## Define common padding and border radius sizes and more. Values based on 14px text and 1.428 line-height
+
+@padding-base-vertical:     6px;
+@padding-base-horizontal:   12px;
+
+@padding-large-vertical:    10px;
+@padding-large-horizontal:  16px;
+
+@padding-small-vertical:    5px;
+@padding-small-horizontal:  10px;
+
+@padding-xs-vertical:       1px;
+@padding-xs-horizontal:     5px;
+
+@line-height-large:         1.333333; //extra decimals for Win 8.1 Chrome
+@line-height-small:         1.5;
+
+@border-radius-base:        4px;
+@border-radius-large:       6px;
+@border-radius-small:       3px;
+
+//== Buttons
+//
+//## For each of buttons, define text, background and border color
+
+@btn-font-weight:      normal;
+
+@btn-default-color:    #333;
+@btn-default-bg:       #fff;
+@btn-default-border:   #ccc;
+
+@btn-primary-color:    #fff;
+@btn-primary-bg:       @blue-base;
+@btn-primary-border:   darken(@btn-primary-bg, 5%);
+
+
+
+
+
+
 

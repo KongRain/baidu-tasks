@@ -1,0 +1,74 @@
+@input-width:     150px;
+@label-width:     @input-width + @padding-large-horizontal + @font-size-base*5;
+@pop-width:       @label-width * 1.5;
+@bottoms-width:   @pop-width / 2;
+
+.prompt {
+    display: none;
+    
+	.mask {
+		position: fixed;
+    	top: 0;
+    	left: 0;
+    	.whole-size;
+    	background-color: rgba(0,0,0,0.5);
+	}
+
+	.popup {
+		.vertical-horizontal-middle;
+		width: @pop-width;
+		height: 200px;
+		border-radius: @border-radius-large;
+		text-align: center;
+		padding: @padding-large-vertical;
+		background-color: #fff;
+
+		h3 {
+			padding-bottom: 10px;
+			border-bottom: 1px solid @text-color;
+		}
+
+		label {
+			display: block;
+			width: @label-width;
+			.horizontal-middle;
+			line-height: @line-height-base;
+            margin: @padding-large-vertical 0;
+		}
+
+		.select-class {
+			bottom: @padding-large-vertical*5 + @line-height-computed*2;
+		}
+
+		.class-name {
+			bottom: @padding-large-vertical*3 + @line-height-computed; 
+		}
+
+		input, select {
+			width: @input-width;
+			line-height: @line-height-base;
+			margin-left: @padding-large-horizontal;
+			border: 1px solid #000;
+		}
+
+		.buttons {
+			.horizontal-middle;
+			width: @bottoms-width;
+			bottom: @padding-large-vertical;
+		}
+
+		.sure {
+			float: left;
+			padding: @padding-base-vertical @padding-large-horizontal;
+			.btn-default;
+			border-radius: @border-radius-small;	
+		}
+
+		.cancel {
+			float: right;
+			padding: @padding-base-vertical @padding-large-horizontal;
+			.btn-primary;
+			border-radius: @border-radius-small;
+		}
+	}
+}

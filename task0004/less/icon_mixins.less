@@ -50,24 +50,15 @@
     	content: @content;
     	width: @font-size-base + @padding-base-horizontal;
     	margin-left: -@font-size-base - @padding-base-horizontal;
-
+      vertical-align: middle;
     }
 
 }
 
-.set-icon-after(@ele-name, @content) {
-	/*.@{ele-name} {
-		padding-right: @padding-large-horizontal + @font-size-base;
-	}
-*/
-	.@{ele-name}::after {
-		.fa;
-		content: @content;
-		width: @padding-base-horizontal + @font-size-base;
-		margin-left: @font-size-base + @padding-large-horizontal;
-	}
-}
 
+.fa-close:before {content: @fa-var-close;}
+.fa-pencil-square-o:before {content: @fa-var-pencil-square-o;}
+.fa-check-square-o:before {content: @fa-var-check-square-o;}
 
 
 

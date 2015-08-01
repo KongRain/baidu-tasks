@@ -41,15 +41,20 @@ a {
   text-decoration: none;
   color: transparent;
 }
+i {
+  display: inline-block;
+  line-height: 1.42857143;
+}
 .container {
   height: 100%;
   width: 100%;
 }
 main {
-  height: 100%;
+  position: fixed;
+  top: 81px;
+  bottom: 0;
   width: 100%;
   display: block;
-  padding: 10px 16px;
 }
 main:after {
   display: block;
@@ -57,6 +62,29 @@ main:after {
   height: 0;
   visibility: hidden;
   clear: both;
+}
+.addition {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  font-size: 20px;
+  color: #66d9ef;
+  background-color: #333333;
+  border: 1px solid #262626;
+  border-radius: 4px;
+  line-height: 1.42857143;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.addition:hover {
+  color: #ffffff;
+  background-color: #1292aa;
+  border: 1px solid #0f7e93;
+  border-radius: 4px;
+  line-height: 1.42857143;
+  padding: 6px 12px;
+  cursor: pointer;
 }
 /* FONT PATH
  * -------------------------- */
@@ -66,6 +94,24 @@ main:after {
   src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.3.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.3.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.3.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
+}
+.fa {
+  display: inline-block;
+  font: normal normal normal 16px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+.fa-close:before {
+  content: "\f00d";
+}
+.fa-pencil-square-o:before {
+  content: "\f044";
+}
+.fa-check-square-o:before {
+  content: "\f046";
 }
 .container-header {
   width: 100%;
@@ -79,7 +125,7 @@ main:after {
   content: "\f00a";
   margin-right: 10px;
   display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
+  font: normal normal normal 16px/1 FontAwesome;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -96,56 +142,53 @@ main:after {
 .task-class {
   float: left;
   position: relative;
-  width: 220px;
+  width: 221px;
   height: 100%;
   border-right: 1px solid #777777;
 }
-.task-class header .title {
+.task-class header h2 {
   padding: 6px 12px;
   font-size: 20px;
+}
+.task-class header .title {
+  border-bottom: 1px dotted #222222;
+}
+.task-class .class-list {
+  margin-left: -12px;
 }
 .task-class .class-list li {
   line-height: 1.42857143;
   cursor: pointer;
 }
-.task-class .class-list li ul {
-  margin-left: 16px;
+.task-class .class-list li .folder {
+  padding-left: 56px;
 }
-.task-class .class-list .folder,
-.task-class .class-list .file {
+.task-class .class-list li .file {
+  padding-left: 84px;
+}
+.task-class .class-list li .folder,
+.task-class .class-list li .file {
   font-size: 16px;
 }
-.task-class .class-list .folder:hover,
-.task-class .class-list .file:hover,
-.task-class .class-list .folder.active,
-.task-class .class-list .file.active {
+.task-class .class-list li .folder:hover,
+.task-class .class-list li .file:hover,
+.task-class .class-list li .folder.active,
+.task-class .class-list li .file.active {
   background-color: #1292aa;
   color: #fff;
 }
-.task-class .addition {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  width: 100%;
-  font-size: 20px;
+.task-class .class-list li .folder i,
+.task-class .class-list li .file i {
+  float: right;
+  margin-right: 12px;
   line-height: 1.42857143;
-  color: #66d9ef;
-  background-color: #333333;
-  border: 1px solid #262626;
-  cursor: pointer;
-}
-.task-class .addition:hover {
-  color: #ffffff;
-  background-color: #1292aa;
-  border: 1px solid #0f7e93;
-  cursor: pointer;
 }
 .folder {
   padding-left: 28px;
 }
 .folder::before {
   display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
+  font: normal normal normal 16px/1 FontAwesome;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -154,13 +197,14 @@ main:after {
   content: "\f115";
   width: 28px;
   margin-left: -28px;
+  vertical-align: middle;
 }
 .file {
   padding-left: 28px;
 }
 .file::before {
   display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
+  font: normal normal normal 16px/1 FontAwesome;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -169,36 +213,245 @@ main:after {
   content: "\f016";
   width: 28px;
   margin-left: -28px;
+  vertical-align: middle;
 }
-/*.@{ele-name} {
-		padding-right: @padding-large-horizontal + @font-size-base;
-	}
-*/
-.folder::after {
+.addition {
+  padding-left: 28px;
+}
+.addition::before {
   display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
+  font: normal normal normal 16px/1 FontAwesome;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transform: translate(0, 0);
-  content: "\f00d";
+  content: "\f067";
   width: 28px;
-  margin-left: 32px;
+  margin-left: -28px;
+  vertical-align: middle;
 }
-/*.@{ele-name} {
-		padding-right: @padding-large-horizontal + @font-size-base;
-	}
-*/
-.file::after {
+.task-list {
+  float: left;
+  position: relative;
+  width: 221px;
+  height: 100%;
+  border-right: 1px solid #777777;
+}
+.task-list .head ul {
+  display: block;
+  background-color: #777777;
+  padding: 3px 5px;
+}
+.task-list .head ul:after {
+  display: block;
+  content: '';
+  height: 0;
+  visibility: hidden;
+  clear: both;
+}
+.task-list .head ul li {
+  float: left;
+  width: 70px;
+  font-size: 20px;
+  line-height: 1.42857143;
+  padding: 1px 5px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+.task-list .head ul li:hover {
+  background-color: #eeeeee;
+  color: #222222;
+}
+.task-list section .all {
+  display: block;
+}
+.task-list section .unFinish,
+.task-list section .finish {
+  display: none;
+}
+.task-list section .dateItem .date,
+.task-list section .dateItem .item {
+  line-height: 1.42857143;
+}
+.task-list section .dateItem .date {
+  background-color: #66d9ef;
+  text-align: center;
+  color: #fff;
+}
+.task-list section .dateItem .item {
+  padding-left: 28px;
+  cursor: pointer;
+}
+.task-list section .dateItem .item:hover {
+  background-color: #fff;
+  color: #1292aa;
+}
+.task-list section .dateItem .item.done {
+  color: #5a7f12;
+}
+.done {
+  padding-left: 28px;
+}
+.done::before {
   display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
+  font: normal normal normal 16px/1 FontAwesome;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transform: translate(0, 0);
-  content: "\f00d";
+  content: "\f00c";
   width: 28px;
-  margin-left: 32px;
+  margin-left: -28px;
+  vertical-align: middle;
+}
+.task-detail {
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+}
+.task-detail header h2 {
+  font-size: 20px;
+  padding: 6px 12px;
+  border-bottom: 1px dotted #222222;
+}
+.task-detail header h2 input {
+  line-height: 1.42857143;
+  font-size: 16px;
+  border: 1px solid #777777;
+}
+.task-detail header h2 i {
+  font-size: 20px;
+  line-height: 1.42857143;
+  float: right;
+  margin-right: 16px;
+  cursor: pointer;
+}
+.task-detail header .task-name {
+  color: #1292aa;
+}
+.task-detail .detail {
+  position: absolute;
+  bottom: 34px;
+  top: 70px;
+  width: 100%;
+}
+.task-detail .detail .detail-body {
+  height: 100%;
+  width: 100%;
+  padding: 12px;
+  line-height: 1.42857143;
+}
+.task-detail .detail .detail-body .input-detail {
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  font-size: 16px;
+  line-height: 1.42857143;
+}
+.task-detail .edit-submit {
+  position: absolute;
+  bottom: 10px;
+  right: 16px;
+}
+.task-detail .edit-submit .save {
+  color: #ffffff;
+  background-color: #1292aa;
+  border: 1px solid #0f7e93;
+  border-radius: 4px;
+  line-height: 1.42857143;
+  padding: 6px 12px;
+  cursor: pointer;
+  margin-right: 16px;
+}
+.task-detail .edit-submit .cancel {
+  color: #66d9ef;
+  background-color: #333333;
+  border: 1px solid #262626;
+  border-radius: 4px;
+  line-height: 1.42857143;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.prompt {
+  display: none;
+}
+.prompt .mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.prompt .popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 369px;
+  height: 200px;
+  border-radius: 6px;
+  text-align: center;
+  padding: 10px;
+  background-color: #fff;
+}
+.prompt .popup h3 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #222222;
+}
+.prompt .popup label {
+  display: block;
+  width: 246px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  line-height: 1.42857143;
+  margin: 10px 0;
+}
+.prompt .popup .select-class {
+  bottom: 94px;
+}
+.prompt .popup .class-name {
+  bottom: 52px;
+}
+.prompt .popup input,
+.prompt .popup select {
+  width: 150px;
+  line-height: 1.42857143;
+  margin-left: 16px;
+  border: 1px solid #000;
+}
+.prompt .popup .buttons {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 184.5px;
+  bottom: 10px;
+}
+.prompt .popup .sure {
+  float: left;
+  padding: 6px 16px;
+  color: #ffffff;
+  background-color: #1292aa;
+  border: 1px solid #0f7e93;
+  border-radius: 4px;
+  line-height: 1.42857143;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.prompt .popup .cancel {
+  float: right;
+  padding: 6px 16px;
+  color: #66d9ef;
+  background-color: #333333;
+  border: 1px solid #262626;
+  border-radius: 4px;
+  line-height: 1.42857143;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 3px;
 }

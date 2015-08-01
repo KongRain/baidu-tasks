@@ -1,16 +1,15 @@
-@article-width:    220px;
 
 .task-class {
-	float: left;
-	position: relative;
-	width: @article-width;
-	height: 100%;
-	border-right: 1px solid @gray-light;
+	.article;
 
 	header {
-		.title {
+		h2 {
 			padding: @padding-base-vertical @padding-base-horizontal;
 			font-size: @font-size-large;
+		}
+
+		.title {
+			border-bottom: 1px dotted @text-color;
 		}
 	}
 
@@ -19,43 +18,31 @@
 
 		li {
 			line-height: @line-height-base;
-			padding-bottom: @padding-base-vertical;
 			cursor: pointer;
 
 			.folder {
-				text-indent: @padding-base-horizontal;
+				padding-left: (@padding-base-horizontal + @font-size-base) * 2;
 			}
 
 			.file {
-				text-indent: @padding-base-horizontal * 2;
+				padding-left: (@padding-base-horizontal + @font-size-base) * 3;
 			}
 
 			.folder, .file {
-			font-size: @font-size-base;
+				font-size: @font-size-base;
 
-			&:hover, &.active {
-				background-color: @blue-dark;
-				color: #fff;
+				&:hover, &.active {
+					background-color: @blue-dark;
+					color: #fff;
+				}
+
+				i {
+					float: right;
+					margin-right: @padding-base-horizontal;
+					line-height: @line-height-base;
+					display: none;
+				} 
 			}
-
-			.delete {
-				
-			}
-		}	
-
-	}
-
-	.addition {
-		position: absolute;
-		bottom: 0px;
-		left: 0px;
-		width: 100%;
-		font-size: @font-size-large;
-		line-height: @line-height-base;
-		.btn-primary;
-
-		&:hover {
-			.btn-default;
 		}
 	}
 
@@ -63,3 +50,4 @@
 
 .set-icon-before(folder, @fa-var-folder-open-o);
 .set-icon-before(file, @fa-var-file-o);
+.set-icon-before(addition, @fa-var-plus);

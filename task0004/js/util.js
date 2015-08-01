@@ -304,5 +304,9 @@ function noGrade(parent, sector) {
     return eleList;
 }
 
-
+function createDOMByStr(str) {
+    var div = document.createElement('div');
+    div.innerHTML = str;
+    return div.childNodes;
+}
 
