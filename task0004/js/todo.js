@@ -58,10 +58,14 @@ Main.prototype = {
 
     setCurrentKlass: function(klass) {
         this.currentKlass = klass;
-        this.klasses.forEach(function(klass) {
-            removeClass(klass.ui.getElementsByTagName('h3')[0], 'active');
+
+        //取消其他所有高亮
+        var actives = $('.class-list').getElementsByClassName('active');
+        Array.prototype.forEach.call(actives, function(active) {
+            removeClass(active, 'active');
         });
-        addClass(klass.ui.getElementsByTagName('h3')[0], 'active');
+
+        klass.highLight();
     },
 
     init: function() {
@@ -167,7 +171,17 @@ Klass.prototype = {
     /*设置当前二级任务*/
     setCurrentFile: function(file) {
         this.currentFile = file;
+
         this.parent.setCurrentKlass(this);
+
+        //取消其他所有高亮
+        var actives = $('.class-list').getElementsByClassName('active');
+        Array.prototype.forEach.call(actives, function(active) {
+            removeClass(active, 'active');
+        });
+
+        file.highLight();
+        
     },
 
     /*设置父类*/
@@ -246,12 +260,12 @@ Klass.prototype = {
 
     /*高光选中此对象*/
     highLight: function() {
-        addClass(this.ui, 'active');
+        addClass(this.ui.getElementsByTagName('h3')[0], 'active');
     },
 
     /*取消高光*/
     unHighLight: function() {
-        removeClass(this.ui, 'active');
+        removeClass(this.ui.getElementsByTagName('h3')[0], 'active');
     },
 
     /*创建界面的DOM元素*/
@@ -459,12 +473,12 @@ File.prototype = {
 
     /*高光选中此对象*/
     highLight: function() {
-        addClass(this.ui, 'active');
+        addClass(this.ui.getElementsByTagName('h4')[0], 'active');
     },
 
     /*取消高光*/
     unHighLight: function() {
-        removeClass(this.ui, 'active');
+        removeClass(this.ui.getElementsByTagName('h4')[0], 'active');
     },
 
     /*创建界面的DOM元素*/
