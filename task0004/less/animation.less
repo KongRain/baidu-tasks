@@ -1,45 +1,43 @@
+
 .currentview {
 	display: block;
 	.translate(0, 0);
-}
+/* 
+	&.left {
+		.translate(-100%, 0);
+	}
 
-.currentview.left {
-    .translate(-100%, 0);
+	&.right {
+		.translate(100%, 0);
+	} */
 }
 
 .nextview {
 	display: block;
 	.translate(100%, 0);
+
+	/* &.in {
+		.translate(0, 0);
+	} */
 }
 
 .preview {
+	display: block;
+	.translate(-100%, 0);
+
+	/* &.in {
+		.translate(0, 0);
+	} */
+}
+
+.left {
 	.translate(-100%, 0);
 }
 
-/* .nextin() {
+.mid {
 	.translate(0, 0);
 }
 
-.currentout() {
+.right {
 	.translate(100%, 0);
-} 
-
-main.in {
-	.currentview {
-			.currentout;
-		}
-	
-	.nextview {
-		.nextin;
-	} 
 }
-
-main.out {
-	.currentview {
-		.currentout;
-	}
-	.beforeview {
-		.currentview;
-	}
-	.translate(-200%, 0);
-} */

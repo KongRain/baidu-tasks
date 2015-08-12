@@ -1,6 +1,6 @@
 console.log('klass加载成功');
 
-define(['util'], function(_) {
+define(['util', 'appEvent'], function(_, ae) {
 
 	function Klass(name) {
 	    this.name = name;
@@ -173,6 +173,10 @@ define(['util'], function(_) {
 	            if(!currentFile) return;
 	            that.setCurrentFile(currentFile);     //设置当前文件
 	            currentFile.showTasks();
+
+	            if(_.getViewWidth() <= _.appMaxWith) {
+	            	ae.nextIn();
+	            }
 	        });
 	    },
 

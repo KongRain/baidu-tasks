@@ -78,7 +78,7 @@ define(function() {
 	function removeClass(ele, name) {
 	    var oldClass = ele.className;
 	    if(oldClass.length == 0) return;
-	    var oldArray = oldClass.split(/\s/);
+	    var oldArray = oldClass.split(/\s+/);
 	    for(var i = 0, len = oldArray.length; i < len; i++) {
 	        if(oldArray[i] == name) {
 	            oldArray.splice(i, 1);
@@ -89,11 +89,16 @@ define(function() {
 	}
 
 	function hasClass(element, className) {
-	    if(element.classList.contains(className)) {
-	        return true;
-	    } else {
-	        return false;
+	    if(className && element.className) {
+	    	var classes = element.className.split(/\s+/);
+	    	for(var i=0, len=classes.length; i<len; i++) {
+	    		if(className === classes[i]) {
+	    			return true;
+	    		}
+	    	}
 	    }
+	    
+	    return false;
 	}
 
 	//实现一个简单的jQuery

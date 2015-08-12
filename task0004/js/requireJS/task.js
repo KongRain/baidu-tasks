@@ -1,6 +1,6 @@
 console.log('task加载成功');
 
-define(['util'], function(_) {
+define(['util', 'appEvent'], function(_, ae) {
 
 	function Task(name, date, finished, detail) {
 	    this.name = name;
@@ -121,6 +121,11 @@ define(['util'], function(_) {
 	        var that = this;
 	        _.addEvent(this.ui, 'click', function() {
 	            that.showDetail();
+
+	            if(_.getViewWidth() <= _.appMaxWith) {
+	            	ae.nextIn();
+	            }
+
 	        });
 	    },
 

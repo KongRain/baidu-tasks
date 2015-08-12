@@ -94,9 +94,6 @@ define(['util', 'appEvent'], function(_, ae) {
 	            var currentKlass = that.getKlass(klassName);
 	            that.setCurrentKlass(currentKlass);     //设置当前文件
 	            currentKlass.toggle();
-	            if(_.getViewWidth() <= _.appMaxWith) {
-	            	ae.nextIn();
-	            }
 	        });
 
 	    },

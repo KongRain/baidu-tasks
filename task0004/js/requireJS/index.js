@@ -1,6 +1,6 @@
 console.log('index加载成功');
 
-require(['util','main', 'klass', 'file', 'task'], function(_, main, klass, file, task) {
+require(['util','main', 'klass', 'file', 'task', 'appEvent'], function(_, main, klass, file, task, ae) {
 	var dftKlass = new klass.Klass('默认分类');
 	var dftFile = new file.File('功能介绍');
 	var dftTask = new task.Task('使用说明', '2015-07-22', true, '此为任务管理器，添加分类，添加文件，添加任务说明');
@@ -63,6 +63,10 @@ require(['util','main', 'klass', 'file', 'task'], function(_, main, klass, file,
 	        var newTask = new task.Task('', '', true, '');
 	        _.$('.detail-head').style.display = 'none';
 	        newTask.edit();
+
+	        if(_.getViewWidth() <= _.appMaxWith) {
+	        	ae.nextIn();
+	        }
 	    }
 	});
 
@@ -118,5 +122,13 @@ require(['util','main', 'klass', 'file', 'task'], function(_, main, klass, file,
 	            break;
 	    }
 	});
+
+	/**
+	 *==================================== 点击返回按钮 ==================================
+	 */
+
+	_.addEvent(_.$('.back'), 'click', function() {
+		ae.preIn();
+	})
 
 });
