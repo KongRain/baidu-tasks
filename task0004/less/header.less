@@ -12,6 +12,21 @@
 		margin-right: @padding-large-vertical;
 		.fa-icon(@font-size-h1, @padding-large-vertical, @gray-dark, @blue-base);
 	}
+
+	.back {
+		display: none; 
+		position: absolute;
+		left: @padding-xs-horizontal;
+		line-height: @padding-small-vertical*2 + @font-size-large;
+		color: @blue-base;
+		font-size: @font-size-small;
+
+		&::before {
+			content: @fa-var-chevron-left;
+			margin-right: @padding-xs-vertical;
+			.fa-icon(@font-size-small, @padding-xs-vertical, @gray-dark, @blue-base);
+		}
+	}
 }
 
 

@@ -63,6 +63,13 @@ main:after {
   visibility: hidden;
   clear: both;
 }
+.article {
+  float: left;
+  position: relative;
+  width: 221px;
+  height: 100%;
+  border-right: 1px solid #777777;
+}
 .addition {
   position: absolute;
   bottom: 0px;
@@ -139,12 +146,34 @@ main:after {
   line-height: 41px;
   text-align: center;
 }
+.container-header .back {
+  display: none;
+  position: absolute;
+  left: 5px;
+  line-height: 30px;
+  color: #66d9ef;
+  font-size: 14px;
+}
+.container-header .back::before {
+  content: "\f053";
+  margin-right: 1px;
+  display: inline-block;
+  font: normal normal normal 16px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+  width: 14px;
+  height: 14px;
+  padding: 1px;
+  background-color: #333333;
+  color: #66d9ef;
+  line-height: 14px;
+  text-align: center;
+}
 .task-class {
-  float: left;
-  position: relative;
-  width: 221px;
-  height: 100%;
-  border-right: 1px solid #777777;
+  /* .article; */
 }
 .task-class header h2 {
   padding: 6px 12px;
@@ -233,14 +262,27 @@ main:after {
   vertical-align: middle;
 }
 .task-list {
-  float: left;
+  /* .article; */
+}
+.task-list .head {
   position: relative;
-  width: 221px;
-  height: 100%;
-  border-right: 1px solid #777777;
+  background-color: #777777;
+  display: block;
+}
+.task-list .head:after {
+  display: block;
+  content: '';
+  height: 0;
+  visibility: hidden;
+  clear: both;
 }
 .task-list .head ul {
+  float: left;
   display: block;
+  position: relative;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
   background-color: #777777;
   padding: 3px 5px;
 }
@@ -399,8 +441,8 @@ main:after {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   width: 369px;
   height: 200px;
   border-radius: 6px;
@@ -417,8 +459,8 @@ main:after {
   width: 246px;
   position: absolute;
   left: 50%;
-  transform: translate(-50%, 0);
   -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
   line-height: 1.42857143;
   margin: 10px 0;
 }
@@ -438,8 +480,8 @@ main:after {
 .prompt .popup .buttons {
   position: absolute;
   left: 50%;
-  transform: translate(-50%, 0);
   -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
   width: 184.5px;
   bottom: 10px;
 }
@@ -467,3 +509,89 @@ main:after {
   cursor: pointer;
   border-radius: 3px;
 }
+@media screen and (max-width: 767px) {
+  .container-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 5px 10px;
+  }
+  .container-header .caption {
+    text-align: center;
+    font-size: 20px;
+  }
+  .container-header .caption::before {
+    margin-right: 5px;
+    display: inline-block;
+    font: normal normal normal 16px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    background-color: #333333;
+    color: #66d9ef;
+    line-height: 20px;
+    text-align: center;
+  }
+  main {
+    top: 40px;
+  }
+  .article,
+  article {
+    display: none;
+    float: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-right: 0px;
+    -webkit-transition: transform 400ms;
+    transition: transform 400ms;
+    /* z-index: 100; */
+  }
+}
+.currentview {
+  display: block;
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.nextview {
+  display: block;
+  -webkit-transform: translate(100%, 0);
+  transform: translate(100%, 0);
+}
+.preview {
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+/* .nextin() {
+	.translate(0, 0);
+}
+
+.currentout() {
+	.translate(100%, 0);
+} 
+
+main.in {
+	.currentview {
+			.currentout;
+		}
+	
+	.nextview {
+		.nextin;
+	} 
+}
+
+main.out {
+	.currentview {
+		.currentout;
+	}
+	.beforeview {
+		.currentview;
+	}
+	.translate(-200%, 0);
+} */

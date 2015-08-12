@@ -2,16 +2,17 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Task Manager</title>
     <link rel="stylesheet" href="less/index.css">
 </head>
 <body>
     <div class="container">
         <header class="container-header">
-            <h1 class="caption">任务管理系统</h1>
+            <h1 class="caption"><span class="back">返回</span>任务管理系统</h1>   
         </header>
         <main>
-            <article class="task-class">
+            <article class="task-class article currentview">
                 <header>
                     <h2 class="title">所有任务 (<span class="title sum"></span>)</h2>
                     <h2>分类列表</h2>
@@ -63,7 +64,7 @@
                 </section>
                 <button class="addition">新建分类</button>
             </article>
-            <article class="task-list">
+            <article class="task-list article">
                 <nav class="head">
                     <ul>
                         <li class="b-all">所有</li>

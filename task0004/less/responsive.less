@@ -1,0 +1,41 @@
+@media screen and (max-width: @screen-xs-max) {
+
+	//header
+	.container-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		padding: @padding-small-vertical @padding-small-horizontal;
+
+		.caption {
+			text-align: center;
+			font-size: @font-size-large;
+
+			&::before {
+				margin-right: @padding-small-vertical;
+				.fa-icon(@font-size-large, @padding-small-vertical, @gray-dark, @blue-base);
+			}
+		}
+	}
+
+	//main 
+	main {
+		top: @font-size-large + @padding-small-vertical*4;
+	}
+
+	//article
+	.article, article {
+		display: none;
+		float:none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		border-right: 0px;
+		-webkit-transition: transform 400ms;
+		        transition: transform 400ms;
+		/* z-index: 100; */
+	}
+
+	
+}

@@ -1,6 +1,6 @@
 console.log('main加载成功');
 
-define(['util'], function(_) {
+define(['util', 'appEvent'], function(_, ae) {
 
 	function Main() {
 	    this.klasses = [];      //包含的一级任务分类 每个元素均为一级任务类Klass
@@ -94,6 +94,9 @@ define(['util'], function(_) {
 	            var currentKlass = that.getKlass(klassName);
 	            that.setCurrentKlass(currentKlass);     //设置当前文件
 	            currentKlass.toggle();
+	            if(_.getViewWidth() <= _.appMaxWith) {
+	            	ae.nextIn();
+	            }
 	        });
 
 	    },

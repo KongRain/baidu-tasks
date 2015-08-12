@@ -1,11 +1,16 @@
 
 .task-list {
-	.article;
+	/* .article; */
 
 	.head {
+		position: relative;
+		background-color: @gray-light;
+		.clearfix;
 
 		ul {
+			float: left;
 			.clearfix;
+			.horizontal-middle(relative);
 			background-color: @gray-light;
 			padding: @padding-xs-vertical*3 @padding-xs-horizontal;
 

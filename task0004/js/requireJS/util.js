@@ -213,6 +213,16 @@ define(function() {
 	    return div.childNodes;
 	}
 
+	function getViewWidth() {
+		var width = window.innerWith || document.documentElement.clientWidth 
+		|| document.body.clientWidth;
+
+		console.log('viewPortwidth:' + width);
+
+		return width;
+
+	}
+
 
 	return {
 		addEvent:       addEvent,
@@ -224,7 +234,9 @@ define(function() {
 		removeClass:    removeClass,
 		hasClass:       hasClass,
 		$:              $,
-		createDOMByStr: createDOMByStr
+		createDOMByStr: createDOMByStr,
+		getViewWidth:   getViewWidth,
+		appMaxWith:     767
 	}
 
 });

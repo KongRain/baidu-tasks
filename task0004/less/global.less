@@ -88,15 +88,13 @@ main {
 	position: @pos;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, -50%);
-	-webkit-transform: translate(-50%, -50%);
+	.translate(-50%, -50%);
 }
 
 .horizontal-middle(@pos: absolute) {
 	position: @pos;
 	left: 50%;
-	transform: translate(-50%, 0);
-	-webkit-transform: translate(-50%, 0);
+	.translate(-50%, 0);
 }
 
 .btn-primary(@color: @btn-primary-color, @bg-color: @btn-primary-bg, @bd-color: @btn-primary-border) {
@@ -119,13 +117,14 @@ main {
 	cursor: pointer;
 }
 
-.article() {
+.article {
 	float: left;
 	position: relative;
 	width: @article-width;
 	height: 100%;
 	border-right: 1px solid @gray-light;
 }
+
 
 .addition {
 	position: absolute;
@@ -141,3 +140,7 @@ main {
 		}
 }
 
+.translate(@x, @y) {
+	-webkit-transform: translate(@x, @y);
+	        transform: translate(@x, @y);
+}
