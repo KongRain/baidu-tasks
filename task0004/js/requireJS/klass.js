@@ -2,7 +2,8 @@ console.log('klass加载成功');
 
 define(['util', 'appEvent'], function(_, ae) {
 
-	function Klass(name) {
+	function Klass(name, id) {
+		this.id = id;
 	    this.name = name;
 	    this.files = [];     //包含的二级子任务 每个元素均为二级任务类File
 	    this.ui = null;      //在ui中绑定的DOM元素

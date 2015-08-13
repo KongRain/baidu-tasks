@@ -1,7 +1,7 @@
 console.log('index加载成功');
 
-require(['util','main', 'klass', 'file', 'task', 'appEvent'], function(_, main, klass, file, task, ae) {
-	var dftKlass = new klass.Klass('默认分类');
+require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], function(_, main, klass, file, task, ae, local) {
+	/*var dftKlass = new klass.Klass('默认分类');
 	var dftFile = new file.File('功能介绍');
 	var dftTask = new task.Task('使用说明', '2015-07-22', true, '此为任务管理器，添加分类，添加文件，添加任务说明');
 	var main = new main.Main();
@@ -11,7 +11,50 @@ require(['util','main', 'klass', 'file', 'task', 'appEvent'], function(_, main, 
 	dftFile.addTask(dftTask);
 	dftTask.showDetail();
 	dftKlass.removeMouseEvent();
-	dftFile.removeMouseEvent();
+	dftFile.removeMouseEvent();*/
+
+	function init() {
+		var nonInitHander = populateStorage;
+		var initedHandler = setDoms;
+		local.initData(nonInitHander, initedHandler);
+	}
+
+	function populateStorage() {
+		local.setDefault();
+		setDoms();
+	}
+
+	function setDoms() {
+		//遍历本地存储的一级分类，并新建对象
+		var klasses = local.getKlass();
+		for(var i = 0, len = klasses.length; i < len; i++) {
+			var theKlass = klasses[i];
+			var kName = theKlass.name,
+			    kId = theKlass.id;
+			var klassObj = new klass.Klass(kName, kId);
+			main.addKlass(klassObj);
+
+			//遍历当前一级分类的二级子类，并新建对象
+			var fileIds = theKlass.children;
+			for(var j = 0, len2 = fileIds.length; j < len2; j++) {
+				var theFile = local.getItem(fileIds[j], 'file');
+				var fileObj = new file.File(theFile.name, theFile.id);
+				klassObj.addFile(fileObj);
+
+				//遍历当前二级子类的任务， 并新建对象
+				var taskIds = theFile.children;
+				for(var k = 0, len3 = taskIds.length; k < len3; k++) {
+					var theTask = local.getItem(taskIds[k], 'task');
+					var taskObj = new task.Task(theTask.name, theTask.date, theTask.finished, theTask.detail, theTask.id);
+					fileObj.addTask(taskObj);
+					taskObj.showDetail();
+				}
+			}
+		}
+	}
+
+	var main = new main.Main();
+	init();
 
 	/**
 	 * ===================================== 新建分类 ===========================================

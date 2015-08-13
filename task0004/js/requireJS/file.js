@@ -2,7 +2,8 @@ console.log('file加载成功');
 
 define(['util','list'], function(_, list) {
 
-	function File(name) {
+	function File(name, id) {
+		this.id = id;
 	    this.name = name;
 	    this.tasks = [];      //包含的三级子任务 每个元素均为三级任务类Task
 	    this.ui = null;       //在ui中绑定的DOM元素

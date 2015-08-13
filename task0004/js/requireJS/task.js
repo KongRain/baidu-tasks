@@ -2,7 +2,8 @@ console.log('task加载成功');
 
 define(['util', 'appEvent'], function(_, ae) {
 
-	function Task(name, date, finished, detail) {
+	function Task(name, date, finished, detail, id) {
+		this.id = id;
 	    this.name = name;
 	    this.date = date;
 	    this.finished = finished;
