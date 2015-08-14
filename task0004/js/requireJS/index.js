@@ -58,7 +58,6 @@ require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], fu
 	}
 
 	var main = new main.Main();
-	localStorage.clear();
 	init();
 
 
