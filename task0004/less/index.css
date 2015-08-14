@@ -12,7 +12,7 @@ body {
   height: 100%;
   width: 100%;
   color: #222222;
-  background-color: #eeeeee;
+  background-color: #ffffff;
   font-size: 16px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -78,8 +78,8 @@ main:after {
   width: 100%;
   font-size: 20px;
   color: #66d9ef;
-  background-color: #333333;
-  border: 1px solid #262626;
+  background-color: #555555;
+  border: 1px solid #494949;
   border-radius: 4px;
   line-height: 1.42857143;
   padding: 6px 12px;
@@ -124,7 +124,7 @@ main:after {
 .container-header {
   width: 100%;
   padding: 10px 16px;
-  background-color: #333333;
+  background-color: #555555;
 }
 .container-header .caption {
   color: #66d9ef;
@@ -142,7 +142,7 @@ main:after {
   width: 41px;
   height: 41px;
   padding: 10px;
-  background-color: #333333;
+  background-color: #555555;
   color: #66d9ef;
   line-height: 41px;
   text-align: center;
@@ -169,7 +169,7 @@ main:after {
   width: 14px;
   height: 14px;
   padding: 1px;
-  background-color: #333333;
+  background-color: #555555;
   color: #66d9ef;
   line-height: 14px;
   text-align: center;
@@ -305,7 +305,8 @@ main:after {
   text-align: center;
   cursor: pointer;
 }
-.task-list .head ul li:hover {
+.task-list .head ul li:hover,
+.task-list .head ul li.active {
   background-color: #eeeeee;
   color: #222222;
 }
@@ -396,6 +397,7 @@ main:after {
   width: 100%;
   padding: 12px;
   line-height: 1.42857143;
+  white-space: pre;
 }
 .task-detail .detail .detail-body .input-detail {
   height: 100%;
@@ -421,8 +423,8 @@ main:after {
 }
 .task-detail .edit-submit .cancel {
   color: #66d9ef;
-  background-color: #333333;
-  border: 1px solid #262626;
+  background-color: #555555;
+  border: 1px solid #494949;
   border-radius: 4px;
   line-height: 1.42857143;
   padding: 6px 12px;
@@ -503,8 +505,8 @@ main:after {
   float: right;
   padding: 6px 16px;
   color: #66d9ef;
-  background-color: #333333;
-  border: 1px solid #262626;
+  background-color: #555555;
+  border: 1px solid #494949;
   border-radius: 4px;
   line-height: 1.42857143;
   padding: 6px 12px;
@@ -534,7 +536,7 @@ main:after {
     width: 20px;
     height: 20px;
     padding: 5px;
-    background-color: #333333;
+    background-color: #555555;
     color: #66d9ef;
     line-height: 20px;
     text-align: center;

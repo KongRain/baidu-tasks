@@ -1,22 +1,14 @@
 console.log('index加载成功');
 
 require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], function(_, main, klass, file, task, ae, local) {
-	/*var dftKlass = new klass.Klass('默认分类');
-	var dftFile = new file.File('功能介绍');
-	var dftTask = new task.Task('使用说明', '2015-07-22', true, '此为任务管理器，添加分类，添加文件，添加任务说明');
-	var main = new main.Main();
 
-	main.addKlass(dftKlass);
-	dftKlass.addFile(dftFile);
-	dftFile.addTask(dftTask);
-	dftTask.showDetail();
-	dftKlass.removeMouseEvent();
-	dftFile.removeMouseEvent();*/
-
+	//初始化列表
 	function init() {
 		var nonInitHander = populateStorage;
 		var initedHandler = setDoms;
 		local.initData(nonInitHander, initedHandler);
+		setDft();
+		main.setSum();
 	}
 
 	function populateStorage() {
@@ -53,8 +45,22 @@ require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], fu
 		}
 	}
 
+	function setDft() {
+		var dftKlass = main.getKlassById(0);
+		var dftFile = dftKlass.getFileById(0);
+		var dftTask = dftFile.getTaskById(0);
+		main.setCurrentKlass(dftKlass);       //设置当前类别
+		dftKlass.setCurrentFile(dftFile);     //设置当前文件
+	    dftFile.showTasks();
+	    dftTask.showDetail();
+	    dftKlass.removeMouseEvent();
+		dftFile.removeMouseEvent();
+	}
+
 	var main = new main.Main();
+	localStorage.clear();
 	init();
+
 
 	/**
 	 * ===================================== 新建分类 ===========================================
@@ -73,10 +79,12 @@ require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], fu
 	        alert('请填写任务名称');
 	    }
 	    if(type == 'parent') {
-	        var newKlass = new klass.Klass(name);
+	    	var klassData = local.addItem('klass', name);   //在数据库中添加
+	        var newKlass = new klass.Klass(name, klassData.id);
 	        main.addKlass(newKlass);
 	    } else {
-	        var newFile = new file.File(name);
+	    	var fileData = local.addFile(main.currentKlass.id, name);  //在数据库中添加
+	        var newFile = new file.File(name, fileData.id);
 	        main.currentKlass.addFile(newFile);
 	        newFile.showTasks();
 	    }
@@ -119,16 +127,31 @@ require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], fu
 	    var currentTask = currentFile.currentTask;
 
 	    // 通过编辑按钮是否隐藏来判断当前操作是编辑任务还是新建任务
+	    // 隐藏时为新建任务，显示时为编辑任务
 	    if(_.$('.detail-head').style.display == 'block') {
-	        /*var newTask = new Task(newName, newDate, false, newDetail);*/
-	        currentFile.removeTask(currentTask);
-	    }
+	        
+	        currentFile.list.deleteTask(currentTask);
+	        currentTask.submitEdit();
+	        currentFile.list.showTask(currentTask);
+	        //改变数据库
+	        local.modifyItem('task', currentTask.id, 'name', currentTask.name);
+            local.modifyItem('task', currentTask.id, 'date', currentTask.date);
+            local.modifyItem('task', currentTask.id, 'detail', currentTask.detail);
+            currentTask.showDetail();
+	    } 
+        else {
+        	var newTask = new task.Task('', '', false, '');
+		    newTask.submitEdit();
 
-	    var newTask = new task.Task('', '', false, '');
-	    newTask.submitEdit();
-	    currentFile.addTask(newTask);
-	    newTask.showDetail();
-	    main.setSum();
+		    //在数据库中添加
+		    var taskData = local.addTask(currentFile.id, newTask.name, newTask.date, newTask.finished, newTask.detail);
+
+		    newTask.setId(taskData.id);
+		    currentFile.addTask(newTask);
+		    newTask.showDetail();
+		    main.setSum();
+
+        }
 	});
 
 	/*点击取消按钮*/
@@ -154,6 +177,9 @@ require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], fu
 	    var currentTask = currentFile.currentTask;
 	    switch (cName) {
 	        case 'ok fa fa-check-square-o':
+	        	//改变数据库
+	        	local.modifyItem('task', currentTask.id, 'finish', true);
+
 	            currentTask.finishTask();
 	            currentFile.list.updateBoth();
 	            this.style.display = 'none';

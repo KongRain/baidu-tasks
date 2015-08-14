@@ -16,6 +16,13 @@ define(['util', 'appEvent'], function(_, ae) {
 	Task.prototype = {
 	    constructor: Task,
 
+	    setId: function(id) {
+	    	if(typeof id != 'number') return;
+	    	else {
+	    		this.id = id;
+	    	}
+	    },
+
 	    setName: function(name) {
 	        if(typeof name != 'string') return;
 	        else {

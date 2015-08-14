@@ -1,6 +1,6 @@
 console.log('main加载成功');
 
-define(['util', 'appEvent'], function(_, ae) {
+define(['util', 'appEvent', 'localStorage'], function(_, ae, local) {
 
 	function Main() {
 	    this.klasses = [];      //包含的一级任务分类 每个元素均为一级任务类Klass
@@ -40,6 +40,15 @@ define(['util', 'appEvent'], function(_, ae) {
 	        }
 	    },
 
+	    getKlassById: function(id) {
+	    	var klasses = this.klasses;
+	    	for(var i=0, len=klasses.length; i<len; i++) {
+	    		if(klasses[i].id === id) {
+	    			return klasses[i];
+	    		}
+	    	}
+	    },
+
 	    getSum: function() {
 	        var num = 0;
 	        this.klasses.forEach(function(klass) {
@@ -68,10 +77,6 @@ define(['util', 'appEvent'], function(_, ae) {
 	    },
 
 	    init: function() {
-	        /*this.addKlass(dftKlass);
-	        dftKlass.addFile(dftFile);
-	        dftFile.addTask(dftTask);
-	        dftTask.showDetail();*/
 	        this.eventDelegate();
 	        this.cilckDelete();
 	        this.setSum();
@@ -92,7 +97,7 @@ define(['util', 'appEvent'], function(_, ae) {
 	            var klassName = target.lastChild.nodeValue;
 	            klassName = klassName.replace(/\s*\(\d+\)$/, "");
 	            var currentKlass = that.getKlass(klassName);
-	            that.setCurrentKlass(currentKlass);     //设置当前文件
+	            that.setCurrentKlass(currentKlass);     //设置当前类别
 	            currentKlass.toggle();
 	        });
 
@@ -117,6 +122,17 @@ define(['util', 'appEvent'], function(_, ae) {
 	                    klassName = klassName.replace(/\s*\(\d+\)$/, "");
 	                    var klass = that.getKlass(klassName);
 	                    that.removeKlass(klass);
+
+	                    //从数据库中删除
+	                    var klassId = klass.id;
+	                    var klassData = local.getItem(klassId, 'klass');
+	                    var children = klassData.children;
+	                    //删除它的子文件
+	                    for(var i=0, len=children.length; i<len; i++) {
+	                    	local.deleteItem('file', children[i]);
+	                    }
+
+	                    local.deleteItem('klass', klassId);
 
 	                    //更新总任务数量
 	                    var sum = _.$('.sum').innerHTML;

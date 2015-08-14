@@ -1,6 +1,6 @@
 console.log('klass加载成功');
 
-define(['util', 'appEvent'], function(_, ae) {
+define(['util', 'appEvent', 'localStorage'], function(_, ae, local) {
 
 	function Klass(name, id) {
 		this.id = id;
@@ -120,6 +120,16 @@ define(['util', 'appEvent'], function(_, ae) {
 	        }
 	    },
 
+	    /*通过二级任务id查找对应的对象*/
+	    getFileById: function(id) {
+	        var files = this.files;
+	        for(var i=0, len=files.length; i<len; i++) {
+	            if(files[i].id == id) {
+	                return files[i];
+	            }
+	        }
+	    },
+
 	    /*高光选中此对象*/
 	    highLight: function() {
 	        _.addClass(this.ui.getElementsByTagName('h3')[0], 'active');
@@ -225,7 +235,16 @@ define(['util', 'appEvent'], function(_, ae) {
 	                    var fileName = target.parentNode.lastChild.nodeValue;
 	                    fileName = fileName.replace(/\s*\(\d+\)$/, "");
 	                    var file = that.getFile(fileName);
+	                    var fileId = file.id;
 	                    that.removeFile(file);
+
+	                    //从数据库中删除
+	                    var thisData = local.getItem(that.id, 'klass');
+	                    var oldChild = thisData.children;
+	                    var index = oldChild.indexOf(fileId);
+	                    oldChild.splice(index, 1);
+	                    local.modifyItem('klass', that.id, 'children', oldChild);
+	                    local.deleteItem('file', fileId);
 
 	                    //更新总任务数量
 	                    var sum = parseInt(_.$('.sum').innerHTML);

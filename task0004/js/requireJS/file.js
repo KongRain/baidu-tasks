@@ -79,6 +79,16 @@ define(['util','list'], function(_, list) {
 	        }
 	    },
 
+	    /*根据三级任务的id查找对应对象*/
+	    getTaskById: function(id) {
+	        var tasks = this.tasks;
+	        for(var i=0, len=tasks.length; i<len; i++) {
+	            if(tasks[i].id == id) {
+	                return tasks[i];
+	            }
+	        }
+	    },
+
 	    /*显示其包含的所有三级任务*/
 	    showTasks: function() {
 	        var that = this;
