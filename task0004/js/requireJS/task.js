@@ -69,6 +69,7 @@ define(['util', 'appEvent'], function(_, ae) {
 	        } else {
 	            _.$('.detail-head').style.display = 'block';
 	        }
+	        this.parent.currentTask = this;
 	    },
 
 	    /*编辑的界面*/

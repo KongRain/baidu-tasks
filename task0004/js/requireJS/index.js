@@ -181,6 +181,7 @@ require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], fu
 
 	            currentTask.finishTask();
 	            currentFile.list.updateBoth();
+	            currentFile.otherListHandler();
 	            this.style.display = 'none';
 	            break;
 	        case 'edit fa fa-pencil-square-o':

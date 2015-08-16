@@ -45,8 +45,8 @@ define(['util','list'], function(_, list) {
 	    addTask: function(task) {
 	        this.tasks.push(task);
 	        this.list.showTask(task);
-	        task.init();
 	        this.list.updateBoth();
+	        this.otherListHandler();
 	        this.currentTask = task;
 	        this.updateLength();
 	        task.setParent(this);
@@ -99,6 +99,41 @@ define(['util','list'], function(_, list) {
 	        });
 	        this.list.switchTo('all');
 	        this.list.updateBoth();
+	        this.otherListHandler();
+	    },
+
+	    /*为未完成和已完成列表绑定事件*/
+	    otherListHandler: function() {
+	    	var doneItems = this.list.doneList.getElementsByClassName('item');
+	    	var undoneItmes = this.list.undoneList.getElementsByClassName("item");
+	    	for(var i=0,len1=doneItems.length; i<len1; i++) {
+	    		var that = this;
+	    		
+	    		 _.addEvent(doneItems[i], 'click', function() {
+	    		 	var itemName = this.innerHTML;
+	    			var task = that.getTask(itemName);
+		            task.showDetail();
+
+		            if(_.getViewWidth() <= _.appMaxWith) {
+		            	ae.nextIn();
+		            }
+
+		        });
+	    	}
+	    	for(var j=0, len2=undoneItmes.length; j<len2; j++) {
+	    		var that = this;
+	    		
+	    		 _.addEvent(undoneItmes[j], 'click', function() {
+	    		 	var itemName = this.innerHTML;
+	    			var task = that.getTask(itemName);
+		            task.showDetail();
+
+		            if(_.getViewWidth() <= _.appMaxWith) {
+		            	ae.nextIn();
+		            }
+
+		        });
+	    	}
 	    },
 
 	    /*高光选中此对象*/

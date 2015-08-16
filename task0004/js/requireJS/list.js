@@ -17,12 +17,13 @@ define(['util'], function(_) {
 	    /*在列表里显示一个任务task*/
 	    showTask: function (task) {
 	        var date = task.date;
-	        var dateItem;         //任务对应的日期div
+	        var dateItem_all, dateItem_other;         //任务对应的日期div
 	        if (this.dates.indexOf(date) < 0) {
 	            this.dates.push(date);
-	            dateItem = this.createDateItem(date);
+	            dateItem_all = this.createDateItem(date);
+
 	        } else {
-	            dateItem = this.searchDateItem(date);
+	            dateItem_all = this.searchDateItem(date);
 	        }
 	        var taskBlock = document.createElement("div");
 	        taskBlock.innerHTML = task.name;
@@ -30,7 +31,7 @@ define(['util'], function(_) {
 	        if (task.finished) {
 	            _.addClass(taskBlock, "done");
 	        }
-	        dateItem.appendChild(taskBlock);
+	        dateItem_all.appendChild(taskBlock);
 	        task.setUI(taskBlock);              //为task绑定DOM元素
 	        task.init();
 	    },
