@@ -1,6 +1,6 @@
 console.log('file加载成功');
 
-define(['util','list'], function(_, list) {
+define(['util','list', 'appEvent'], function(_, list, ae) {
 
 	function File(name, id) {
 		this.id = id;

@@ -177,7 +177,7 @@ require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], fu
 	    switch (cName) {
 	        case 'ok fa fa-check-square-o':
 	        	//改变数据库
-	        	local.modifyItem('task', currentTask.id, 'finish', true);
+	        	local.modifyItem('task', currentTask.id, 'finished', true);
 
 	            currentTask.finishTask();
 	            currentFile.list.updateBoth();
