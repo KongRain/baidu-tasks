@@ -8,103 +8,66 @@
             padding: 0;
             margin: 0;
         }
+
         body {
-            font: '微软雅黑' 20px/1.5;
+            font: '微软雅黑' 30px/1.5;
             background: #f0f0f0;
-            color: rgb(182,159,141);
         }
-        .clearfix:after {
-            display: table;
-            content: '';
-            height: 0;
-            visibility: hidden;
-            clear: both;
+
+        a {
+            color: #000;
+            text-decoration: none;
+            font-size: 30px;
+            transition: all .5s;
         }
-        .outer {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            margin-left: -300px;
-            margin-top: -200px;
-            width: 600px;
-            height: 400px;
-            padding: 20px;
-            box-sizing: border-box;
-            border: 2px solid rgb(107,200,242);
-            border-radius: 15px;
-            background-color: rgb(255,245,215);
+        a:hover {
+            color: #69c;
         }
+
+        #container {
+            width: 700px;
+            margin: 20px auto;
+        }
+
         h1 {
-            margin: 10px;
+            margin: 10px auto;
             padding: 10px;
             border-bottom: 1px solid rgb(182,159,141);
+            text-align: center;
         }
-        ul {
-            list-style: none;
-        }
-        li {
-            display: block;
+        dt,dd {
             margin-bottom: 10px;
         }
-        h2 {
-            margin: 10px 10px 10px 20px;
+        
+        footer {
+            position: absolute;
+            bottom: 30px;
+            margin: 0 auto;
         }
-        h2 a {
-            display: inline-block;
-            margin-left: 50px;
-            vertical-align: middle;
-        }
-        .enter {
-            display: inline-block;
-            width: 32px;
-            height: 32px;
-            background-image: url(./img/enter.ico);
-        }
-        li p {
-            margin-left: 30px;
+
+        footer a {
+            font-size: inherit;
         }
 
     </style>
 </head>
 <body>
 <div id="container">
-    <div class="outer">
-        <h1 class="caption">百度IFE项目展示</h1>
-        <ul>
-            <li class="clearfix">
-                <h2>task0001
-                    <a href="./task0001/index.html" target="_blank"><i class="enter"></i></a>
-                </h2>
+    <h1 class="caption">百度IFE项目展示</h1>
+    <dl>
+        <dt><a href="./task0001/index.html" target="_blank">task0001</a></dt>
+        <dd>个人网站的静态页面</dd>
 
-                <p>个人网站的静态页面</p>
+        <!-- <dt><a href="task0001/index.html" target="_blank">task0002</a></dt>
+        <dd>个人网站的静态页面</dd> -->
 
-            </li>
-            <li class="clearfix">
-                <h2>task0002
-                    <a href="task0001/index.html" target="_blank"><i class="enter"></i></a>
-                </h2>
+        <dt><a href="task0003/task0003.html" target="_blank">task0003</a>
+        <dd>一个简单的任务管理器</dd>
 
-                <p>个人网站的静态页面</p>
-
-            </li>
-            <li class="clearfix">
-                <h2>task0003
-                    <a href="task0003/task0003.html" target="_blank"><i class="enter"></i></a>
-                </h2>
-
-                <p>一个简单的任务管理器</p>
-
-            </li>
-            <li class="clearfix">
-                <h2>task0004
-                    <a href="task0004/index.html" target="_blank"><i class="enter"></i></a>
-                </h2>
-
-                <p>对task0003的代码重构</p>
-
-            </li>
-        </ul>
-    </div>
+        <dt><a href="task0004/index.html" target="_blank">task0004</a>
+        <dd>对task0003的代码重构,增加了移动端的自适应，localStorage本地存储，运用RequireJS实现模块化，用LESS实现CSS代码的预编译等。</dd>
+    </dl>
+    <footer>源代码：<a href="https://github.com/KongRain/baidu-tasks" target="_blank">https://github.com/KongRain/baidu-tasks</a></footer>
 </div>
 </body>
 </html>
