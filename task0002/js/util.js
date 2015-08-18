@@ -4,54 +4,59 @@
 
 //判断arr是否为数组，并返回一个bool值
 function isArray(arr) {
-	console.log(arr instanceof Array);
+	if(Object.protoytype.toString.call(arr) === '[object Array]') {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
 //判断fn是否为函数，并返回一个bool值
 function isFunction(fn) {
-	//方法一 用typeof操作符
-	if(typeof fn === "function")
-	    console.log(true);
-	else
-	    console.log(false);
-	//方法二 用instanceof操作符
-	console.log(fn instanceof Function);
+	return Object.prototype.toString.call(fn) === '[object Function]';
 }
 
 
 //使用递归来实现一个深度克隆，可以复制一个目标对象，返回一个完整拷贝
 //被复制的对象类型会被限制为数字、字符串、布尔、日期、数组、Object对象。不会包含函数、正则对象等
 function cloneObject(src) {
-	if (typeof src === "object") {
-		var dst = new Object();
-		for (var attr in src) {
-			if (typeof src[attr] !== "object" && typeof src[attr] !== "undefined") {
-				dst[attr] = src[attr];
-			} else {
-				dst[attr] = cloneObject(src[attr]);
-			}
-		}
-		return dst;
-	}
+	var result = src;
+    var type = Object.prototype.toString.call(src);
+    if(!src || type === '[object Number]' || type === '[object String]' || type === '[object Boolean]') {
+        return result;
+    } else if(type === '[object Array]') {
+        result = [];
+        for(var i=0, len = src.length; i<len; i++) {
+            result[i] = cloneObject(src[i]);
+        }
+    } else if(type === '[object Object]') {
+        result = {};
+        for(var i in src) {
+            if(src.hasOwnProperty(i)) {
+                result[i] = cloneObject(src[i]);
+            }
+        }
+    }
+
+    return result;
 }
 
 
 //对数组进行去重操作，只考虑数组中元素为数字或字符串，返回一个去重后的数组
 function uniqArray(arr) {
-    if(!arr instanceof Array)
-        return;
-    else {
-        var uniqArr = new Array();
-        arr.sort();
-        for(var i=0; i<arr.length; i++) {
-            if(i == 0 || arr[i] != uniqArr[uniqArr.length-1]) {
-                uniqArr.push(arr[i]);
-            } else
-                continue;
+    if(!isArray(arr)) return arr;
+    var result = [];
+    var hash = {};
+    for(var i=0, len=arr.length; i<len; i++) {
+        var key = arr[i];
+
+        if(!hash[key]) {
+            result.push(key);
+            hash[key] = 1;
         }
     }
-    return uniqArr;
+    return result;
 }
 
 
@@ -89,8 +94,8 @@ function fn(index, item) {
     console.log(index + ": " + item);
 }
 function each(arr, fn) {
-    var i = 0;
-    for(; i != arr.length; i++) {
+    
+    for(var i = 0, len = arr.length; i < len; i++) {
         fn(i, arr[i]);
     }
 }
@@ -114,16 +119,26 @@ function getObjectLength(obj) {
 
 // 为element增加一个样式名为newClassName的新样式
 function addClass(element, newClassName) {
-    /*if(!element.className) {
-        element.className = newClassName;
-    }else {
-        var finnalClass = element.className;
-        finnalClass += " ";
-        finnalClass += newClassName;
-        element.className = finnalClass;
-    }*/
-    //改进方法
-    element.classList.add(newClassName);
+    var result;
+    if(typeof newClassName === 'string') {
+        var classes = (newClassName || '').match(/\S+/g) || [];
+        var elementClass = element.className;
+        var cur = element.nodeType === 1 && (elementClass ?
+            (' ' + elementClass + ' ').replace(/[\t\r\n\f]/g, ' ') :
+            ' ');
+        if(cur) {
+            var len = classes.length;
+            for(var i = 0; i < len; i++) {
+                if(cur.indexOf(' ' + classes[i] + ' ') < 0) {
+                    cur += classes[i] + ' ';
+                }
+            }
+        }
+        result = trim(cur);
+        if(elementClass != result) {
+            element.className = result;
+        }
+    }
 }
 
 
