@@ -20,6 +20,9 @@
                 if(xhr.status >= 200 && xhr.status <= 300) {
                     suggestData = JSON.parse(xhr.responseText);
                 }
+                else {
+                    console.log('请求失败，响应状态：' + xhr.status);
+                }
             }
         }
     }
