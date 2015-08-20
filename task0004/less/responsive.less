@@ -25,7 +25,7 @@
 
 	//article
 	.article, article {
-		display: none;
+		/* display: none; */
 		float:none;
 		position: absolute;
 		top: 0;
@@ -35,6 +35,17 @@
 		-webkit-transition: transform 400ms;
 		        transition: transform 400ms;
 		z-index: 100; 
+	}
+	.currentview {
+		.translate(0, 0);
+	}
+
+	.nextview {
+		.translate(100%, 0);
+	}
+
+	.preview {
+		.translate(-100%, 0);
 	}
 
 	

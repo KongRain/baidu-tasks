@@ -548,7 +548,7 @@ main:after {
   }
   .article,
   article {
-    display: none;
+    /* display: none; */
     float: none;
     position: absolute;
     top: 0;
@@ -559,45 +559,16 @@ main:after {
     transition: transform 400ms;
     z-index: 100;
   }
-}
-.currentview {
-  display: block;
-  -webkit-transform: translate(0, 0);
-  transform: translate(0, 0);
-  /* 
-	&.left {
-		.translate(-100%, 0);
-	}
-
-	&.right {
-		.translate(100%, 0);
-	} */
-}
-.nextview {
-  display: block;
-  -webkit-transform: translate(100%, 0);
-  transform: translate(100%, 0);
-  /* &.in {
-		.translate(0, 0);
-	} */
-}
-.preview {
-  display: block;
-  -webkit-transform: translate(-100%, 0);
-  transform: translate(-100%, 0);
-  /* &.in {
-		.translate(0, 0);
-	} */
-}
-.left {
-  -webkit-transform: translate(-100%, 0);
-  transform: translate(-100%, 0);
-}
-.mid {
-  -webkit-transform: translate(0, 0);
-  transform: translate(0, 0);
-}
-.right {
-  -webkit-transform: translate(100%, 0);
-  transform: translate(100%, 0);
+  .currentview {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  .nextview {
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+  }
+  .preview {
+    -webkit-transform: translate(-100%, 0);
+    transform: translate(-100%, 0);
+  }
 }

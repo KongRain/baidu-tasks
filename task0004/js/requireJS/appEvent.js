@@ -14,27 +14,16 @@ define(['util'], function(_) {
 
 	function nextIn() {
 		var cur = _.$('.currentview');
-		var next = _.$('.nextview');
+		var next = cur.next;
 
-		if(!next) {
-			next = cur.next;
+		if(!_.hasClass(next, 'nextview')) {
 			_.addClass(next, 'nextview');
 		}
 
-		_.addClass(cur, 'left');
-		_.addClass(next, 'mid');
-
 		_.removeClass(cur, 'currentview');
 		_.addClass(cur, 'preview');
-		_.removeClass(cur, 'left');
-		
-		_.addClass(next, 'currentview');
 		_.removeClass(next, 'nextview');
-		_.removeClass(next, 'mid');
-
-		if(cur.pre && _.hasClass(cur.pre, 'preview')) {
-			_.removeClass(cur.pre, 'preview');
-		}
+		_.addClass(next, 'currentview');
 
 		backtoggle();
 
@@ -42,27 +31,16 @@ define(['util'], function(_) {
 
 	function preIn() {
 		var cur = _.$('.currentview');
-		var pre = _.$('preview');
+		var pre = cur.pre;
 
-		if(!pre) {
-			pre = cur.pre;
+		if(!_.hasClass(pre, 'preview')) {
 			_.addClass(pre, 'preview');
 		}
-		
-		_.addClass(cur, 'right');
-		_.addClass(pre, 'mid');
 
 		_.removeClass(cur, 'currentview');
-		_.removeClass(cur, 'right');
-		_.addClass(cur, 'next');
-		
-		_.addClass(pre, 'currentview');
+		_.addClass(cur, 'nextview');
 		_.removeClass(pre, 'preview');
-		_.removeClass(pre, 'mid');
-
-		if(cur.next && _.hasClass(cur.next, 'nextview')) {
-			_.removeClass(cur.next, 'nextview');
-		}
+		_.addClass(pre, 'currentview');
 
 		backtoggle();
 		

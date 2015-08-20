@@ -60,18 +60,30 @@ define(function() {
 	    return len;
 	}
 
-	function addClass(ele, name) {
-	    var oldClass = ele.className;
-	    if(oldClass.length == 0) {
-	        ele.className = name;
-	    } else {
-	        var oldArray = oldClass.split(/\s/);
-	        for(var i = 0, len = oldArray.length; i < len; i++) {
-	            if(oldArray[i] == name) {
-	                return;
+	function trim(str) {
+	    return str.replace(/^\s*|\s*$/g, "");
+	}
+
+	function addClass(element, newClassName) {
+	    var result;
+	    if(typeof newClassName === 'string') {
+	        var classes = (newClassName || '').match(/\S+/g) || [];
+	        var elementClass = element.className;
+	        var cur = element.nodeType === 1 && (elementClass ?
+	            (' ' + elementClass + ' ').replace(/[\t\r\n\f]/g, ' ') :
+	            ' ');
+	        if(cur) {
+	            var len = classes.length;
+	            for(var i = 0; i < len; i++) {
+	                if(cur.indexOf(' ' + classes[i] + ' ') < 0) {
+	                    cur += classes[i] + ' ';
+	                }
 	            }
 	        }
-	        ele.className += " " + name;
+	        result = trim(cur);
+	        if(elementClass != result) {
+	            element.className = result;
+	        }
 	    }
 	}
 
