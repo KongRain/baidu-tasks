@@ -5,6 +5,19 @@ var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var sourceMaps = require('gulp-sourcemaps');
 var amdOptimize = require('amd-optimize');
+var browserSync = require('browser-sync');
+
+/*static server*/
+gulp.task('browser-sync', function() {
+	browserSync({
+		server: {
+			//指定服务器启动根目录
+			baseDir: '.'
+		}
+	});
+	//监听变化，实时刷新页面
+	gulp.watch('./**/*.*').on('change', browserSync.reload);
+});
 
 /* less to css */
 gulp.task('less', function() {
@@ -18,8 +31,8 @@ gulp.task('less', function() {
 gulp.task('compress', function() {
 	gulp.src('src/js/requireJS/*.js')
 		.pipe(amdOptimize('index'))
-		/*.pipe(uglify())*/
 		.pipe(concat('app.js'))
+		.pipe(uglify())
 		.pipe(gulp.dest('dist/js'));
 });
 
