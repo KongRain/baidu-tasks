@@ -24,3 +24,8 @@
 
 在JS方面，将代码合理划分为模块，包括一级、二级、三级任务模块及显示模块，并运用RequireJS实现了AMD模块化方案。运用gulp自动化构建工具管理工作流。
 
+在移动端浏览页面可扫描二维码：
+
+![二维码](https://github.com/KongRain/baidu-tasks/raw/master/task0004/%E4%BA%8C%E7%BB%B4%E7%A0%81.png?raw=true)
+
+

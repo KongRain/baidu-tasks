@@ -4,7 +4,7 @@
 
 //判断arr是否为数组，并返回一个bool值
 function isArray(arr) {
-	if(Object.protoytype.toString.call(arr) === '[object Array]') {
+	if(Object.prototype.toString.call(arr) === '[object Array]') {
         return true;
     } else {
         return false;
