@@ -283,8 +283,8 @@ main:after {
   display: block;
   position: relative;
   left: 50%;
-  -webkit-transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
+  -webkit-transform: translate3d(-50%, 0, 0);
+  transform: translate3d(-50%, 0, 0);
   background-color: #777777;
   padding: 3px 5px;
 }
@@ -447,8 +447,8 @@ main:after {
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate3d(-50%, -50%, 0);
+  transform: translate3d(-50%, -50%, 0);
   width: 369px;
   height: 200px;
   border-radius: 6px;
@@ -465,8 +465,8 @@ main:after {
   width: 246px;
   position: absolute;
   left: 50%;
-  -webkit-transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
+  -webkit-transform: translate3d(-50%, 0, 0);
+  transform: translate3d(-50%, 0, 0);
   line-height: 1.42857143;
   margin: 10px 0;
 }
@@ -486,8 +486,8 @@ main:after {
 .prompt .popup .buttons {
   position: absolute;
   left: 50%;
-  -webkit-transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
+  -webkit-transform: translate3d(-50%, 0, 0);
+  transform: translate3d(-50%, 0, 0);
   width: 184.5px;
   bottom: 10px;
 }
@@ -560,15 +560,15 @@ main:after {
     z-index: 100;
   }
   .currentview {
-    -webkit-transform: translate(0, 0);
-    transform: translate(0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
   .nextview {
-    -webkit-transform: translate(100%, 0);
-    transform: translate(100%, 0);
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
   }
   .preview {
-    -webkit-transform: translate(-100%, 0);
-    transform: translate(-100%, 0);
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
   }
 }

@@ -167,18 +167,71 @@ define(function() {
 
 	//在某一分类中删除一个对象
 	function deleteItem(key, id) {
-		var oldItems = JSON.parse(localStorage.getItem(key));
-		var item = null;
-		for(var i=0, len=oldItems.length; i<len; i++) {
-			if(oldItems[i].id === id) {
-				item = oldItems[i];
-				oldItems.splice(i, 1);
+		if(key === 'klass') {
+			deleteKlass(id);
+		} else if(key === 'file') {
+			deleteFile(id);
+		} else {
+			return;
+		}
+	}
+
+	function deleteTask(id) {
+		var oldTasks = JSON.parse(localStorage.getItem('task'));
+		var taskDel = null;
+		for(var i=0, len=oldTasks.length; i<len; i++) {
+			if(oldTasks[i].id === id) {
+				taskDel = oldTasks[i];
+				oldTasks.splice(i, 1);
 				break;
 			}
 		}
 
-		localStorage.setItem(key, JSON.stringify(oldItems));	
+		localStorage.setItem('task', JSON.stringify(oldTasks));	
 	}
+
+	function deleteFile(id) {
+		var oldFiles = JSON.parse(localStorage.getItem('file'));
+		var fileDel = null;
+		for(var i=0, len=oldFiles.length; i<len; i++) {
+			if(oldFiles[i].id === id) {
+				fileDel = oldFiles[i];
+				var child = fileDel.children;
+				var childLen = child.length;
+				if(childLen !== 0) {
+					for(var j=0; j<childLen; j++) {
+						deleteTask(child[j]);
+					}
+				}
+				oldFiles.splice(i, 1);
+				break;
+			}
+		}
+
+		localStorage.setItem('file', JSON.stringify(oldFiles));	
+	}
+
+	function deleteKlass(id) {
+		var oldKlasses = JSON.parse(localStorage.getItem('klass'));
+		var klassDel = null;
+		for(var i=0, len=oldKlasses.length; i<len; i++) {
+			if(oldKlasses[i].id === id) {
+				klassDel = oldKlasses[i];
+				var child = klassDel.children;
+				var childLen = child.length
+				if(childLen !== 0) {
+					for(var j=0; j<childLen; j++) {
+						deleteFile(child[j]);
+					}
+				}
+				oldKlasses.splice(i, 1);
+				break;
+			}
+		}
+
+		localStorage.setItem('klass', JSON.stringify(oldKlasses));	
+	}
+
 
     return {
     	initData : initData,

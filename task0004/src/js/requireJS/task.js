@@ -110,13 +110,16 @@ define(['util', 'appEvent'], function(_, ae) {
 
 	        if(name == '') {
 	            alert('请输入任务名称');
+	            return false;
 	        }
 	        if(date == '') {
 	            alert('请输入日期');
+	            return false;
 	        }
 	        this.name = name;
 	        this.date = date;
 	        this.detail = detail;
+	        return true;
 	        //currentKlass.currentFile.list.showTask(this);
 	    },
 

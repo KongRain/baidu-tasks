@@ -9,6 +9,7 @@ require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], fu
 		local.initData(nonInitHander, initedHandler);
 		setDft();
 		main.setSum();
+
 	}
 
 	function populateStorage() {
@@ -140,7 +141,10 @@ require(['util','main', 'klass', 'file', 'task', 'appEvent', 'localStorage'], fu
 	    } 
         else {
         	var newTask = new task.Task('', '', false, '');
-		    newTask.submitEdit();
+		    var success = newTask.submitEdit();
+		    if(!success) {
+		    	return false;
+		    }
 
 		    //在数据库中添加
 		    var taskData = local.addTask(currentFile.id, newTask.name, newTask.date, newTask.finished, newTask.detail);

@@ -23,7 +23,7 @@ gulp.task('browser-sync', function() {
 gulp.task('less', function() {
 	gulp.src('src/less/index.less')
 		.pipe(less())
-		.pipe(minifyCSS())
+		/*.pipe(minifyCSS())*/
 		.pipe(gulp.dest('dist/css'));
 });
 
